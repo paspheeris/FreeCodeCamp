@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Quote Machine</title>
+</head>
+<body>
+  <style>
+    /*
+    * {
+      border: 1px solid red;
+    }
+    */
+    body {
+      background-color: #ffc600;
+    }
+    .centerBox {
+      width: 700px;
+      height: 400px;
+      margin: 75px auto;
+      background-color: #BDBDBD;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      font-family:'helvetica neue';
+      box-shadow:10px 10px 0 rgba(0,0,0,0.1);
+    }
+    .text {
+      margin: 0 auto;
+      padding: 50px;
+      flex: 1;
+    }
+    .buttons {
+      /*margin-bottom: auto;*/
+      display: flex;
+      align-items: center;
+      flex: 1;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .quote {
+      color: white;
+      font-size: 35px;
+    }
+    .author {
+      color: white;
+      font-size: 35px;
+      float: right;
+      margin-top: 25px;
+    }
+    .twitter {
+
+    }
+    .newQuoteButton {
+      /*float: right;
+      align-self: flex-end;*/
+    }
+    .buttonStyling {
+      background-color: #ffc600;
+      height: 76px;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 10px;
+      color: grey;
+      font-weight: bold;
+      font-size: 17px;
+      box-shadow:10px 10px 0 rgba(0,0,0,0.1);
+    }
+  </style>
+
+  <div class="centerBox">
+    <div class="text">
+      <div class="quote"></div>
+      <div class="author"></div>
+    </div>
+    <div class="buttons">
+      <button class="twitter buttonStyling">Tweet this quote!</button>
+      <button class="newQuoteButton buttonStyling">New Quote</button>
+    </div>
+  </div>
+  <script>
+  const centerBox = document.querySelector('.centerBox');
+  const newQuoteButton = document.querySelector('.newQuoteButton');
+  const quoteDiv = document.querySelector('.quote');
+  const authorDiv = document.querySelector('.author');
+  //retreive quotes from github, them place them into quotes array as objects
+  const endpoint = 'https://gist.githubusercontent.com/dmakk767/9375ff01aff76f1788aead1df9a66338/raw/491f8c2e91b7d3b8f1c8230e32d9c9bc1a1adfa6/Quotes.json%2520';
+  const quotes = [];
+  fetch(endpoint)
+    .then(blob => blob.json())
+    .then(data => quotes.push(...data))
+    .then(data => {
+      let quoteObject = newQuoteObject();
+      quoteDiv.innerHTML = quoteObject.quote;
+      authorDiv.innerHTML = quoteObject.name;
+    })
+    //.then(data => console.log(quotes[0]));
+
+  //event listener for the new quote button
+  newQuoteButton.addEventListener('click', function() {
+    console.log('New quote button click');
+    let quoteObject = newQuoteObject();
+    //console.log(quoteObject);
+    quoteDiv.innerHTML = quoteObject.quote;
+    authorDiv.innerHTML = quoteObject.name;
+  });
+
+  //function that returns a random quote object from the quotes array
+  function newQuoteObject() {
+    const randomNum = Math.floor(Math.random() * 100);
+    return quotes[randomNum];
+  }
+
+  </script>
+</body>
+</html>
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
