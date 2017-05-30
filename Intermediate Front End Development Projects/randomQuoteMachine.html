@@ -103,6 +103,7 @@
   const newQuoteButton = document.querySelector('.newQuoteButton');
   const quoteDiv = document.querySelector('.quote');
   const authorDiv = document.querySelector('.author');
+  const twitterLink = document.querySelector('.twitter-share-button');
   //retreive quotes from github, them place them into quotes array as objects
   const endpoint = 'https://gist.githubusercontent.com/dmakk767/9375ff01aff76f1788aead1df9a66338/raw/491f8c2e91b7d3b8f1c8230e32d9c9bc1a1adfa6/Quotes.json%2520';
   const quotes = [];
@@ -113,6 +114,7 @@
       let quoteObject = newQuoteObject();
       quoteDiv.innerHTML = quoteObject.quote;
       authorDiv.innerHTML = quoteObject.name;
+
     })
     //.then(data => console.log(quotes[0]));
 
@@ -123,12 +125,21 @@
     //console.log(quoteObject);
     quoteDiv.innerHTML = quoteObject.quote;
     authorDiv.innerHTML = quoteObject.name;
+    handleTwitterLink(quoteObject);
   });
 
   //function that returns a random quote object from the quotes array
   function newQuoteObject() {
     const randomNum = Math.floor(Math.random() * 100);
     return quotes[randomNum];
+  }
+  //given a quote object, creates and inserts a link for the twitter button
+  function handleTwitterLink(quoteObject) {
+    console.log(quoteObject.quote);
+    console.log(quoteObject.name);
+    quoteSpacesReplaced = quoteObject.quote.replace(/ /g, '%20');
+    nameSpacesReplaced = quoteObject.name.replace(/ /g, '%20');    
+    twitterLink.href = `https://twitter.com/intent/tweet?text=${quoteSpacesReplaced} %2D${nameSpacesReplaced}`;
   }
 
   </script>
