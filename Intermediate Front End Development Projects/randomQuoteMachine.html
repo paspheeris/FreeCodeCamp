@@ -6,11 +6,11 @@
 </head>
 <body>
   <style>
-    /*
-    * {
+   
+    /** {
       border: 1px solid red;
-    }
-    */
+    }*/
+   
     body {
       background-color: #ffc600;
     }
@@ -18,7 +18,7 @@
       width: 700px;
       height: 400px;
       margin: 75px auto;
-      background-color: #BDBDBD;
+      background-color: #9e9e9e;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
@@ -50,7 +50,7 @@
       margin-top: 25px;
     }
     .twitter {
-
+      display: flex;
     }
     .newQuoteButton {
       /*float: right;
@@ -62,11 +62,18 @@
       padding: 20px;
       margin: 20px;
       border-radius: 10px;
-      color: grey;
+      color: #9e9e9e;
       font-weight: bold;
       font-size: 17px;
       box-shadow:10px 10px 0 rgba(0,0,0,0.1);
     }
+    .birdie {
+      max-width: 28%;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,.5));
+    }
+    /*.twitter-share-button {
+      display: flex;
+    }*/
   </style>
 
   <div class="centerBox">
@@ -75,9 +82,21 @@
       <div class="author"></div>
     </div>
     <div class="buttons">
-      <button class="twitter buttonStyling">Tweet this quote!</button>
+      
+        <a class="twitter-share-button" href="https://twitter.com/intent/tweet">
+          <img class ="birdie" src="./twitterLogo.png">
+        </a>
+      
+      <!--<button class="twitter buttonStyling">
+        <a class="twitter-share-button" href="https://twitter.com/intent/tweet">
+          <img class ="birdie" src="./twitterLogo.png">
+        </a>
+      </button>-->
+      <!--<a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a>-->
+      <!--<button class="twitter buttonStyling">Tweet this quote!</button>-->
+
       <button class="newQuoteButton buttonStyling">New Quote</button>
-    </div>
+  
   </div>
   <script>
   const centerBox = document.querySelector('.centerBox');
@@ -116,25 +135,3 @@
 </body>
 </html>
 
-/*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/
