@@ -172,24 +172,39 @@
 //    
       //cachedData will hold all the data retrieved from the API
       let cachedData;
-      let scale = "fahrenheit";  
+      let scale = "fahrenheit"; 
+      
+    //   `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/502110c7a4981f8355529b2f656802e5/${lat},${long}`
       const currentTemp = document.querySelector('.box1')
       const currentWeather = document.querySelector('.box2')
       const weekDaysNodeList = document.querySelectorAll('.day-box');
       //responseObj will hold all the data retrieved from the API
       let responseObj;
-      fetch('https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/502110c7a4981f8355529b2f656802e5/37.8267,-122.4233')
-      .then(response => {
-          return response.json();
-        })
-      .then(parsedData => {
-            cachedData = parsedData;
-            setCurrentTemp(parsedData), scale;
-            setCurrentWeather(parsedData);
-            setWeekWeather(parsedData);
-            return parsedData;
+    //   let lat;
+    //   let long;
+    //   navigator.geolocation.getCurrentPosition(position => {
+    //       lat = position.coords.latitude;
+    //       long = position.coords.longitude;
+    //   }).then( data => {
+        navigator.geolocation.getCurrentPosition(position => {
+          lat = position.coords.latitude;
+          long = position.coords.longitude;
+        //   console.log(lat);
             
-        });
+
+        fetch(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/502110c7a4981f8355529b2f656802e5/${lat},${long}`)
+        .then(response => {
+            return response.json();
+            })
+        .then(parsedData => {
+                cachedData = parsedData;
+                setCurrentTemp(parsedData), scale;
+                setCurrentWeather(parsedData);
+                setWeekWeather(parsedData);
+                return parsedData;
+                
+            });
+        }, err => {alert("Please allow geolocation")});
       
 //Event Listeners 
 // 
@@ -219,7 +234,7 @@
 // 
 // 
 function setCurrentTemp(data, scale) {
-     
+    currentTime = new Date();
     let temp;
     //is scale is in celsius, convert to fahrenheit, otherwise set temp as given
     (scale === "celsius") ? temp = (data.currently.temperature -32) * (5/9) : temp = data.currently.temperature;
@@ -228,7 +243,7 @@ function setCurrentTemp(data, scale) {
         <div class="current-temp-value">
             ${Math.floor(temp)} &#176
         </div>
-        <div class="current-time">2:40AM</div>
+        <div class="current-time">${currentTime.getHours()}:${currentTime.getMinutes()}</div>
     </div>
     <div class="right">
         <div class="toggle">
