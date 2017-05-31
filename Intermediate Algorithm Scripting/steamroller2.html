@@ -1,0 +1,17 @@
+<script>function steamrollArray(arr) {
+  // I'm a steamroller, baby
+  if(!Array.isArray(arr)) {
+    return arr;
+  }
+  arr.reduce((accum, curval) => {
+      accum.concat(
+          (Array.isArray(curval)) ? curval : steamrollArray(curval)
+      )
+  }, []);
+//   console.log(reducedArr);
+  //return reducedArr;
+}
+
+
+steamrollArray([1, [2], [3, [[4]]]]);
+</script>
