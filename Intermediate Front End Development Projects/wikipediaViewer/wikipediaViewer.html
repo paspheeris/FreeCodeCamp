@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FlexBox Tutorial</title>
+  <style>
+  /* Some default styles to make each box visible */
+ body {
+      background: #bdc3c7;
+  }
+.box {
+  color:white;
+  /*font-size: 1em;*/
+  text-align: center;
+  text-shadow:4px 4px 0 rgba(0,0,0,0.1);
+  padding:20px;
+}
+
+/* Colours for each box */
+.box0 { background:#1abc9c;}
+.box1 { background:#3498db;}
+.box2 { background:#9b59b6;}
+.box3 { background:#34495e;}
+.box4 { background:#f1c40f;}
+.box5 { background:#e67e22;}
+.box6 { background:#e74c3c;}
+.box7 { background:rgb(153, 183, 204);}
+.box8 { background:#2ecc71;}
+.box9 { background:#16a085;}
+
+
+/* We start writing out flexbox here. The above is just page setup */
+.container {
+    /*background: transparent;*/
+  display:flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+  height: 100vh;
+  padding: 20px;
+  
+}
+
+.box {
+  flex:1;
+  line-height: 1.4em;
+  
+}
+
+.box2 {
+  /*flex:1;*/
+  /*flex-grow: */
+}
+.searchInput {
+    /*height: 100%;*/
+}
+.title {
+    display: block;
+    font-size: 2em;
+    /*text-decoration: underline; */
+    margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="box box0">
+        <input class="searchInput" type="text" placeholder="search">
+    </div>
+    
+    <!--<div class="box box2">1</div>
+    <div class="box box3">2</div>
+    <div class="box box4">3</div>
+    <div class="box box5">4</div>
+    <div class="box box6">5</div>
+    <div class="box box7">6</div>
+    <div class="box box8">7</div>
+    <div class="box box9">8</div>
+    <div class="box box10">9</div>-->
+  </div>
+
+</body>
+<script>
+    //Query Selectors and variables
+    //
+    //
+    // let searchResultArray;
+    const container = document.querySelector('.container');
+    const boxZero = document.querySelector('.box0');
+    const searchInput = document.querySelector('.searchInput')
+    // const searchURL = 'https://en.wikipedia.org/w/index.php?search=a&title=Special:Search&profile=default&fulltext=1&searchToken=6csy7qqs9sntv68fkhg5fnclc'
+    // const endpoint = 'https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=Stack%20Overflow';
+    // let endpoint = 'https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=intitle:domenico*';
+
+    // /w/api.php?action=query&format=json&list=search&srsearch=meaning
+    // fetch(endpoint)
+    //     .then(response => {
+    //         console.log(response);
+            // console.log(response.json());
+
+                // return response.json();
+            
+            // console.log(response.blob());
+            // console.log(response.text());
+            
+
+        //}).then(jsonData => {
+            // console.log(jsonData);
+            // console.log(jsonData.query.search)
+            // const searchArray = jsonData.query.search;
+            // let extract = searchArray[0].snippet;
+            // boxTwo.innerHTML = extract;
+                
+
+        // });
+    //Even Listeners
+    //
+    //
+    searchInput.addEventListener('input', () => {
+        fetchSearchResults(searchInput.value)
+        .then(result => {
+            renderHTMLElements(result);
+        }) 
+    });
+
+    //Functions
+    //
+    //
+    //Given a search term string, returns a Promise, the result of which will be an array of the form: 
+    // ["searchTerm", [pageTitles], [extracts], [links]]
+    function fetchSearchResults(searchTerm) {
+        let searchResultArray = [];
+        // let targetURL = `https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&prop=extracts&srsearch=intitle:domenico*`
+        let targetURL = `https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=opensearch&search=${searchTerm}&format=json`
+        return fetch(targetURL)
+        .then(response => {
+            return response.json();
+        })
+        .then(parsedData => {
+            // console.log(parsedData);
+            return parsedData;
+            
+        });
+        return searchResultArray;
+    }
+    // console.log(fetchSearchResults('a'));
+    // fetchSearchResults('a')
+    // .then(response => console.log(response));
+
+    //Given an array, constructs html elements and inserts them
+    function renderHTMLElements(searchResultArray) {
+        //Delete any existing search results
+        // console.dir(container);
+        let firstChild = container.children[1];
+        while(firstChild) {
+            container.removeChild(firstChild);
+            firstChild = container.children[1];
+        }
+        // For every title
+        searchResultArray[1].forEach((val, index, array) => {
+            if(searchResultArray) {
+            //create an element
+            let result = document.createElement('div');
+            //
+            result.classList.add('box', `box${index}`)
+            result.innerHTML = `
+                <span class="title">${searchResultArray[1][index]}
+                </span>
+                ${searchResultArray[2][index]} `
+            container.appendChild(result);
+            }});
+    }
+    // fetchSearchResults('a')
+    //     .then(result => {
+    //         console.log(result);
+    //         renderHTMLElements(result);
+    //     });
+
+</script>
+</html>
