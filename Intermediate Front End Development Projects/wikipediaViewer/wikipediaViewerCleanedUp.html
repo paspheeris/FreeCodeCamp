@@ -4,13 +4,11 @@
   <meta charset="UTF-8">
   <title>FlexBox Tutorial</title>
   <style>
-  /* Some default styles to make each box visible */
  body {
       background: #bdc3c7;
   }
 .box {
   color:white;
-  /*font-size: 1em;*/
   text-align: center;
   text-shadow:4px 4px 0 rgba(0,0,0,0.1);
   padding:20px;
@@ -28,15 +26,12 @@
 .box8 { background:#2ecc71;}
 .box9 { background:#16a085;}
 
-
-/* We start writing out flexbox here. The above is just page setup */
 a {
   color: white;
   text-decoration: none; /* no underline */
   display: block;
 }
 .container {
-    /*background: transparent;*/
   display:flex;
   flex-direction: column;
   width: 80%;
@@ -52,12 +47,6 @@ a {
   
 }
 
-.box0 {
-  /*flex:1;*/
-  /*flex-grow: */
-  /*border-top-right-radius: 20%;
-  border-top-left-radius: 20%;*/
-}
 .searchInput {
     background-color: #bdc3c7;
     font-size: 1.2rem;
@@ -67,67 +56,29 @@ a {
     text-align: center;
     max-width: 100%;
 }
+
 .title {
     display: block;
     font-size: 2em;
-    /*text-decoration: underline; */
     margin-bottom: 10px;
 }
 </style>
 </head>
 <body>
-
   <div class="container">
     <div class="box boxa">
         <input class="searchInput" type="text" placeholder="search">
     </div>
-    
-    <!--<div class="box box2">1</div>
-    <div class="box box3">2</div>
-    <div class="box box4">3</div>
-    <div class="box box5">4</div>
-    <div class="box box6">5</div>
-    <div class="box box7">6</div>
-    <div class="box box8">7</div>
-    <div class="box box9">8</div>
-    <div class="box box10">9</div>-->
   </div>
-
 </body>
 <script>
     //Query Selectors and variables
     //
     //
-    // let searchResultArray;
     const container = document.querySelector('.container');
-    // const boxZero = document.querySelector('.box0');
-    const searchInput = document.querySelector('.searchInput')
-    // const searchURL = 'https://en.wikipedia.org/w/index.php?search=a&title=Special:Search&profile=default&fulltext=1&searchToken=6csy7qqs9sntv68fkhg5fnclc'
-    // const endpoint = 'https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=Stack%20Overflow';
-    // let endpoint = 'https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=intitle:domenico*';
+    const searchInput = document.querySelector('.searchInput');
 
-    // /w/api.php?action=query&format=json&list=search&srsearch=meaning
-    // fetch(endpoint)
-    //     .then(response => {
-    //         console.log(response);
-            // console.log(response.json());
-
-                // return response.json();
-            
-            // console.log(response.blob());
-            // console.log(response.text());
-            
-
-        //}).then(jsonData => {
-            // console.log(jsonData);
-            // console.log(jsonData.query.search)
-            // const searchArray = jsonData.query.search;
-            // let extract = searchArray[0].snippet;
-            // boxTwo.innerHTML = extract;
-                
-
-        // });
-    //Even Listeners
+    //Event Listeners
     //
     //
     searchInput.addEventListener('input', () => {
@@ -143,41 +94,26 @@ a {
     //Given a search term string, returns a Promise, the result of which will be an array of the form: 
     // ["searchTerm", [pageTitles], [extracts], [links]]
     function fetchSearchResults(searchTerm) {
-        // console.log(searchTerm);
         //If there is no search term(as when the user has backspaced til the input is empty), delete any children and then break off the promise chain in order to avoid unnecessary ajax
         if(!searchTerm) {
             deleteChildren();
             throw new Error("Empty search term");
             }
-        // let searchResultArray = [];
-        // let targetURL = `https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&prop=extracts&srsearch=intitle:domenico*`
         let targetURL = `https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?action=opensearch&search=${searchTerm}&format=json`
         return fetch(targetURL)
         .then(response => {
             return response.json();
         })
         .then(parsedData => {
-            // console.log(parsedData);
             return parsedData;
             
         });
-        // return searchResultArray;
     }
-    // console.log(fetchSearchResults('a'));
-    // fetchSearchResults('a')
-    // .then(response => console.log(response));
 
     //Given an array, constructs html elements and inserts them
     function renderHTMLElements(searchResultArray) {
         if(!searchResultArray) {return};
         console.log(searchResultArray);
-        // //Delete any existing search results
-        // // console.dir(container);
-        // let firstChild = container.children[1];
-        // while(firstChild) {
-        //     container.removeChild(firstChild);
-        //     firstChild = container.children[1];
-        // }
         deleteChildren();
         // For every title
         searchResultArray[1].forEach((val, index, array) => {
@@ -190,29 +126,21 @@ a {
             //open link in a new tab
             result.target="_blank";
             result.innerHTML = `
-                
                 <span class="title">${searchResultArray[1][index]}
                 </span>
                 ${searchResultArray[2][index]} 
-                
                 `
             container.appendChild(result);
             }});
     }
+
     function deleteChildren() {
         //Delete any existing search results
-        // console.dir(container);
         let firstChild = container.children[1];
         while(firstChild) {
             container.removeChild(firstChild);
             firstChild = container.children[1];
         }
     }
-    // fetchSearchResults('a')
-    //     .then(result => {
-    //         console.log(result);
-    //         renderHTMLElements(result);
-    //     });
-
 </script>
 </html>
