@@ -1,0 +1,50 @@
+<script>
+function sym(args) {
+    // console.log(...args);
+  //assemble the provided arrays into a single layered array
+  let layeredArray = [];
+  Array.from(arguments).forEach(arr => {
+    layeredArray.push(arr);
+  });
+  //remove any duplicates within each nested array
+  layeredArray = layeredArray.map(arr => {
+      return arr.reduce((accum, curval) => {
+            if(!accum.includes(curval)) {
+                accum.push(curval);
+            }
+            return accum;
+      }, []);
+  });
+  //flatten the arguments into a single array
+  const singleArray = layeredArray.reduce((accum, curval) => {
+      curval.forEach(num => {accum.push(num)});
+      return accum;
+  }, []);
+  //if a number occurs more than one, delete both instance of it
+  singleArray.forEach(num => {
+      let first = singleArray.indexOf(num);
+      let last = singleArray.lastIndexOf(num);
+      if(first !== last) {
+        //   delete singleArray[first];
+        //   delete singleArray[last];
+        //   singleArrayCopy.splice(first, 1);
+        //   singleArrayCopy.splice(last, 1);
+        singleArray.forEach((curval,index) => {
+            if (curval === num) {
+                delete singleArray[index];
+            }
+        });
+      }
+  });
+  //clean the undefined values from the array
+  const cleanArray = singleArray.filter(val => {
+      return val !== "undefined";
+  });
+//   console.log(layeredArray);
+  console.log(cleanArray);  
+  return args;
+}
+
+// sym([1, 2, 3], [5, 2, 1, 4]);
+sym([1, 1, 2, 5], [2, 2, 3, 5], [3, 4, 5, 5]);
+</script>

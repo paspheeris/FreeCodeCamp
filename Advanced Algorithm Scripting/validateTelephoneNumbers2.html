@@ -1,0 +1,35 @@
+<script>
+function telephoneCheck(str) {
+    //strip 1-prefixed numbers to test the rest of the string
+    if(str.slice(0, 2) === "1 ") {
+        str = str.slice(2);
+    } else if (str.slice(0, 1) === "1") {
+        str = str.slice(1);
+    }
+    //Possible formats are in the comments above the RegExp that checks for them
+    // 555-555-5555
+    // 555 555 5555
+    const test1 = /^\d{3}(-| )\d{3}(-| )\d{4}/.test(str);
+    // (555)555-5555a
+    // (555) 555-5555
+    const test2 = /^\(\d{3}\) ?\d{3}\-\d{4}/.test(str);
+    //5555555555
+    const test3 = /^\d{10}$/.test(str);
+    console.log(test1 || test2 || test3);    
+    return (test1 || test2 || test3);
+}
+
+// telephoneCheck("2(757)622-7382")
+// telephoneCheck("1 (555) 555-5555");
+telephoneCheck("1(555)555-5555")
+</script>
+
+<!--555-555-5555
+    555 555 5555
+
+    (555)555-5555
+    (555) 555-5555
+    
+    5555555555
+
+    1 555 555 5555-->
