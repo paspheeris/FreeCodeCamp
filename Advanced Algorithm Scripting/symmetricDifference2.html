@@ -1,0 +1,35 @@
+<script>
+function sym(args) {
+    const numMap = new Map();
+    const answerArr = [];
+    // console.log([...arguments]);
+    //For each array in the arguments list
+    [...arguments].forEach((subArr, index) => {
+        //Remove duplicates of values in each subArr
+        subArr.forEach((val, index2) => {
+            if(subArr.indexOf(val) !== subArr.lastIndexOf(val)) {
+                delete subArr[index2];
+            }
+        })
+        // console.log(subArr);        
+        subArr.forEach(num => {
+            if(num !== 'undefined') {
+                //If the num is already a key of numMap
+                if(numMap.has(num)) {numMap.set(num, numMap.get(num) + 1)}
+                //Otherwise, add the num as prop of the map
+                else {numMap.set(num, 1)};
+            }
+        })
+    })
+    console.log(numMap);
+    //If the value of a prop in the map is an odd number, add that prop (number) to answerArr
+    numMap.forEach((key, val, map) => {
+        // console.log(val, key);
+        if(key % 2 !== 0) {answerArr.push(val)};
+    });
+    answerArr.sort();
+    console.log(answerArr);
+    return answerArr;
+}
+sym([1, 1, 2, 5], [2, 2, 3, 5], [3, 4, 5, 5])
+</script>
