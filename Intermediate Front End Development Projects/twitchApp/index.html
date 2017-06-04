@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Twitch Viewer</title>
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrapper">
+      <div class="streams-div section-titles">Streams</div>
+     <div class="streams-content content">
+          <div class="dummy">Dummy1</div>
+          <div class="dummy">Dummy2</div>
+          <div class="dummy">Dummy3</div>
+          <div class="dummy">Dummy4</div>
+          <div class="dummy">Dummy5</div>
+          <div class="dummy">Dummy6</div>
+      </div>
+      <div class="online-div section-titles">Online</div>
+      <div class="online-content content">
+          <div class="dummy">Dummy1</div>
+          <div class="dummy">Dummy2</div>
+          <div class="dummy">Dummy3</div>
+          <div class="dummy">Dummy4</div>
+          <div class="dummy">Dummy5</div>
+          <div class="dummy">Dummy6</div>
+      </div>      
+      <div class="offline-div section-titles">Offline</div>
+      <div class="streams-content content">
+          <div class="dummy">Dummy1</div>
+          <div class="dummy">Dummy2</div>
+          <div class="dummy">Dummy3</div>
+          <div class="dummy">Dummy4</div>
+          <div class="dummy">Dummy5</div>
+          <div class="dummy">Dummy6</div>
+      </div>
+      <div class="all-div section-titles">All</div>
+      <div class="streams-content content">
+          <div class="dummy">Dummy1</div>
+          <div class="dummy">Dummy2</div>
+          <div class="dummy">Dummy3</div>
+          <div class="dummy">Dummy4</div>
+          <div class="dummy">Dummy5</div>
+          <div class="dummy">Dummy6</div>
+      </div>
+  </div>
+  <script>
+    ///////////////////////////////////////
+    //elements and data
+    const sectionTitles = document.querySelectorAll('.section-titles');
+    // const streamersArray = [
+    //   {'name': 'etup',
+    //    'id': '2522044'},
+    //   {'name': 'freecodecamp', 
+    //   'id' : '79776140'},
+    //   {'name': 'esl_sc2',
+    //   'id': '30220059'},
+    //   {'name': 'ogamingsc2', 
+    //   'id': '71852806'},
+    //   {'name': 'itshafu',
+    //   'id': '30777889'}
+    // ];
+    //populate from local storage later
+    const streamersObject = {
+    };
+    // const streamersIdsList = streamersArray.reduce((accum, user, index) => {
+    //   if(index === 0) {return accum += user['id'];}
+    //   return accum += ',' + user['id'];
+    // },'');
+    // console.log(streamersIdsList);
+    // streamersDict.set("ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas");
+    // console.log(streamersDict);
+    // const endpoint = "https://cors-anywhere.herokuapp.com/https://wind-bow.gomix.me/twitch-api/streams?channel=etup,freecodecamp"
+    // const UserNameEndpoint = "https://api.twitch.tv/kraken/users?login=itshafu,etup"
+    // const idEndpoint = `https://api.twitch.tv/kraken/streams/30777889`;
+    let dataDump;
+    // var myInit = {Client-ID: 'dll0wzapy7w7ich3dmaqpc0w1yopkc'};
+    function userNameApiCall(userName) {
+      const endpoint = `https://api.twitch.tv/kraken/users?login=${userName}`;
+      return fetch(endpoint, {
+        headers: {
+        'Accept': 'application/vnd.twitchtv.v5+json',
+        'Client-ID': 'dll0wzapy7w7ich3dmaqpc0w1yopkc'
+        }
+      })
+      .then(data => {
+        // console.log(data);
+        return data.json();
+          });
+      // .then(parsedData => {
+      //   return
+        // console.log('Name:', parsedData);
+        // dataDump = parsedData;
+    }
+
+    function idApiCall(id) {
+      endpoint = `https://api.twitch.tv/kraken/streams/${id}`;
+      // let parsedData;
+      return fetch(endpoint, {
+        headers: {
+        'Accept': 'application/vnd.twitchtv.v5+json',
+        'Client-ID': 'dll0wzapy7w7ich3dmaqpc0w1yopkc'
+        }
+      })
+      .then(data => {
+        // console.log(data);
+        return data.json();
+          })
+      .then(parsedData => {
+        //  console.log('ID:', parsedData);
+        return parsedData;
+      });
+    }
+
+    /////////////////////////////////////////
+    //function
+    function toggleSubsections() {
+      //toggles the display of the next element in the node list, after the one clicked on
+      // console.log('Subsection slick');
+      // console.dir(this.nextElementSibling);
+      (this.nextElementSibling.style.display === "none") ?
+        (this.nextElementSibling.style.display = "flex") :
+        (this.nextElementSibling.style.display = "none") 
+    }
+
+    //Given a username, performs an api call and then, if the username isnt already in the streamersObject, it adds in an object with data for that user
+    function addStreamerToObject(userName) {
+      userNameApiCall(userName)
+        .then(result => {
+          // console.log(result);
+          name = result.users[0].name;
+          if(! streamersObject.hasOwnProperty(name)) {
+            // console.log('in if');
+            streamersObject[name] = {};
+            streamersObject[name]['name'] = result.users[0].name;            
+            streamersObject[name]['_id'] = result.users[0]._id;
+            streamersObject[name]['display_name'] = result.users[0].display_name;
+            streamersObject[name]['bio'] = result.users[0].bio;
+            streamersObject[name]['logo'] = result.users[0].logo;
+            updateStreamersObject();
+            console.log('streamersObject:', streamersObject);
+          }
+          
+        })
+    }
+
+    function updateStreamersObject() {
+      // console.log('streamers object', streamersObject);
+      for(let object in streamersObject) {
+        // let name = object[Object.keys(object)[0]];
+        // console.log('name', name);
+        let id = streamersObject[object]._id;
+        // console.dir(object.itshafu);
+        idApiCall(id)
+        .then(result => {
+          //if stream is online
+          console.log(result);
+          if(result.stream !== null) {
+          streamersObject[object]['stream_type'] = result.stream.stream_type;
+          streamersObject[object]['game'] = result.stream.game;
+          streamersObject[object]['preview'] = result.stream.preview.medium;
+          streamersObject[object]['statusMessage'] = result.stream.channel.status;
+          } else {
+            streamersObject[object]['stream_type'] = "offline";
+          }
+          console.log(result);
+        })
+      }
+    }
+
+    /////////////////////////////////////////////////
+    //event listeners
+    sectionTitles.forEach(section => {
+      section.addEventListener('click', toggleSubsections)
+    });
+    // userNameApiCall('itshafu').then(result => {console.dir(result)});
+    addStreamerToObject('itshafu');
+    addStreamerToObject('etup');
+    
+  </script>
+
+</body>
+</html>
