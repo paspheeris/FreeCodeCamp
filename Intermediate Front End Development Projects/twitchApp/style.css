@@ -18,6 +18,10 @@ body {
     font-weight: 400;
     font-family: Helvetica Neue, sans-serif;
     /*flex: 1;*/
+    
+}
+.section-titles:hover {
+  background:rgba(0,0,0,0.3);
 }
 .content {
     /*flex: 1;*/
@@ -40,6 +44,29 @@ body {
     height: 33%;*/
     /*flex: 1;*/
     border: 1px solid black;
-    
-
+    margin: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    /*flex-direction: column;*/
+    justify-content: center;
+    /*align-content: center;*/
+    /*align-items: center;*/
+    padding: 10px;
+}
+.dummy .logo {
+    height: 100px;
+    width: 100px;
+}
+.dummy .title {
+    display: block;
+    font-size: 2em;
+    width: 100%;
+    text-align: center;
+}
+.dummy .bio {
+    display: block;
+}
+.screenshot {
+    width: 272px;
+    height: 136px;
 }
