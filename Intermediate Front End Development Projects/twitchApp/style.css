@@ -52,6 +52,10 @@ body {
     /*align-content: center;*/
     /*align-items: center;*/
     padding: 10px;
+   background-size: cover;
+}
+.delete-dummy {
+    background-color: rgba(0,0,0,0.3);
 }
 .dummy .logo {
     height: 100px;
@@ -69,4 +73,25 @@ body {
 .screenshot {
     width: 272px;
     height: 136px;
+}
+.controls {
+    width: 100%;
+    align-self: flex-end;
+    order: 2;
+    margin-top: 20px;
+    display: flex;
+    /*justify-content: center;*/
+}
+.input-field {
+
+}
+.add-button {
+
+}
+.remove-button {
+    justify-content: flex-end;
+    margin-left: auto;
+}
+.remove-all-button {
+    align-self: flex-end;
 }

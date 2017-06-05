@@ -9,31 +9,19 @@
 <body>
   <div class="wrapper">
       <div class="streams-div section-titles">All Streams</div>
-     <div class="streams-content content">
-          <!--<div class="dummy">Dummy1</div>
-          <div class="dummy">Dummy2</div>
-          <div class="dummy">Dummy3</div>
-          <div class="dummy">Dummy4</div>
-          <div class="dummy">Dummy5</div>
-          <div class="dummy">Dummy6</div>-->
+      <div class="streams-content content">
+      <div class="controls">
+        <input class="input-field" type="text" placeholder="Stream Name">
+        <button class="add-button">Add stream</button>
+        <button class="remove-button">Remove a stream</button>
+        <button class="remove-all-button">Remove all streams</button>
+      </div>
       </div>
       <div class="online-div section-titles">Online</div>
       <div class="online-content content">
-          <!--<div class="dummy">Dummy1</div>
-          <div class="dummy">Dummy2</div>
-          <div class="dummy">Dummy3</div>
-          <div class="dummy">Dummy4</div>
-          <div class="dummy">Dummy5</div>
-          <div class="dummy">Dummy6</div>-->
       </div>      
       <div class="offline-div section-titles">Offline</div>
       <div class="offline-content content">
-          <!--<div class="dummy">Dummy1</div>
-          <div class="dummy">Dummy2</div>
-          <div class="dummy">Dummy3</div>
-          <div class="dummy">Dummy4</div>
-          <div class="dummy">Dummy5</div>
-          <div class="dummy">Dummy6</div>-->
       </div>
   </div>
   <script>
@@ -43,6 +31,8 @@
     const streamsContent = document.querySelector('.streams-content');
     const onlineContent = document.querySelector('.online-content');
     const offlineContent = document.querySelector('.offline-content');
+    const removeButton = document.querySelector('.remove-button');
+
     let firstLoadFlag = JSON.parse(localStorage.getItem('firstLoadFlag')) || true;
     const streamersObject = JSON.parse(localStorage.getItem('streamersObject')) || {};
     
@@ -145,7 +135,7 @@
       let streamerBox = document.createElement('div');
       let offlineBox = document.createElement('div');
       streamerBox.innerHTML = `
-        <div class="dummy">
+        <div class="dummy" data-streamer="${streamer}">
           <span class="title">${streamersObject[streamer].display_name}</span>
           <img class="logo" src="${streamersObject[streamer].logo}" />
           <span class="bio">${streamersObject[streamer].bio}</span>
@@ -161,7 +151,7 @@
       if(streamersObject[streamer].stream_type === 'live') {
         let onlineBox = document.createElement('div');
         onlineBox.innerHTML = `
-          <div class="dummy">
+          <div class="dummy" data-streamer="${streamer}">
             <span class="title">${streamersObject[streamer].display_name}</span>
             <img class="screenshot" src="${streamersObject[streamer].preview}" />
             <span class="bio"> Playing: ${streamersObject[streamer].game}</span>
@@ -179,6 +169,23 @@
     sectionTitles.forEach(section => {
       section.addEventListener('click', toggleSubsections)
     });
+    //Remove mode
+    removeButton.addEventListener('click', function() {
+  
+      const imgs = streamsContent.querySelectorAll('img');
+      imgs.forEach(img => {
+        console.dir(img);
+        storedSource = img.src;
+        img.src = './can.png';
+        // img.outerHTML = `
+        //   <a href="https://www.twitch.tv/${img.parentNode.dataset.streamer}">
+        //   <img src= './can.png'>
+        //   </a>
+        // `
+      })
+    })
+    
+
     // userNameApiCall('itshafu').then(result => {console.dir(result)});
     if(firstLoadFlag) {
       console.log(firstLoadFlag);
