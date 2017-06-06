@@ -43,7 +43,7 @@ body {
     /*width: 33%;
     height: 33%;*/
     /*flex: 1;*/
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     margin: 5px;
     display: flex;
     flex-wrap: wrap;
@@ -53,6 +53,7 @@ body {
     /*align-items: center;*/
     padding: 10px;
    background-size: cover;
+   background-color: rgba(0,0,0,0.3);
 }
 .delete-dummy {
     background-color: rgba(0,0,0,0.3);

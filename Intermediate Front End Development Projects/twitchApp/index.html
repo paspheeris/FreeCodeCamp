@@ -32,6 +32,9 @@
     const onlineContent = document.querySelector('.online-content');
     const offlineContent = document.querySelector('.offline-content');
     const removeButton = document.querySelector('.remove-button');
+    const inputField = document.querySelector('.input-field');
+    const addButton = document.querySelector('.add-button');
+
 
     let firstLoadFlag = JSON.parse(localStorage.getItem('firstLoadFlag')) || true;
     const streamersObject = JSON.parse(localStorage.getItem('streamersObject')) || {};
@@ -99,11 +102,20 @@
             updateStreamersObject();
             console.log('streamersObject:', streamersObject);
           }
-          
+             
+        // }).then(res => {
+        //   console.log('in then');
+        //     localStorage.setItem('streamersObject', JSON.stringify(streamersObject));
+        //     updateStreamersObject();
+        //      console.log('streamersObject:', streamersObject);
         })
+        //Create a modal with a popup 'invalid username'
+        .catch(reject => console.log('reject'));
     }
 
     function updateStreamersObject() {
+      //Delete all currently existing nodes
+      deleteContentDivs();
       // console.log('streamers object', streamersObject);
       for(let object in streamersObject) {
         // let name = object[Object.keys(object)[0]];
@@ -125,8 +137,13 @@
           // console.log(result);
           //Render the div
           // console.log(object);
+          console.log('about to call renderStreamer');
           renderStreamer(object);
-        })
+        // }).then(res => {
+        //   console.log('streamsObject length:', Object.keys(streamersObject).length);
+        // console.log('about to call renderStreamer');
+        //   renderStreamer(object);
+         })
       }
     }
     function renderStreamer(streamer) {
@@ -137,7 +154,9 @@
       streamerBox.innerHTML = `
         <div class="dummy" data-streamer="${streamer}">
           <span class="title">${streamersObject[streamer].display_name}</span>
-          <img class="logo" src="${streamersObject[streamer].logo}" />
+          <a href=https://www.twitch.tv/${streamersObject[streamer].name} target="_blank" data-link="https://www.twitch.tv/${streamersObject[streamer].name}">
+            <img class="logo" src="${streamersObject[streamer].logo}" data-logo="${streamersObject[streamer].logo}" />
+          </a>
           <span class="bio">${streamersObject[streamer].bio}</span>
         </div>
       `;
@@ -147,13 +166,13 @@
       offlineContent.appendChild(offlineBox);
       }
       //If online
-      console.log(streamersObject[streamer].stream_type === 'live');
+      // console.log(streamersObject[streamer].stream_type === 'live');
       if(streamersObject[streamer].stream_type === 'live') {
         let onlineBox = document.createElement('div');
         onlineBox.innerHTML = `
           <div class="dummy" data-streamer="${streamer}">
             <span class="title">${streamersObject[streamer].display_name}</span>
-            <img class="screenshot" src="${streamersObject[streamer].preview}" />
+            <img class="screenshot" src="${streamersObject[streamer].preview}" data-logo="${streamersObject[streamer].logo}" />
             <span class="bio"> Playing: ${streamersObject[streamer].game}</span>
           </div>
         `;
@@ -171,33 +190,92 @@
     });
     //Remove mode
     removeButton.addEventListener('click', function() {
-  
+      console.dir(this);
       const imgs = streamsContent.querySelectorAll('img');
-      imgs.forEach(img => {
-        console.dir(img);
-        storedSource = img.src;
-        img.src = './can.png';
-        // img.outerHTML = `
-        //   <a href="https://www.twitch.tv/${img.parentNode.dataset.streamer}">
-        //   <img src= './can.png'>
-        //   </a>
-        // `
-      })
+      if(this.innerHTML === "Remove a stream") {
+        this.innerHTML = "Done";
+        imgs.forEach(img => {
+          // console.dir(this);
+          img.src = './can.png';
+          img.parentNode.href = "javascript:function() { return false; }";
+          img.addEventListener('click', removeDivFun)
+        })
+      } else if (this.innerHTML === "Done") {
+        this.innerHTML = "Remove a stream";
+        imgs.forEach(img => {
+          console.dir(img);
+          img.src = img.dataset.logo;
+          img.parentNode.href = img.parentNode.dataset.link;
+          img.removeEventListener('click', removeDivFun);
+        });
+        console.dir(streamersObject);
+        updateStreamersObject();
+      }
+      function removeDivFun() {
+            let streamer = this.parentNode.parentNode.streamer;
+            console.log('remove streamer div');
+            console.dir(streamersObject[this.parentNode.parentNode.dataset.streamer]);
+            delete streamersObject[this.parentNode.parentNode.dataset.streamer];
+            this.parentNode.parentNode.remove();
+            
+          }
+    });
+    function deleteContentDivs() {
+      const contentNodeList = document.querySelectorAll('.content');
+      contentNodeList.forEach(section => {
+        let subNodes = section.querySelectorAll('.dummy');
+        subNodes.forEach(streamerDiv => {
+          streamerDiv.remove();
+        });
+      });
+      // const streamerBoxesNodeList = document.querySelectorAll('.dummy');
+      // streamerBoxesNodeList.forEach(box => {
+        // document.removeChild(box);
+      // });
+    }
+    inputField.addEventListener('keydown', function(e) {
+      console.dir(e);
+      console.dir(this);
+      if (e.code === "Enter" && this.value !== "") {
+
+      }
     })
-    
+    inputField.addEventListener('keydown', function(e) {
+      // console.dir(e);
+      // console.dir(this);
+      if(this.value in streamersObject) {
+        //Create modal saying that stream has already been added
+        // console.log('already in streamers list');
+      }
+      else if (e.key === "Enter" && this.value !== "") {
+        // console.log('in if');
+        addStreamerToObject(this.value)
+      }
+    })
+    addButton.addEventListener('click', function(e) {
+      if(this.value in streamersObject) {
+        //Create modal saying that stream has already been added
+        // console.log('already in streamers list');
+      }
+      else if(this.value !== "") {
+        // console.log('in');
+        addStreamerToObject(this.value);
+      }
+    })
 
     // userNameApiCall('itshafu').then(result => {console.dir(result)});
-    if(firstLoadFlag) {
+    if(firstLoadFlag !== 'true') {
       console.log(firstLoadFlag);
-      addStreamerToObject('itshafu');
-      addStreamerToObject('etup');
-      addStreamerToObject('freecodecamp');
+      // addStreamerToObject('itshafu');
+      // addStreamerToObject('etup');
+      // addStreamerToObject('freecodecamp');
       addStreamerToObject('vanguardstv');
       addStreamerToObject('hsdogdog');
       localStorage.setItem('firstLoadFlag', 'false');
       firstLoadFlag = false;
+      updateStreamersObject();
     }
-    updateStreamersObject();
+    // updateStreamersObject();
   </script>
 
 </body>
