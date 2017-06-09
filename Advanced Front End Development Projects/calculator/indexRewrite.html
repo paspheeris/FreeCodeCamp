@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="wrapper">
+      <div class="history">
+          <!--<span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>-->
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+      </div>
+      <div class="display"></div>
+      <div class="malformed">Malformed Expression</div>
+      <div class="button-wrapper">
+          <button class="button">7</button>
+          <button class="button">8</button>
+          <button class="button">9</button>
+          <button class="button">&#247</button>
+          <button class="button">&#8617</button>
+          <button class="button">&#8864</button>
+          <button class="button">4</button>
+          <button class="button">5</button>
+          <button class="button">6</button>
+          <button class="button">x</button>
+          <button class="button">(</button>
+          <button class="button">)</button>
+          <button class="button">1</button>
+          <button class="button">2</button>
+          <button class="button">3</button>
+          <button class="button">-</button>
+          <button class="button">x&sup2</button>
+          <button class="button">&#8730</button>
+          <button class="button">0</button>
+          <button class="button">.</button>
+          <button class="button">%</button>
+          <button class="button">+</button>
+          <button class="button equals">=</button>      
+      </div>
+      
+  </div>
+
+<script>
+    const display = document.querySelector('.display');
+    const buttons = document.querySelectorAll('.button');
+    const buttonWrapper = document.querySelector('.button-wrapper');
+    const historyElem = document.querySelector('.history');
+
+    const calc = {
+        keyPresses : [],
+        addKeyPresses : (key) => {calc.keyPresses.push(key);},
+        getPrevKeyPress : () => calc.keyPresses[calc.keyPresses.length - 2],
+
+        stringRep: [],
+        getStringRep: () => calc.stringRep[calc.stringRep.length - 1],
+        getPrevStringRep: () => calc.stringRep[calc.stringRep.length - 2],
+        addStringRep: (val) => {
+            let resStr = calc.getStringRep() || '';
+            //KEY = '='
+            if (val === '=') {
+                let numRep = calc.getNumericalRep();
+                if (numRep === "malformed") {
+                    console.log("malformed");
+                    return;
+                }
+                resStr += '=';
+            //KEY = '↩'
+            } else if (val === '↩') {
+                return;
+            //KEY = '+'
+            } else if (val === '+') {
+                resStr += '+';
+            //KEY = '-'
+            } else if (val === '-') {
+                resStr += '-';
+            //KEY = 'x'
+            } else if (val === 'x') {
+                resStr += 'x';
+            //KEY = '÷'
+            } else if (val === '÷') {
+                resStr += '÷';
+            //KEY is any number
+            } else if (/\d/.test(val)) {
+                //Number preceded by equal; clear screen
+                if(calc.getPrevKeyPress() === '=') {
+                    console.log('number preceded by equal');
+                    render('');
+                    calc.stringRep.push(calc.getNumericalRep());
+                    resStr = val;
+                } 
+                //Else it's a normal number
+                else {
+                    resStr += val;
+                }
+            }
+
+            
+            calc.stringRep.push(resStr);
+        },
+
+
+        getNumericalRep: () => {
+            try {
+                //Get the stringRep, then clean it so that it works with eval; returns the result of the eval
+                let str = calc.getStringRep();
+              
+                str = str.replace(/=$/, '');
+                str = str.replace(/x/g, '*');
+                str = str.replace(/÷/g, '/');
+
+                // console.log('str: ', str);
+                let result;
+                result = eval(str);
+
+                return result;
+            } catch (err) {
+                console.log(err);
+                return "malformed";
+            } 
+        }
+    }
+
+    function buttonHit(e) {
+            let hitKey = e.target.innerHTML;
+            // console.log('click');
+
+            //A click outside of a button; do nothing
+            if(e.target.className === "button-wrapper") {
+                return;
+            }
+            // console.dir(e.target);
+            calc.addKeyPresses(hitKey);
+            calc.addStringRep(hitKey);
+            render(calc.getStringRep());
+            if(hitKey === '=') {
+                //Getting rid of the '=' on the end, in the calc object itself; not sure if that should be done here
+                // console.log(calc.stringRep[calc.stringRep.length - 1]);
+                calc.stringRep[calc.stringRep.length - 1] = calc.stringRep[calc.stringRep.length - 1].replace(/=/, '');
+                // console.log(calc.stringRep[calc.stringRep.length - 1]);
+                
+                appendScrollHistory();
+                 calc.stringRep[calc.stringRep.length - 1] = calc.getNumericalRep();
+            }
+    }
+    function render(val) {
+        console.log('rendering before: ', val)
+        //If the last char in val is "=", calc.getNumericalRep and render that
+        if(val[val.length - 1] === '=') {
+            display.innerHTML = calc.getNumericalRep();
+        } else {
+            display.innerHTML = val;
+        }
+        // display.innerHTML = val;
+    }
+    
+    function appendScrollHistory() {
+        let entered = document.createElement('span');
+        entered.classList.add("history-entered");
+        let result = document.createElement('span');
+        result.classList.add("history-result");
+
+        entered.innerHTML = `${calc.getStringRep()}`
+        result.innerHTML = `= ${calc.getNumericalRep()}`
+
+        historyElem.appendChild(entered);
+        historyElem.appendChild(result);
+        
+    }
+
+    buttonWrapper.addEventListener('click', buttonHit);
+
+</script>
+</body>
+</html>
