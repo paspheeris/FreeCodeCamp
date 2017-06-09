@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="wrapper">
+      <div class="history">
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+          <span class="history-entered">6+9</span>
+          <span class="history-result">= 15</span>
+      </div>
+      <div class="display"></div>
+      <div class="malformed">Malformed Expression</div>
+      <div class="button-wrapper">
+          <button class="button">7</button>
+          <button class="button">8</button>
+          <button class="button">9</button>
+          <button class="button">&#247</button>
+          <button class="button">&#8617</button>
+          <button class="button">&#8864</button>
+          <button class="button">4</button>
+          <button class="button">5</button>
+          <button class="button">6</button>
+          <button class="button">x</button>
+          <button class="button">(</button>
+          <button class="button">)</button>
+          <button class="button">1</button>
+          <button class="button">2</button>
+          <button class="button">3</button>
+          <button class="button">-</button>
+          <button class="button">x&sup2</button>
+          <button class="button">&#8730</button>
+          <button class="button">0</button>
+          <button class="button">.</button>
+          <button class="button">%</button>
+          <button class="button">+</button>
+          <button class="button equals">=</button>      
+      </div>
+      
+  </div>
+
+<script>
+    const display = document.querySelector('.display');
+    const buttons = document.querySelectorAll('.button');
+    const buttonWrapper = document.querySelector('.button-wrapper');
+
+    const calc = {
+        currentDisplay: "",
+        getPrevious: function() {
+            return calc.currentDisplay[calc.currentDisplay.length - 1]
+        },
+        getcurrentDisplay: function() {
+            // console.log(calc.currentDisplay);
+            // setNumericalRep(calc.currentDisplay);
+            return calc.currentDisplay;
+        },
+        setCurrentDislay: function(event) {
+            let val = event.target.innerText;
+            if(val === '+') {
+                calc.currentDisplay += ` ${val} `;
+                calc.numericalRep += ` ${val} `;
+            } else if(val === '-') {
+                calc.currentDisplay += ` ${val} `;
+                calc.numericalRep += ` ${val} `; 
+            } else if(val === 'x') {
+                console.log('in x');
+                calc.currentDisplay += ` x `;
+                calc.numericalRep += ` * `; 
+            } else if(val === '÷') {
+                calc.currentDisplay += ` ${val} `;
+                calc.numericalRep += ` / `; 
+            } 
+            else {
+                calc.currentDisplay += val;
+                calc.numericalRep += val;
+            }
+        },
+        numericalRep: '',
+        getNumericalRep: () => {
+            console.log(calc.numericalRep);
+            let result = eval(calc.numericalRep);
+            console.log(result);
+            return result;
+            // return eval(calc.getcurrentDisplay());
+        }
+        // setNumericalRep: (string) => {
+        //     string.replace(/÷/g, 1);
+        // }
+    }
+
+    function buttonHit(e) {
+        let specialFlag = specialKeyHandler(e);
+        console.log(e.target.innerHTML);
+        
+        if(!specialFlag) {
+            calc.setCurrentDislay(e);
+            calc.getcurrentDisplay();
+            // console.dir(display);
+            render();
+            calc.getNumericalRep();
+        }
+    }
+    function render() {
+        display.innerHTML = calc.getcurrentDisplay();
+    }
+    function specialKeyHandler(event) {
+        let key = event.target.innerHTML;
+        if(key === '=') {
+            display.innerHTML = calc.getNumericalRep();
+            calc.currentDisplay = calc.getNumericalRep().toString();
+            calc.numericalRep = calc.getNumericalRep().toString();
+            return true;
+        }
+    }
+
+    buttonWrapper.addEventListener('click', buttonHit);
+
+    // buttons.forEach(button => {
+    //     button.addEventListener('click', buttonHit)
+    // });
+</script>
+</body>
+</html>
