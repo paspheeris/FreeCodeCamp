@@ -9,7 +9,7 @@
 
   <div class="wrapper">
       <div class="history">
-          <span class="history-entered">6+9</span>
+          <!--<span class="history-entered">6+9</span>
           <span class="history-result">= 15</span>
           <span class="history-entered">6+9</span>
           <span class="history-result">= 15</span>
@@ -26,7 +26,7 @@
           <span class="history-entered">6+9</span>
           <span class="history-result">= 15</span>
           <span class="history-entered">6+9</span>
-          <span class="history-result">= 15</span>
+          <span class="history-result">= 15</span>-->
           <span class="history-entered">6+9</span>
           <span class="history-result">= 15</span>
           <span class="history-entered">6+9</span>
@@ -66,6 +66,7 @@
     const display = document.querySelector('.display');
     const buttons = document.querySelectorAll('.button');
     const buttonWrapper = document.querySelector('.button-wrapper');
+    const historyElem = document.querySelector('.history');
 
     const calc = {
         currentDisplay: "",
@@ -79,61 +80,138 @@
         },
         setCurrentDislay: function(event) {
             let val = event.target.innerText;
-            if(val === '+') {
+            // calc.history.prevKey.push(val);
+            calc.history.prevCurrentDisplay.push(display.innerHTML);
+            calc.history.prevNumericalRep.push(calc.getNumericalRep());
+            if(specialKeyHandler(val)) {
+                return;
+            } else if(val === '+') {
                 calc.currentDisplay += ` ${val} `;
                 calc.numericalRep += ` ${val} `;
             } else if(val === '-') {
                 calc.currentDisplay += ` ${val} `;
                 calc.numericalRep += ` ${val} `; 
             } else if(val === 'x') {
-                console.log('in x');
+                // console.log('in x');
                 calc.currentDisplay += ` x `;
                 calc.numericalRep += ` * `; 
             } else if(val === '÷') {
                 calc.currentDisplay += ` ${val} `;
                 calc.numericalRep += ` / `; 
             } 
+            //plain numbers
             else {
+                console.log('in else');
+                if(calc.history.getPrevKey() === '=') {
+                    console.log('in');
+                    // calc.history.prevNumericalRep.push(0);
+                    clearDisplay();
+                    calc.numericalRep = '';
+                    // calc.history.prevNumericalRep.length = 0;
+                }
                 calc.currentDisplay += val;
                 calc.numericalRep += val;
             }
+            // console.log('val', val);
+            calc.history.prevKey.push(val);
+            // calc.history.prevCurrentDisplay.push(calc.getcurrentDisplay());
+            // calc.history.prevNumericalRep.push(calc.getNumericalRep());
         },
         numericalRep: '',
         getNumericalRep: () => {
-            console.log(calc.numericalRep);
-            let result = eval(calc.numericalRep);
-            console.log(result);
-            return result;
+            try {
+                let result = eval(calc.numericalRep);
+                return result;
+            } catch (err) {
+                return "malformed";
+            }
+            // console.log(result);
+            
             // return eval(calc.getcurrentDisplay());
-        }
+            
+        },
         // setNumericalRep: (string) => {
         //     string.replace(/÷/g, 1);
         // }
+        history : {
+             prevKey: [],
+             getPrevKey: () => calc.history.prevKey[calc.history.prevKey.length - 1],
+             prevCurrentDisplay: [],
+             getPrevCurrentDisplay: () => calc.history.prevCurrentDisplay[calc.history.prevCurrentDisplay.length - 1],
+             prevNumericalRep: [],
+             getPrevNumericalRep: () => calc.history.prevNumericalRep[calc.history.prevNumericalRep.length - 1]
+             
+        }
     }
 
     function buttonHit(e) {
-        let specialFlag = specialKeyHandler(e);
-        console.log(e.target.innerHTML);
+            //A click outside of a button
+            if(e.target.className === "button-wrapper") {
+                return;
+            }
+        // console.log(e.target.innerHTML);
         
-        if(!specialFlag) {
+        
             calc.setCurrentDislay(e);
-            calc.getcurrentDisplay();
+            // console.log('Prev curdispl', calc.history.prevCurrentDisplay);
+            // calc.getcurrentDisplay();
             // console.dir(display);
-            render();
-            calc.getNumericalRep();
-        }
+            render(calc.getcurrentDisplay());
+            // calc.getNumericalRep();
+        
     }
-    function render() {
-        display.innerHTML = calc.getcurrentDisplay();
+    function render(val) {
+        console.log('rendering: ', val)
+        display.innerHTML = val;
     }
-    function specialKeyHandler(event) {
-        let key = event.target.innerHTML;
-        if(key === '=') {
+    function specialKeyHandler(val) {
+        if(val === '=') {
+            calc.history.prevKey.push(val);
+            //Do nothing: malformed expression
+            if(calc.getNumericalRep() === "malformed") {
+                console.log("malformed");
+                return;
+            }
+            // calc.history.prevKey.push(val);
+            // calc.history.prevCurrentDisplay.push(calc.getcurrentDisplay());
+            // calc.history.prevNumericalRep.push(calc.getNumericalRep());
+            clearDisplay();
+
             display.innerHTML = calc.getNumericalRep();
             calc.currentDisplay = calc.getNumericalRep().toString();
             calc.numericalRep = calc.getNumericalRep().toString();
+
+            appendScrollHistory();
+            
             return true;
         }
+        else if (val === '↩') {
+            console.log('undow');
+            console.log(calc.history.getPrevCurrentDisplay());
+            render(calc.history.getPrevCurrentDisplay());
+            return true;
+        }
+    }
+    //clears the display while also pushing history information
+    function clearDisplay() {
+            // calc.history.prevCurrentDisplay.push(calc.getcurrentDisplay());
+            // calc.history.prevNumericalRep.push(calc.getNumericalRep());
+            calc.currentDisplay = '';
+
+            render('');
+    }
+    function appendScrollHistory() {
+        let entered = document.createElement('span');
+        entered.classList.add("history-entered");
+        let result = document.createElement('span');
+        result.classList.add("history-result");
+
+        entered.innerHTML = `${calc.history.getPrevCurrentDisplay()}`
+        result.innerHTML = `= ${calc.history.getPrevNumericalRep()}`
+
+        historyElem.appendChild(entered);
+        historyElem.appendChild(result);
+        
     }
 
     buttonWrapper.addEventListener('click', buttonHit);

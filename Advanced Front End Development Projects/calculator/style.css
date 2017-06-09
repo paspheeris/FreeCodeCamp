@@ -12,11 +12,12 @@ body {
 
 .wrapper {
     margin: 40px auto;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     display: flex;
     width: 50%;
     max-width: 500px;
     flex-wrap: wrap;
+    background-color: lightgray;
 }
 .history {
     overflow: scroll;
@@ -27,6 +28,7 @@ body {
     font-size: 1.5rem;
     display: flex;
     flex-wrap: wrap;
+    
 }
 .history-entered {
     display: inline-block;
@@ -36,17 +38,20 @@ body {
     flex-basis: 25%;
 }
 .display {
-    flex-basis: 100%;
+    flex-basis: 90%;
     height: 12vh;
     text-align: right;
-    font-size: 2rem;
-    border: 0;
+    font-size: 2.3rem;
+    background-color: white;
+    margin: 0 auto;
+    border-radius: 10px;
 }
 .malformed {
     /*align-self: flex-end;*/
     /*text-align: right;*/
     margin-left: auto;
     font-size: 1rem;
+    
 }
 .button-wrapper {
     background-color: lightgray;
