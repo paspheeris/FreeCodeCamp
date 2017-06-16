@@ -18,12 +18,45 @@
   </div>
 </div>  
 <div class="clock-box">
-  <p>Session</p>
-  <p>25</p>
+  <canvas></canvas>
+  <p class="clock-type">Session</p>
+  <p class="clock-remaining">25</p>
 </div>
 
 <script>
+  const arcCanvas = document.querySelector('canvas');
+  const clockBox = document.querySelector('.clock-box');
+  const clockTypeP =document.querySelector('.clock-type');
+  repositionCanvas();
+  drawArc(99);
 
+  function drawArc(percentLeft=100) {
+    let context =arcCanvas.getContext('2d');
+    let y = arcCanvas.height / 2;
+    let degrees =percentLeft * 3.6;
+    let radians = (degrees * (Math.PI / 180)) - .5 * Math.PI;
+    console.log({percentLeft, degrees, radians});
+    context.lineWidth = 15;
+    context.beginPath();
+    context.arc(250,y,200, 1.5*Math.PI, radians);
+    context.stroke();
+  }
+
+
+
+  window.addEventListener('resize', repositionCanvas);
+  
+  function repositionCanvas() { 
+  arcCanvas.style.left = clockTypeP.offsetLeft + 'px';
+  arcCanvas.style.top = clockBox.offsetTop + 'px';
+  arcCanvas.width = clockBox.offsetWidth;  
+  arcCanvas.height = clockBox.offsetHeight;  
+
+  // console.log(clockBox.offsetWidth);  
+  // console.log(arcCanvas.width);
+  // console.dir(clockBox);
+  // console.dir(arcCanvas);
+  }
 </script>
 </body>
 </html>

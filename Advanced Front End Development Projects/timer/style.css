@@ -41,3 +41,33 @@ input[type="number"] {
     margin: 0;
     padding: 0;
 }
+.clock-box {
+    margin: 0 auto;
+    width: 500px;
+    text-align: center
+}
+.clock-box > p {
+    /*margin: 0;*/
+    /*padding-bottom: 25px;*/
+    font-size: 3em;
+    position: relative;
+    /*height: 400px;*/
+}
+.clock-type {
+    margin: 0;
+    padding-top: 100px;
+    padding-bottom: 25px;
+}
+.clock-remaining {
+    /*margin: 350px 0 0 0;*/
+    padding-top: 25px;
+    padding-bottom: 100px;
+}
+canvas {
+    /*z-index: -1;*/
+    background-color: yellow;
+    /*display: none;*/
+    position: absolute;
+    top: 0;
+    left: 0;  
+}
