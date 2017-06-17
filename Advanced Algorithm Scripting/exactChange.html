@@ -1,0 +1,76 @@
+<script>
+function checkCashRegister(price, cash, cid) {
+    let cidOrig = [];
+    cid.forEach(subArr => {
+        cidOrig.push(subArr);
+    });
+    cidOrig.reverse();
+    cidOrig = null;
+    // console.log("cidOrig", cidOrig);
+    const registerBalance = cashInRegister(cid);
+    let changeDue = cash - price; 
+    //Not enough cash in the register
+    // cid = null;
+    if(registerBalance < changeDue) {
+        //   console.log("Insufficient Funds");
+        return "Insufficient Funds";
+    }
+    //Exactly enough cash in the register
+    else if(registerBalance < changeDue) {
+        console.log("Closed");
+        return "Closed";
+    }
+    else {
+        cid.reverse();
+        // console.log(cid[0]);
+        cid[0][1] = 100;
+        cid[1][1] = 20;
+        cid[2][1] = 10;
+        cid[3][1] = 5;
+        cid[4][1] = 1;
+        cid[5][1] = .25;
+        cid[6][1] = .1;
+        cid[7][1] = .01;        
+        const answerArray = [];
+        cid.forEach((subArr, index) => {
+            console.log("cidorig:", cidOrig[index]);
+            // console.log(subArr);
+            let numOfSubCurrency = Math.floor(changeDue / subArr[1]);
+            // console.log(numOfSubCurrency);
+            if(numOfSubCurrency * subArr[1] > cidOrig[index][1]) {
+                numOfSubCurrency = (cidOrig[index][1] / 2);
+            }
+            changeDue -= numOfSubCurrency * subArr[1];
+            if(numOfSubCurrency > 0) {
+                answerArray.push([subArr[0], numOfSubCurrency]);
+            }
+        });
+        // answerArray.reverse();
+         console.table(answerArray);
+    }
+   
+    return;
+}
+function cashInRegister(register) {
+    const total = register
+    .reduce((accum, val)  => {
+        return accum + val[1];
+    }, 0);
+    return total;
+}
+
+
+// Example cash-in-drawer array:
+// [["PENNY", 1.01],
+// ["NICKEL", 2.05],
+// ["DIME", 3.10],
+// ["QUARTER", 4.25],
+// ["ONE", 90.00],
+// ["FIVE", 55.00],
+// ["TEN", 20.00],
+// ["TWENTY", 60.00],
+// ["ONE HUNDRED", 100.00]]
+
+// checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]);
+checkCashRegister(3.26, 100.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]);
+</script>

@@ -1,0 +1,44 @@
+<script>
+function updateInventory(arr1, arr2) {
+  
+    arr2.forEach((newItem, newIndexL) => {
+        let foundIndex = -1;
+        arr1.some((oldItem, oldIndex) => {
+            if(oldItem[1] === newItem[1]) {
+                foundIndex = oldIndex;
+                return true;
+            }
+        });
+        //Item not found in old list
+        if(foundIndex === -1) {
+            arr1.push(newItem);
+        }
+        //Item found
+        else {
+            arr1[foundIndex][0] += newItem[0];
+        }
+    });
+    arr1.sort((a, b) => {
+        return (a[1] > b[1]) ? 1 : -1;
+    });
+    console.log(arr1);
+    return arr1;
+}
+
+// Example inventory lists
+var curInv = [
+    [21, "Bowling Ball"],
+    [2, "Dirty Sock"],
+    [1, "Hair Pin"],
+    [5, "Microphone"]
+];
+
+var newInv = [
+    [2, "Hair Pin"],
+    [3, "Half-Eaten Apple"],
+    [67, "Bowling Ball"],
+    [7, "Toothpaste"]
+];
+// updateInventory(curInv, newInv);
+updateInventory([[21, "Bowling Ball"], [2, "Dirty Sock"], [1, "Hair Pin"], [5, "Microphone"]], [[2, "Hair Pin"], [3, "Half-Eaten Apple"], [67, "Bowling Ball"], [7, "Toothpaste"]])
+</script>

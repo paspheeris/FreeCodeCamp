@@ -10,11 +10,11 @@
 <div class="input-box">
   <div class="break-box">
     <p class="input-title">Break Length</p>
-    <input type="number" value="5">
+    <input type="number" value="5" min="1" class="break-input">
   </div>
   <div class="session-box">
     <p class="input-title">Session Length</p>
-    <input type="number" value="25">
+    <input type="number" value="25" step="5" min="1" class="session-input">
   </div>
 </div>  
 <div class="clock-box">
@@ -27,20 +27,71 @@
   const arcCanvas = document.querySelector('canvas');
   const clockBox = document.querySelector('.clock-box');
   const clockTypeP =document.querySelector('.clock-type');
+  const clockRemaining = document.querySelector('.clock-remaining');
+  let sessionInput = document.querySelector('.session-input');
+  let breakInput = document.querySelector('.break-input');
+  let pause = true;
+  
   repositionCanvas();
-  drawArc(99);
+  drawArc(99.99999, false);
+  // drawArc(25);
 
-  function drawArc(percentLeft=100) {
+  function setTimer(mins) {
+    const lengthMil = mins * 60 * 1000;
+    const startMil = Date.now();
+    const endMil = startMil + lengthMil;
+    console.log({mins, startMil, endMil});
+    // console.log(endMil / Date.now());
+    // let elapsedPercent = (Date.now() / endMil) * 100;
+    let interv = setInterval(function() {
+      let elapsed = Date.now() - startMil;
+      let elapsedPercent = (elapsed / lengthMil) * 100;
+
+      // let displayMin =Math.floor(((lengthMil - elapsed) / 1000) / 60);
+      // let displaySecs = Math.floor(((lengthMil - elapsed) - (displayMin * 1000 * 60)) / 1000);
+      // console.log({displayMin, displaySecs});
+      clockRemaining.innerText = `${displayMin}:${displaySecs}`;
+
+
+
+      if(elapsedPercent >= 100) {
+        elapsedPercent = 99.99999;
+        drawArc(elapsedPercent, true);
+        clearInterval(interv);
+        return;
+      }
+      drawArc(elapsedPercent, true);
+      }
+      , 1000);
+  }
+
+  function drawArc(percentLeft, counterClockWise=true) {
     let context =arcCanvas.getContext('2d');
+    context.clearRect(0,0,arcCanvas.width,arcCanvas.height);
     let y = arcCanvas.height / 2;
     let degrees =percentLeft * 3.6;
+    //Endpoint
     let radians = (degrees * (Math.PI / 180)) - .5 * Math.PI;
     console.log({percentLeft, degrees, radians});
     context.lineWidth = 15;
     context.beginPath();
-    context.arc(250,y,200, 1.5*Math.PI, radians);
+    context.arc(250,y,200, 1.5*Math.PI, radians, counterClockWise);
+    context.strokeStyle = 'white';
     context.stroke();
+    
   }
+
+arcCanvas.addEventListener('click', function() {
+  if(pause) {
+    clockRemaining.innerText = sessionInput.value + ':00';
+    setTimer(sessionInput.value);
+  }
+});
+
+
+
+
+
 
 
 
