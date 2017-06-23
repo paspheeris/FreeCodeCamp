@@ -110,13 +110,13 @@ class TicTacToe
     }
     drawMove(coord, symbol) 
     {
-        let beginPathPoint = new Vec(coord[0] * 200,
-                                     coord[1] * 200);
-        let endPathPoint = new Vec(((coord[0] * 200) + 200),
-                                    (coord[1] * 200) + 200);
+        let beginPathPoint = new Vec(((coord[0] * 200) + 10),
+                                     (coord[1] * 200) + 10);
+        let endPathPoint = new Vec(((coord[0] * 200) + 190),
+                                    (coord[1] * 200) + 190);
         let centerPoint = new Vec(((beginPathPoint.x + endPathPoint.x) / 2),
                                     (beginPathPoint.y + endPathPoint.y) / 2);
-        console.log(centerPoint);
+        // console.log(centerPoint);
         // console.log(beginPathPoint);
         // console.log(endPathPoint);
         this._context.beginPath();
@@ -125,8 +125,8 @@ class TicTacToe
             this._context.lineTo(endPathPoint.x, endPathPoint.y);
             this._context.stroke();
 
-            this._context.moveTo(beginPathPoint.x + 200, beginPathPoint.y);
-            this._context.lineTo(endPathPoint.x - 200, endPathPoint.y);
+            this._context.moveTo(beginPathPoint.x + 180, beginPathPoint.y);
+            this._context.lineTo(endPathPoint.x - 180, endPathPoint.y);
             this._context.stroke();
         } else if (symbol === 'O') {
             this._context.arc(centerPoint.x, centerPoint.y, 90, 0, 2 * Math.PI);
@@ -135,6 +135,18 @@ class TicTacToe
         //Swap who's up next
         this.playerTurn === 0 ? this.playerTurn = 1 : this.playerTurn = 0;
         console.table(this.dataStore.state);
+    }
+    checkForWinner() 
+    {
+        let winner = false;
+        this.dataStore.state.forEach((subArr, index) => {
+            //Row winner
+            if(subArr.every((val, index) => val === 'X') || subArr.every((val, index) => val === 'O')) {
+                console.log('winner');
+                winner = true;
+            }
+            });
+        return winner;
     }
 }
 
@@ -146,4 +158,7 @@ canvas.addEventListener('click', event => {
     let coord = ttt.clickDetection(event.offsetX, event.offsetY);
     // console.log(coord);
     ttt.makeMove(coord);
+    if(ttt.checkForWinner()) {
+        console.log('time for a new game')
+    }
 });
