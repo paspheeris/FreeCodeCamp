@@ -34,19 +34,44 @@ class DataStore
             [null, null, null]
         ];
     }
+    eraseState() 
+    {
+        this.state = [
+            [null, null, null],
+            [null, null, null],
+            [null, null, null]
+        ];
+    }
+    getRandOpenSquare()
+    {
+        let randX = Math.floor(Math.random() * 3);
+        let randY = Math.floor(Math.random() * 3);        
+
+        let s = this.state[randY][randX];
+        if(s === null) {
+            console.log(randX, randY);
+            return [randX, randY];
+        } else {
+            console.log('repick');
+            return this.getRandOpenSquare();
+        }
+    }
 }
 class TicTacToe
 {
     constructor(canvas) 
     {
+        this.SQUARE_WIDTH = 200;
         this._context = canvas.getContext('2d');
         this.players = [new Player('X', true), 
                         new Player('O', false)];
         this.dataStore = new DataStore;
-        this.playerTurn = 1;
+        this.playerTurn = 0;
+        this.winFlag = false;
         
         this.drawBoard(canvas);
         this.drawGrid();
+        this._context.save();
         
     }
     drawBoard(canvas)
@@ -96,6 +121,7 @@ class TicTacToe
     //Checks if a move should be made, ie if the coord is currently null. If a move should be made, calls drawMove
     makeMove(coord) 
     {
+        // console.log('coord in makeMove:', coord);
         // console.log(this.state[coord[1]][coord[0]]);
         let symbol = this.dataStore.state[coord[1]][coord[0]];
         //Make the move if the square is currently null
@@ -108,8 +134,17 @@ class TicTacToe
         }
         // console.table(this.dataStore.state);
     }
+    drawLine(startVec, endVec) 
+    {
+        this._context.beginPath();
+        this._context.moveTo(startVec.x, startVec.y);
+        this._context.lineTo(endVec.x, endVec.y);
+        this._context.stroke();        
+    }
     drawMove(coord, symbol) 
     {
+        console.log('coord in drawMove:', coord);
+        
         let beginPathPoint = new Vec(((coord[0] * 200) + 10),
                                      (coord[1] * 200) + 10);
         let endPathPoint = new Vec(((coord[0] * 200) + 190),
@@ -121,44 +156,187 @@ class TicTacToe
         // console.log(endPathPoint);
         this._context.beginPath();
         if(symbol === 'X') {
-            this._context.moveTo(beginPathPoint.x, beginPathPoint.y);
-            this._context.lineTo(endPathPoint.x, endPathPoint.y);
-            this._context.stroke();
+            this.drawLine(beginPathPoint, endPathPoint);
+            // this._context.moveTo(beginPathPoint.x, beginPathPoint.y);
+            // this._context.lineTo(endPathPoint.x, endPathPoint.y);
+            // this._context.stroke();
 
-            this._context.moveTo(beginPathPoint.x + 180, beginPathPoint.y);
-            this._context.lineTo(endPathPoint.x - 180, endPathPoint.y);
-            this._context.stroke();
+            beginPathPoint.x += 180;
+            endPathPoint.x -= 180;
+            this.drawLine(beginPathPoint, endPathPoint);
+            // this._context.moveTo(beginPathPoint.x + 180, beginPathPoint.y);
+            // this._context.lineTo(endPathPoint.x - 180, endPathPoint.y);
+            // this._context.stroke();
         } else if (symbol === 'O') {
             this._context.arc(centerPoint.x, centerPoint.y, 90, 0, 2 * Math.PI);
             this._context.stroke();
         }
         //Swap who's up next
         this.playerTurn === 0 ? this.playerTurn = 1 : this.playerTurn = 0;
-        console.table(this.dataStore.state);
+        // console.table(this.dataStore.state);
     }
     checkForWinner() 
     {
+        let state = this.dataStore.state;
         let winner = false;
-        this.dataStore.state.forEach((subArr, index) => {
+        state.forEach((subArr, index) => {
             //Row winner
             if(subArr.every((val, index) => val === 'X') || subArr.every((val, index) => val === 'O')) {
-                console.log('winner');
-                winner = true;
+                // console.log('winner');
+                winner = [index, "row"];
             }
-            });
-        return winner;
+        });
+        //Column winner
+        state[0].forEach((val, index) => {
+            if( val !== null &&
+                state[1][index] === val &&
+               state[2][index] === val) {
+                winner = [index, "col"];
+            } else if(val !== null &&
+                      state[1][index + 1] === val &&
+                      state[2][index + 2] === val ||
+
+                      val !== null &&
+                      state[1][index - 1] === val &&
+                      state[2][index - 2] === val) {
+                      winner = [index, 'diag'];
+                    //   console.log({winner});
+
+               }
+        });
+        // console.log({winner});
+        // return winner;
+        if(winner) {
+            this.handleWin(winner);
+            this.winFlag = true;
+        }
+    }
+    handleWin(winner) 
+    {
+        //Draw winning line
+        // console.log(this.playerTurn);
+        const winningPlayer = this.playerTurn === 0 ? 1 : 0;
+        // console.log(this.playerTurn);
+        
+        let w = this.SQUARE_WIDTH;
+        let square = winner[0];
+        // console.log(square);
+        if(winner[1] === "row") {
+            let startVec = new Vec(0, 
+                                    (square * w) + (w / 2));
+            let endVec = new Vec(w * 3,
+                                (square * w) + (w / 2));
+            this.drawLine(startVec, endVec);
+        }else if(winner[1] === "col") {
+            let startVec = new Vec((square * w) + (w / 2), 
+                                    0);
+            let endVec = new Vec((square * w) + (w / 2), 
+                                    w * 3);
+            this.drawLine(startVec, endVec);
+
+        }else if(winner[1] === "diag") {
+            // console.log(square);
+            let startVec = new Vec((square * w * 1.5), 
+                                    0);
+            let endVec = new Vec(square === 0 ? w * 3: 0, 
+                                    w * 3);
+            this.drawLine(startVec, endVec);
+
+        }
+        //Show modal ('winner x, click to continue)
+        const modalText = document.createElement('p');
+        modalText.textContent = `Player ${winningPlayer + 1} has won. Click to continue`;
+        // modal.style.display = "block";
+        // modalText.style.backgroundColor = '#fff';
+        // modalText.style.display = "relative";
+        winModalDiv.appendChild(modalText);
+        // console.log(modalText.parentNode.style.display);
+        modalText.parentNode.style.display = "block";
+
+        //On click, clear board and dismiss modalText
+        modalText.parentNode.addEventListener('click', e => {
+            this.clearBoard();
+            modalText.parentNode.style.display = 'none';
+            modalText.textContent = '';
+            // computerMoveMonitor();
+        });
+        //Increment score and show new scores
+        const newScore = this.players[winningPlayer].score += 1;
+        playerScores[winningPlayer].textContent = newScore;
+        // console.log(this.playerTurn);
+        
+
+    }
+    clearBoard() 
+    {
+        console.log('clearing board after a winf');
+         this.drawBoard(canvas);
+         this.drawGrid();
+
+         this.dataStore.eraseState();
+         this.winFlag = false;
+
+        //  canvas.addEventListener('click', event => {
+        //      callback(event);
+        //  });
+    }
+    computerMove() 
+    {
+        let coord = this.dataStore.getRandOpenSquare();
+
+        this.drawMove(coord, this.players[1].symbol);
+
+        this.dataStore.state[coord[1]][coord[0]] = this.players[1].symbol;
     }
 }
 
+const body = document.querySelector('.body');
 const canvas = document.getElementById('ticTacToe');
+const playerScores = document.querySelectorAll('.player-score');
+const winModalDiv = document.querySelector('.win-modal');
 const ttt = new TicTacToe(canvas);
 
 canvas.addEventListener('click', event => {
     // console.log(event.offsetX, event.offsetY);
     let coord = ttt.clickDetection(event.offsetX, event.offsetY);
     // console.log(coord);
-    ttt.makeMove(coord);
-    if(ttt.checkForWinner()) {
-        console.log('time for a new game')
+    if(ttt.playerTurn === 0 && ttt.winFlag === false) {
+        ttt.makeMove(coord);
+        ttt.checkForWinner();
     }
+    // if(ttt.players[1].human === false && ttt.playerTurn === 1 && 
+    //    ttt.winFlag === false) {
+    //        console.log('in if');
+    //     ttt.computerMove();
+    //     ttt.checkForWinner();    
+    // }
+    // callback(event);
+    // computerMoveMonitor();
 });
+
+window.setInterval(computerMoveMonitor, 1000);
+
+function computerMoveMonitor() {
+    if(ttt.players[1].human === false && ttt.playerTurn === 1 && 
+       ttt.winFlag === false) {
+           console.log('in if');
+        ttt.computerMove();
+        ttt.checkForWinner();    
+    }
+}
+
+// function callback(event) {
+//      // console.log(event.offsetX, event.offsetY);
+//     let coord = ttt.clickDetection(event.offsetX, event.offsetY);
+//     // console.log(coord);
+//     if(ttt.playerTurn === 0) {
+//         ttt.makeMove(coord);
+//     }
+//     ttt.checkForWinner();
+//     if(ttt.players[1].human === false && ttt.playerTurn === 1 && 
+//        ttt.winFlag === false) {
+//            console.log('in if');
+//         ttt.computerMove();
+//         ttt.checkForWinner();    
+//     }
+// }
