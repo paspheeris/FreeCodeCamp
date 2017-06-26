@@ -210,6 +210,7 @@ class TicTacToe
             this.handleWin(winner);
             this.winFlag = true;
         }
+        return winner;
     }
     handleWin(winner) 
     {
@@ -244,22 +245,20 @@ class TicTacToe
 
         }
         //Show modal ('winner x, click to continue)
-        const modalText = document.createElement('p');
-        modalText.textContent = `Player ${winningPlayer + 1} has won. Click to continue`;
-        // modal.style.display = "block";
-        // modalText.style.backgroundColor = '#fff';
-        // modalText.style.display = "relative";
-        winModalDiv.appendChild(modalText);
-        // console.log(modalText.parentNode.style.display);
-        modalText.parentNode.style.display = "block";
+        this.showModalMessage(`Player ${winningPlayer + 1} has won. Click to continue`)
+        // const modalText = document.createElement('p');
+        // modalText.textContent = `Player ${winningPlayer + 1} has won. Click to continue`;
+        // winModalDiv.appendChild(modalText);
+        // modalText.parentNode.style.display = "block";
 
         //On click, clear board and dismiss modalText
-        modalText.parentNode.addEventListener('click', e => {
-            this.clearBoard();
-            modalText.parentNode.style.display = 'none';
-            modalText.textContent = '';
-            // computerMoveMonitor();
-        });
+        // modalText.parentNode.addEventListener('click', e => {
+        //     this.clearBoard();
+        //     modalText.parentNode.style.display = 'none';
+        //     modalText.textContent = '';
+        //     // computerMoveMonitor();
+        // });
+
         //Increment score and show new scores
         const newScore = this.players[winningPlayer].score += 1;
         playerScores[winningPlayer].textContent = newScore;
@@ -282,11 +281,52 @@ class TicTacToe
     }
     computerMove() 
     {
+        if(!this.checkForFullBoard()) {
         let coord = this.dataStore.getRandOpenSquare();
 
         this.drawMove(coord, this.players[1].symbol);
 
         this.dataStore.state[coord[1]][coord[0]] = this.players[1].symbol;
+        }
+    }
+    showModalMessage(message)
+    {
+        const modalText = document.createElement('p');
+        modalText.textContent = message;
+        winModalDiv.appendChild(modalText);
+        modalText.parentNode.style.display = "block";
+
+        modalText.parentNode.addEventListener('click', e => {
+            this.clearBoard();
+            modalText.parentNode.style.display = 'none';
+            modalText.textContent = '';
+            // computerMoveMonitor();
+        });
+    }
+    checkForFullBoard() 
+    {   
+        let flag = true;
+        for(let i = 0; i < 3; i++) {
+            for(let j = 0; j < 3; j++) {
+                if(this.dataStore.state[i][j] === null) {
+                    flag = false;
+                    break;
+                }
+                if (flag === false) {
+                    break;
+                }
+            }
+        }
+        console.log({flag});
+        if(flag) {
+            this.handleTie();
+        }
+        return flag;
+    }
+    handleTie() 
+    {
+        this.showModalMessage('Tie game. Click to continue');
+
     }
 }
 
@@ -302,7 +342,10 @@ canvas.addEventListener('click', event => {
     // console.log(coord);
     if(ttt.playerTurn === 0 && ttt.winFlag === false) {
         ttt.makeMove(coord);
-        ttt.checkForWinner();
+        // ttt.checkForWinner();
+        if(!ttt.checkForWinner()) {
+            ttt.checkForFullBoard();
+        }
     }
     // if(ttt.players[1].human === false && ttt.playerTurn === 1 && 
     //    ttt.winFlag === false) {
@@ -317,11 +360,15 @@ canvas.addEventListener('click', event => {
 window.setInterval(computerMoveMonitor, 1000);
 
 function computerMoveMonitor() {
+   
     if(ttt.players[1].human === false && ttt.playerTurn === 1 && 
        ttt.winFlag === false) {
            console.log('in if');
         ttt.computerMove();
-        ttt.checkForWinner();    
+        // ttt.checkForWinner();    
+        if(!ttt.checkForWinner()) {
+            ttt.checkForFullBoard();
+        }       
     }
 }
 
