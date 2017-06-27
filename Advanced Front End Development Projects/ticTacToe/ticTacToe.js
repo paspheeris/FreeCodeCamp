@@ -49,10 +49,10 @@ class DataStore
 
         let s = this.state[randY][randX];
         if(s === null) {
-            console.log(randX, randY);
+            // console.log(randX, randY);
             return [randX, randY];
         } else {
-            console.log('repick');
+            // console.log('repick');
             return this.getRandOpenSquare();
         }
     }
@@ -157,16 +157,10 @@ class TicTacToe
         this._context.beginPath();
         if(symbol === 'X') {
             this.drawLine(beginPathPoint, endPathPoint);
-            // this._context.moveTo(beginPathPoint.x, beginPathPoint.y);
-            // this._context.lineTo(endPathPoint.x, endPathPoint.y);
-            // this._context.stroke();
 
             beginPathPoint.x += 180;
             endPathPoint.x -= 180;
             this.drawLine(beginPathPoint, endPathPoint);
-            // this._context.moveTo(beginPathPoint.x + 180, beginPathPoint.y);
-            // this._context.lineTo(endPathPoint.x - 180, endPathPoint.y);
-            // this._context.stroke();
         } else if (symbol === 'O') {
             this._context.arc(centerPoint.x, centerPoint.y, 90, 0, 2 * Math.PI);
             this._context.stroke();
@@ -245,19 +239,8 @@ class TicTacToe
 
         }
         //Show modal ('winner x, click to continue)
+        //includes click listener that will this.clearBoard() and dismiss the modal
         this.showModalMessage(`Player ${winningPlayer + 1} has won. Click to continue`)
-        // const modalText = document.createElement('p');
-        // modalText.textContent = `Player ${winningPlayer + 1} has won. Click to continue`;
-        // winModalDiv.appendChild(modalText);
-        // modalText.parentNode.style.display = "block";
-
-        //On click, clear board and dismiss modalText
-        // modalText.parentNode.addEventListener('click', e => {
-        //     this.clearBoard();
-        //     modalText.parentNode.style.display = 'none';
-        //     modalText.textContent = '';
-        //     // computerMoveMonitor();
-        // });
 
         //Increment score and show new scores
         const newScore = this.players[winningPlayer].score += 1;
@@ -268,16 +251,12 @@ class TicTacToe
     }
     clearBoard() 
     {
-        console.log('clearing board after a winf');
+        // console.log('clearing board after a winf');
          this.drawBoard(canvas);
          this.drawGrid();
 
          this.dataStore.eraseState();
          this.winFlag = false;
-
-        //  canvas.addEventListener('click', event => {
-        //      callback(event);
-        //  });
     }
     computerMove() 
     {
@@ -301,6 +280,29 @@ class TicTacToe
             modalText.parentNode.style.display = 'none';
             modalText.textContent = '';
             // computerMoveMonitor();
+        });
+    }
+    showIntroModal() 
+    {
+        const introModal = document.createElement('div');
+        introModal.innerHTML = `
+                                <p>Please select a symbol<p>
+                                <span class="symbol">X</span>
+                                <br />          
+                                <span class="symbol">O</span>
+                                `;
+        introModalDiv.appendChild(introModal);
+        introModalDiv.style.display = "block";
+        const symbols = document.querySelectorAll('.symbol');
+        symbols.forEach(el => {
+            el.style.fontSize = "30px";
+            el.addEventListener('click', e => {
+                // console.log(el.textContent);
+                const choice = el.textContent;
+                this.players[0].symbol = choice;
+                this.players[1].symbol = choice === 'X' ? 'O' : 'X';
+                introModalDiv.style.display = 'none';
+            });
         });
     }
     checkForFullBoard() 
@@ -334,7 +336,10 @@ const body = document.querySelector('.body');
 const canvas = document.getElementById('ticTacToe');
 const playerScores = document.querySelectorAll('.player-score');
 const winModalDiv = document.querySelector('.win-modal');
+const introModalDiv = document.querySelector('.intro-modal');
 const ttt = new TicTacToe(canvas);
+
+ttt.showIntroModal();
 
 canvas.addEventListener('click', event => {
     // console.log(event.offsetX, event.offsetY);
@@ -347,14 +352,6 @@ canvas.addEventListener('click', event => {
             ttt.checkForFullBoard();
         }
     }
-    // if(ttt.players[1].human === false && ttt.playerTurn === 1 && 
-    //    ttt.winFlag === false) {
-    //        console.log('in if');
-    //     ttt.computerMove();
-    //     ttt.checkForWinner();    
-    // }
-    // callback(event);
-    // computerMoveMonitor();
 });
 
 window.setInterval(computerMoveMonitor, 1000);
@@ -363,7 +360,7 @@ function computerMoveMonitor() {
    
     if(ttt.players[1].human === false && ttt.playerTurn === 1 && 
        ttt.winFlag === false) {
-           console.log('in if');
+        //    console.log('in if');
         ttt.computerMove();
         // ttt.checkForWinner();    
         if(!ttt.checkForWinner()) {
@@ -371,19 +368,3 @@ function computerMoveMonitor() {
         }       
     }
 }
-
-// function callback(event) {
-//      // console.log(event.offsetX, event.offsetY);
-//     let coord = ttt.clickDetection(event.offsetX, event.offsetY);
-//     // console.log(coord);
-//     if(ttt.playerTurn === 0) {
-//         ttt.makeMove(coord);
-//     }
-//     ttt.checkForWinner();
-//     if(ttt.players[1].human === false && ttt.playerTurn === 1 && 
-//        ttt.winFlag === false) {
-//            console.log('in if');
-//         ttt.computerMove();
-//         ttt.checkForWinner();    
-//     }
-// }
