@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>Simon</title>
+        <style>
+            .wrapper{
+                display: flex;
+                flex-wrap: wrap;
+                width: 500px;
+                height: 500px;
+            }
+            .wrapper > div {
+                flex-basis: 50%;
+            }
+            .count-display {
+                background: black;
+                color: white;
+                height: 50px;
+                width: 50px;
+            }
+            .strict-indicator {
+                background: black;
+                height: 10px;
+                width: 10px;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body class="body">
+        <div class="wrapper">
+            <div class="green color-button" style="background: green"></div>
+            <div class="red color-button" style="background: red"></div>
+            <div class="yellow color-button" style="background: yellow"></div>            
+            <div class="blue color-button" style="background: blue"></div>
+        </div>
+        <div class="controls">
+            <div class="count-display"></div>
+            <button class="start-button">Start</button>
+            <button class="strict-button">Strict</button>
+            <div class="strict-indicator"></div>
+            <input class="on-off" type="checkbox" name="on/off">
+            <label for="on/off">On/Off</label>
+        </div>
+        <script src="./simon.js"></script>
+    </body>
+</html>
+
+<!--<svg width="500" height="500">
+            <circle r="250" cx="250" cy="250" fill="#333" />   
+                      
+            <circle r="125" cx="250" cy="250" fill="white" />
+            <path d="M0 250
+                     A1, 1 0 1 1 500, 250"
+                     
+                     style="stroke: green"
+                     fill="green" /> 
+            <path d="M250 0
+                     A1, 1 0 1 1 250, 500"
+                     
+                     style="stroke: red"
+                     fill="red"/> 
+            <path d="M500 250
+                     A1, 1 0 1 1 0, 250"
+                     
+                     style="stroke: blue"
+                     fill="blue"/> 
+            <path d ="M20, 230
+                      L105, 230
+                      A230, 230 0 0,1 230, 105
+                      L230, 20
+                      A1, 1 0 0, 0 20,230"
+                      
+                  style="stroke: green" />
+
+        </svg>-->
