@@ -64,7 +64,8 @@ class Model {
             this.playerSeq[this.playerSeqCount - 1] !== this.sequence[this.playerSeqCount - 1]) {
             return 'failed';
         } else if (this.getPlayerSeqCount() === this.count &&
-                    compLast === playerLast) {
+                    compLast === playerLast &&
+                    this.getPlayerSeqCount() > 0) {
             return 'matched';
         } else {
             return "unresolved";
@@ -95,7 +96,13 @@ class Controller {
     onOffButton()
     {
         console.log('fn: controller.onOffButton()')
-        this.model.appState.on = !this.model.appState.on;
+        if(this.model.appState.on === true) {
+            this.model.emptySequence;
+            this.model.emptyPlayerSeq;
+            this.view.renderCountDisplaySync('');
+        } else {
+            this.model.appState.on = !this.model.appState.on;
+        }
         // console.log(this.model.appState.on);
     }
     startButton() 
@@ -106,7 +113,6 @@ class Controller {
 
         this.view.renderCountDisplayAsync('--')
             .then(() => {
-                this.view.renderCountDisplaySync(this.model.getCountString());
                 this.playSequence();
             });
         // this.view.renderCountDisplay(this.model.getCountString());
@@ -122,7 +128,9 @@ class Controller {
     {
         console.log('fn: controller.playSequence');
         if(this.model.count === 0) this.model.incrementSequence();
+        this.view.renderCountDisplaySync(this.model.getCountString());
 
+        this.model.awaiting = false;
         this.view.renderSequenceAsync(this.model.getSequence())
             .then(() => {
                 return this.awaitingtPlayer();
@@ -148,10 +156,13 @@ class Controller {
                 let status = this.model.getPlayerSeqStatus();
                 if(status === 'failed') {
                     console.log('failure');
-                     this.model.emptyPlayerSeq();
                     clearInterval(interv);
-                    this.model.awaitingtPlayer = false;
-                    res(status);
+                    this.view.renderCountDisplayAsync('!!')
+                        .then(() => {
+                            this.model.emptyPlayerSeq();
+                            this.model.awaitingtPlayer = false;
+                            res(status);
+                        });
                 } else if (status === 'matched') {
                     console.log('matched');
                     this.model.emptyPlayerSeq();
@@ -168,6 +179,7 @@ class Controller {
     colorClick(e)
     {
         if(this.model.awaiting === false) return;
+        if(this.model.appState.on === false) return;
 
         let color = Array.from(e.target.classList)[0];
         console.log('fn: controller.colorClick');
@@ -175,6 +187,10 @@ class Controller {
         this.view.animate(color);
         this.model.playerSeq.push(color);
         this.model.playerSeqCount++;
+    }
+    getOnOffStatus() 
+    {
+        return this.model.appState.on;
     }
 }
 class View {
@@ -191,11 +207,18 @@ class View {
         this.startButton = document.querySelector('.start-button');
         this.strictButton = document.querySelector('.strict-button');
         this.strictIndicator = document.querySelector('.strict-indicator');
-        this.onOff = document.querySelector('.on-off');    
+        this.onOff = document.querySelector('.on-off'); 
+        this.audio = {
+                    green: document.querySelector('audio[data-key="green"]'),
+                    red: document.querySelector('audio[data-key="red"]'),
+                    blue: document.querySelector('audio[data-key="blue"]'),
+                    yellow: document.querySelector('audio[data-key="yellow"]')           
+                    }   
     }
     renderCountDisplayAsync(string) {
         console.log('fn view.renderCountDisplayAsync()');
         console.log(this.countDisplay.textContent === '');
+        this.countDisplay.textContent = '';
         return new Promise((res, rej) => { 
             let i = 0;
             this.countDisplay.innerText = string;  
@@ -208,7 +231,7 @@ class View {
                     clearInterval(interv);
                     res();
                 }
-            }, 500);
+            }, 300);
         }
     )}
     renderCountDisplaySync(string) {
@@ -222,7 +245,17 @@ class View {
         return new Promise((res, rej) => {
             let i = 0;
             const interv = setInterval(() => {
-                if(i >= arr.length) {
+                //Cheating with state on the on/off button so I can break
+                 //off the sequence rendering if the off button is hit
+                  //in the middle of a sequence   
+                //   console.log('on off value', this.onOff.checked);
+                //still have the problem of interrupting it if the start
+                //button is clicked in the middle of a sequence                 
+                 if(!this.onOff.checked) {
+                    clearInterval(interv);
+                    res();
+                }
+                else if(i >= arr.length) {
                     clearInterval(interv);
                     // console.log(this.prevColor);
                     res();
@@ -235,19 +268,16 @@ class View {
         });
     }
     animate(color) {
+        this[color].style.opacity = '1';
+        let sound = this.audio[color];
+        sound.pause();
+        sound.currentTime = 0;
+        sound.play();
         this[color].style.opacity = '.5';
         setTimeout(() => {
             this[color].style.opacity = '1';
         }, 500);
     }
-    // animate(color)
-    // {
-    //     console.log('fn: view.animateAsync');
-    //     this[color].style.opacity = '.5';
-    //     setTimeout(() => {
-    //         this[color].style.opacity = '1';
-    //     }, 500);
-    // }
 }
 
 class Simon {
