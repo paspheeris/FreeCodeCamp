@@ -57,13 +57,17 @@ class Model {
         let compLast = this.sequence[this.count - 1];
         let playerLast = this.playerSeq[this.playerSeqCount - 1];
         //If the player hasn't made as many moves
-        if(this.getPlayerSeqCount() < this.count) {
-            return 'unresolved';
-        } else if (compLast !== playerLast) {
+        // if(this.getPlayerSeqCount() < this.count) {
+        //     return 'unresolved';
+        // } 
+        if (this.playerSeqCount > 0 &&
+            this.playerSeq[this.playerSeqCount - 1] !== this.sequence[this.playerSeqCount - 1]) {
             return 'failed';
         } else if (this.getPlayerSeqCount() === this.count &&
                     compLast === playerLast) {
             return 'matched';
+        } else {
+            return "unresolved";
         }
     }
 }
@@ -144,18 +148,20 @@ class Controller {
                 let status = this.model.getPlayerSeqStatus();
                 if(status === 'failed') {
                     console.log('failure');
+                     this.model.emptyPlayerSeq();
                     clearInterval(interv);
                     this.model.awaitingtPlayer = false;
                     res(status);
                 } else if (status === 'matched') {
                     console.log('matched');
+                    this.model.emptyPlayerSeq();
                     clearInterval(interv);             
                     this.model.awaitingtPlayer = false;                           
                     res(status);
                 } 
-                // else if (status === 'unresolved') {
-                //     // console.log('unresolved');
-                // }
+                else if (status === 'unresolved') {
+                    // console.log('unresolved');
+                }
             }, 250);
         });
     }
@@ -166,7 +172,7 @@ class Controller {
         let color = Array.from(e.target.classList)[0];
         console.log('fn: controller.colorClick');
         // console.log(Array.from(e.target.classList));
-        this.view.animateColorClick(color);
+        this.view.animate(color);
         this.model.playerSeq.push(color);
         this.model.playerSeqCount++;
     }
@@ -212,38 +218,36 @@ class View {
         console.log('fn: view.renderSequenceAsync');
         console.log({arr});
         //Turn off audio and remove visual effects from all four colors to clear previous
-        let prevColor = '';
-        if(prevColor) {
-            this[prevColor].style.opacity = 1;
-        }
         
         return new Promise((res, rej) => {
             let i = 0;
             const interv = setInterval(() => {
                 if(i >= arr.length) {
                     clearInterval(interv);
-                    console.log(this.prevColor);
-                    this[prevColor].style.opacity = 1;
+                    // console.log(this.prevColor);
                     res();
                 } else {
                     this.animate(arr[i]);
-                    prevColor = arr[i];
                     i++;
                 }
         }, 1000);
-        })
+
+        });
     }
     animate(color) {
         this[color].style.opacity = '.5';
-    }
-    animateColorClick(color)
-    {
-        console.log('fn: view.animateAsync');
-        this[color].style.opacity = '.5';
         setTimeout(() => {
             this[color].style.opacity = '1';
-        }, 750);
+        }, 500);
     }
+    // animate(color)
+    // {
+    //     console.log('fn: view.animateAsync');
+    //     this[color].style.opacity = '.5';
+    //     setTimeout(() => {
+    //         this[color].style.opacity = '1';
+    //     }, 500);
+    // }
 }
 
 class Simon {
