@@ -9,6 +9,7 @@ class Model {
         this.awaiting = false;
 
         this.colors = ['green', 'red', 'yellow', 'blue'];
+        this.WIN_CONDITION = 5;
         this.appState = {
             on: false,
             strict: false
@@ -100,6 +101,7 @@ class Controller {
             this.model.emptySequence;
             this.model.emptyPlayerSeq;
             this.view.renderCountDisplaySync('');
+            this.view.toggleStrictDisplay();
         } else {
             this.model.appState.on = !this.model.appState.on;
         }
@@ -123,6 +125,9 @@ class Controller {
     {
         if(this.model.appState.on === false) return;
         console.log('fn: controller.strictButton()');
+        this.view.toggleStrictDisplay();
+        this.model.appState.strict = !this.model.appState.strict;
+        console.log(this.model.appState.strict);
     }
     playSequence()
     {
@@ -138,10 +143,23 @@ class Controller {
             .then((status) => {
                 console.log('resolving promis', status);
                 if(status === 'matched'){
-                    this.model.incrementSequence();
-                    this.playSequence();
+                    // console.log('in matched if');
+                    if(this.model.count >= this.model.WIN_CONDITION) {
+                        console.log('in win if');
+                        this.view.renderCountDisplayAsync('win')
+                            .then(() => {
+                                this.startButton();
+                            })
+                    } else {
+                        this.model.incrementSequence();
+                        this.playSequence();
+                    }
                 } else if (status === 'failed') {
-                    this.playSequence();
+                    if(this.model.appState.strict) {
+                        this.startButton();
+                    } else {
+                        this.playSequence();
+                    }
                 }
             })
     }
@@ -277,6 +295,14 @@ class View {
         setTimeout(() => {
             this[color].style.opacity = '1';
         }, 500);
+    }
+    toggleStrictDisplay(string)
+    {
+        // console.dir(this.strictIndicator);
+        this.strictIndicator.style.backgroundColor === "black" ||
+        this.strictIndicator.style.backgroundColor === ""  ? 
+                        this.strictIndicator.style.backgroundColor = "red" :
+                        this.strictIndicator.style.backgroundColor = "black";
     }
 }
 
