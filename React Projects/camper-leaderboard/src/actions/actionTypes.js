@@ -1,0 +1,1 @@
+export const LOAD_CAMPERS_SUCCESS = 'LOAD_COURSES';
