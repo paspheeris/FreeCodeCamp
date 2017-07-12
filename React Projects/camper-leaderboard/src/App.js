@@ -15,21 +15,27 @@ class App extends Component {
   // }
 
   render() {
+    // console.log('this.props', this.props);
     return (
       <div className="App">
         <Header />
-        <Table campers={this.props.campers}/>
+        <Table campers={this.props.campers}
+               sortBy={this.props.sortBy}
+               sort={this.props.actions.sort}/>
         <Footer />
       </div>
     );
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
+  // console.log(state);
   return {
-    campers: state.campers
+    campers: state.campers,
+    sortBy: state.sortBy
   };
 }
+  
 
 function mapDispatchToProps(dispatch) {
   return {

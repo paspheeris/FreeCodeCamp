@@ -1,31 +1,55 @@
-import React from 'react';
+import React, { Component } from 'react';
 import TableRow from './TableRow';
+import {SORT_TYPES} from '../actions/actionTypes';
 
-const Table = (props) => {
-  return (
-    <table>
-      <thead>
-        <tr>Camper Leaderboard</tr>
-        <tr>
-          <td>#</td>
-          <td>Camper Name</td>
-          <td>Points in past 30 days</td>
-          <td>All time points</td>          
-        </tr>
-      </thead>
-      <tbody>
-        {props.campers.map((camper, index) => {
-          return <TableRow 
-                    key={index}
-                    index={index}
-                    img={camper.img}
-                    username={camper.username}
-                    recent={camper.recent}
-                    alltime={camper.alltime}/>
-        })}
-      </tbody>
-    </table>
-  )
+class Table extends React.Component {
+  constructor() {
+    super();
+    // console.log('table.js', this.props);
+    this.renderRows = this.renderRows.bind(this);
+  }
+  renderRows() {
+    if(this.props.campers) {
+      return this.props.campers.map((camper, index) => {
+            return <TableRow 
+                      key={index}
+                      index={index}
+                      img={camper.img}
+                      username={camper.username}
+                      recent={camper.recent}
+                      alltime={camper.alltime}
+                      />
+          })
+    }
+  }
+  render() {
+    console.log(this.props);
+    return (
+      <table>
+        <thead>
+          <tr>Camper Leaderboard</tr>
+          <tr>
+            <td>#</td>
+            <td onClick={this.props.sortBy === SORT_TYPES.NAME_DESC ? 
+                        () => this.props.sort(SORT_TYPES.NAME_ASC) :
+                        () => this.props.sort(SORT_TYPES.NAME_DESC)}>
+              Camper Name</td> 
+            <td onClick={this.props.sortBy === SORT_TYPES.PAST_30_DESC ? 
+                        () => this.props.sort(SORT_TYPES.PAST_30_ASC) :
+                        () => this.props.sort(SORT_TYPES.PAST_30_DESC)}>
+              Points in past 30 days</td>
+            <td onClick={this.props.sortBy === SORT_TYPES.ALL_TIME_DESC ? 
+                        () => this.props.sort(SORT_TYPES.ALL_TIME_ASC) :
+                        () => this.props.sort(SORT_TYPES.ALL_TIME_DESC)}>
+              All time points</td>          
+          </tr>
+        </thead>
+        <tbody>
+          {this.renderRows()}
+        </tbody>
+      </table>
+    )
+  }
 }
 
 export default Table;
