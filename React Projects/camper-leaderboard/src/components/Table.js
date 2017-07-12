@@ -25,10 +25,10 @@ class Table extends React.Component {
   render() {
     console.log(this.props);
     return (
-      <table>
+      <table className="table">
         <thead>
-          <tr>Camper Leaderboard</tr>
-          <tr>
+          {/*<tr>Camper Leaderboard</tr>*/}
+          <tr className="table-thead-tr">
             <td>#</td>
             <td onClick={this.props.sortBy === SORT_TYPES.NAME_DESC ? 
                         () => this.props.sort(SORT_TYPES.NAME_ASC) :
