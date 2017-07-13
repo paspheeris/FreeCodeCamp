@@ -30,6 +30,7 @@ class Table extends React.Component {
           {/*<tr>Camper Leaderboard</tr>*/}
           <tr className="table-thead-tr">
             <td>#</td>
+            <td className='profile-pic-column'></td>
             <td onClick={this.props.sortBy === SORT_TYPES.NAME_DESC ? 
                         () => this.props.sort(SORT_TYPES.NAME_ASC) :
                         () => this.props.sort(SORT_TYPES.NAME_DESC)}>

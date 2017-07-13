@@ -43,3 +43,20 @@ thead {
 .TableRow-username {
   text-align: left;
 }
+.user-photo {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 50px;
+  width: 50px;
+  border: 2px solid #167F92;
+  border-radius: 10px;
+}
+.user-photo:hover {
+  height: inherit;
+  width: inherit;
+  position: absolute;
+}
+.username-link {
+  color: black;
+  text-decoration: none;
+}
