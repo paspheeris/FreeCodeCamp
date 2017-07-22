@@ -6,10 +6,11 @@
 //     this.image = image
 //   }
 // }
+const uuidv4 = require('uuid/v4');
 
 const defaultRecipes = {
   'asian-salmon': {
-    key: 1,
+    key: uuidv4(),
     name: 'Asian Salmon',
     urlName: 'asian-salmon',
     ingredients: ['salmon', 'soy sauce', 'ginger'],
@@ -18,7 +19,7 @@ const defaultRecipes = {
     image: 'images/asian-salmon.jpg'
   },
   'beef-stew': {
-    key: 2,
+    key: uuidv4(),
     name: 'Beef Stew',
     urlName: 'beef-stew',    
     ingredients: ['beef', 'onions', 'carrots', 'potatoes'],
@@ -31,3 +32,13 @@ const defaultRecipes = {
 // console.log(defaultRecipes);
 
 export default defaultRecipes;
+
+export const defaultAddRecipe = {
+    key: uuidv4(),
+    name: 'Recipe Name',
+    urlName: 'new-recipe',    
+    ingredients: ['Ingredient 1', 'Ingredient 2'],
+    directions: ['Step 1', 'Step 2'],
+    tags: ['tag1', 'tag2'],
+    image: ''    
+}

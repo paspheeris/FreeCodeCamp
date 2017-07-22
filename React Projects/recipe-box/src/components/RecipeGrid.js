@@ -6,7 +6,7 @@ import RecipeTile from './RecipeTile';
 
 
 const RecipeGrid = ({recipes}) => {
-  console.log(recipes);
+  // console.log(recipes);
   return (
     <div className="recipe-grid">
       {Object.keys(recipes).map(recipeTitle => {

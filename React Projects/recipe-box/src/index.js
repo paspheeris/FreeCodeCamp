@@ -11,6 +11,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import App from './App';
 import RecipeGrid from './components/RecipeGrid';
 import Single from './components/Single';
+import AddRecipe from './components/AddRecipe';
 
 
 
@@ -22,7 +23,9 @@ render((<Provider store={store}>
         <App>
           <Switch>
             <Route exact path="/" component={RecipeGrid} />
-            <Route path="/recipe/" component={Single} />
+            <Route path="/add-recipe" component={AddRecipe} />
+            <Route path="/edit-recipe" component={AddRecipe} />            
+            <Route path="/recipe/*" component={Single} />
           </Switch>
         </App>
       </BrowserRouter>

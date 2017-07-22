@@ -4,7 +4,7 @@ const Ingredients = ({ingredients}) => {
   return (
     <div>
       <ul>
-      {ingredients.map(ingredient => <li>{ingredient}</li>)}
+      {ingredients.map((ingredient, ind) => <li key={ind}>{ingredient}</li>)}
       </ul>
     </div>
   )

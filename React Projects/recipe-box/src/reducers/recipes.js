@@ -2,16 +2,19 @@
 //1: the action (info about what happened)
 //2: copy of current state
 
+
+import {defaultAddRecipe} from '../data/defaultRecipes.js';
+import * as types from '../actions/actionTypes';
+
 function recipes(state = [], action) {
+  // console.log(state);
   switch(action.type) {
-    case 'INCREMENT_LIKES': 
-    console.log('Incrementing Likes!!');
-    const i = action.index;
-    return [
-      ...state.slice(0, i), //before the one we are updating
-      {...state[i], likes: state[i].likes + 1},
-      ...state.slice(i+ 1), //after the one we are updating
-    ]
+    case types.ADD_RECIPE: 
+    // console.log(state);
+    // console.dir(action);
+    return Object.assign({}, state, {[action.localState.name]: action.localState});
+    case types.EDIT_RECIPE:
+      return 
     default:
       return state;
   }

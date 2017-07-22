@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const RecipeTile = ({recipe, urlTitle}) => {
   // console.log(props.recipeTitle);
-  console.log(urlTitle);
+  // console.log(urlTitle);
   const imgSrc = require(`../${recipe.image}`);
   return (
     <Link to={`recipe/${urlTitle}`} >

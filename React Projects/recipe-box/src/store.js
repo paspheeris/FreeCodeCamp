@@ -1,22 +1,24 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 // import { syncHistoryWithStore } from 'react-router-redux';
 // import { BrowserRouter } from 'react-router-dom';
-import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
+// import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 
 
 //import the root reducer
 import rootReducer from './reducers/index';
 
 import recipes from './data/defaultRecipes';
+import {defaultAddRecipe} from './data/defaultRecipes';
 
 //create an object for the default data
 const defaultState = {
-  recipes
+  recipes,
+  // defaultAddRecipe
 };
-
+// console.log(defaultState);
 const enhancers = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f,
-  applyMiddleware(reduxImmutableStateInvariant())
+  // applyMiddleware(reduxImmutableStateInvariant())
 );
 
 const store = createStore(rootReducer, defaultState, enhancers);
