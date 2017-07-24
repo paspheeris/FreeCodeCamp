@@ -14,8 +14,14 @@ const Single = ({recipes, location}) => {
   // console.log(location.pathname.split('/')[2]);
   let recipeName = location.pathname.split('/')[2];
   let recipe = recipes[recipeName];
-  console.log(recipe);
-  const imgSrc = require(`../${recipe.image}`);
+  // console.log(recipe);
+  // const imgSrc = require(`../${recipe.image}`);
+  let imgSrc;
+  try {
+    imgSrc = require(`../${recipe.image}`)} 
+  catch (err) {
+    imgSrc =  recipe.image;
+  }
   return (
     <div>
       <img className='tile-image' src={imgSrc} alt={recipe.name}/>

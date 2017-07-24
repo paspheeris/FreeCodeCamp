@@ -12,9 +12,10 @@ function recipes(state = [], action) {
     case types.ADD_RECIPE: 
     // console.log(state);
     // console.dir(action);
-    return Object.assign({}, state, {[action.localState.name]: action.localState});
+    return Object.assign({}, state, {[action.localState.urlName]: action.localState});
     case types.EDIT_RECIPE:
-      return 
+    // console.dir(action);
+      return Object.assign({}, state, {[action.localState.urlName]: action.localState});
     default:
       return state;
   }

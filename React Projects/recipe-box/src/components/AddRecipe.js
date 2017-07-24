@@ -10,6 +10,7 @@ class AddRecipe extends React.Component {
     const splitPathName = this.props.location.pathname.split('/');
     const editingPathName = splitPathName[2] || null;
     // console.log(editingPathName);
+    let imgObj;
     this.state = this.props.props.recipes[editingPathName] || {
       key: uuidv4(),
       name: '',
@@ -24,12 +25,13 @@ class AddRecipe extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.addInput = this.addInput.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
-    
+    this.imageUpload = this.imageUpload.bind(this);    
     
   }
 
   handleChange(e) {
     //If the property value is an array
+    console.log('handle change', e);
     if(typeof this.state[e.target.name] === 'object') {
       // console.log(e);
       const ind = e.target.dataset.ind;
@@ -76,13 +78,20 @@ class AddRecipe extends React.Component {
     if(!this.state.name) {
          alert('Please enter a recipe name');
        } else {
-         this.setState({'urlName': this.state.name}, () => {
+         this.setState({'urlName': this.toSnakeCase(this.state.name)}, () => {
          (this.props.location.pathname.split('/')[2] ? 
             this.props.onEditClick(this.state) :
             this.props.onAddClick(this.state));
          this.props.history.push('');
          }
          )}
+  }
+  toSnakeCase(str) {
+    // console.log('str:', str);
+    return str.toLowerCase().replace(/ /g, '-');
+  }
+  imageUpload(e) {
+    console.dir(e.target);
   }
   // console.log(props);
   render() {
@@ -92,7 +101,8 @@ class AddRecipe extends React.Component {
       <form>
         <input name='name' type='text' value={this.state.name} 
          onChange={this.handleChange} placeholder='Recipe Name'></input>
-        <input type="file" />
+        <input name='image' type='text' value={this.state.image} 
+         onChange={this.handleChange} placeholder='Image URL'/>
         <p>Prep info</p>
         <h3>Ingredients</h3>
         <ul>

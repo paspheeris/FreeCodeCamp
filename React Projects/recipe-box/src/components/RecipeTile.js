@@ -7,7 +7,12 @@ import { Link } from 'react-router-dom';
 const RecipeTile = ({recipe, urlTitle}) => {
   // console.log(props.recipeTitle);
   // console.log(urlTitle);
-  const imgSrc = require(`../${recipe.image}`);
+  let imgSrc;
+  try {
+    imgSrc = require(`../${recipe.image}`)} 
+  catch (err) {
+    imgSrc =  recipe.image;
+  }
   return (
     <Link to={`recipe/${urlTitle}`} >
     <div className='tile'>

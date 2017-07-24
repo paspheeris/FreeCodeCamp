@@ -3,6 +3,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 // import { BrowserRouter } from 'react-router-dom';
 // import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 
+import { loadState, saveState } from './localStorage';
 
 //import the root reducer
 import rootReducer from './reducers/index';
@@ -11,7 +12,7 @@ import recipes from './data/defaultRecipes';
 import {defaultAddRecipe} from './data/defaultRecipes';
 
 //create an object for the default data
-const defaultState = {
+const defaultState = loadState() || { 
   recipes,
   // defaultAddRecipe
 };
@@ -22,7 +23,7 @@ const enhancers = compose(
 );
 
 const store = createStore(rootReducer, defaultState, enhancers);
-
+store.subscribe(() => saveState({recipes: store.getState().recipes}));
 // export const history = syncHistoryWithStore(BrowserRouter, store);
 
 if(module.hot) {
