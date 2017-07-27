@@ -1,0 +1,20 @@
+.grid-container {
+  width: 600px;
+  
+  display: flex;
+  flex-wrap: wrap;
+}
+.cell {
+  box-sizing: border-box;
+  height: 20px;
+  width: 20px;
+  border: 1px solid grey;
+  margin: 0;
+  
+}
+.on {
+  background: white;
+}
+.off {
+  background: black;
+}
