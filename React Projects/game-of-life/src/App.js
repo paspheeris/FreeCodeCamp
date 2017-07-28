@@ -5,43 +5,66 @@ import Grid from './components/Grid'
 class App extends Component {
   constructor(props) {
     super(props);
+    // let counter = 0;
+    // let oneKMode = false;
     this.state = {
+      xDimension: 100,
+      generation: 0,
+      startTime: 0,
+      elapsed: 0,
+      timePerGeneration: 0,
       interval: false,
-      arr: ''
+      arr: []
     };
     this.onRandomizeClick = this.onRandomizeClick.bind(this);
     this.initializeArr = this.initializeArr.bind(this);
     this.iterate = this.iterate.bind(this);
     this.nextIterationStatus = this.nextIterationStatus.bind(this);
     this.startStop = this.startStop.bind(this);
+    this.handleDimensionChange = this.handleDimensionChange.bind(this);
+    
+    // this.toggleOneK = this.toggleOneK.bind(this);
+    // this.oneKGenerations = this.oneKGenerations.bind(this);
+    
     
   }
   componentWillMount() {
     this.initializeArr();
   }
   initializeArr() {
-    this.setState({arr: Array(30).fill(Array(30).fill(false))});
+    console.log(typeof this.state.xDimension);
+    let x = parseFloat(this.state.xDimension);
+    // this.setState({arr: ''});
+    this.setState({arr: Array(x).fill(Array(x).fill(false))});
   }
   onRandomizeClick() {
+
     this.setState({arr: this.state.arr.map(subArr => {
       return subArr.map(cell => {
         return (Math.random() < 0.5 ? false : true);
       });
-    })});
+    }),
+    generation: 0});
   }
+
   iterate() {
-    this.setState({arr: this.state.arr.map((subArr, subArrInd) => {
+    this.setState(
+      {arr: this.state.arr.map((subArr, subArrInd) => {
       return subArr.map((cellStatus, cellInd) => {
         return (this.nextIterationStatus(this.state.arr, subArr, subArrInd, cellStatus,cellInd));
       });
-    })});
+    }),
+  generation: this.state.generation + 1,
+  timePerGeneration: (this.state.elapsed / this.state.generation),
+  elapsed: Date.now() - this.state.startTime});
   }
   startStop() {
     if (this.state.interval) {
       clearInterval(this.state.interval);
       this.setState({interval: false});
     } else {
-      this.setState({interval: setInterval(this.iterate, 250)});
+      this.setState({interval: setInterval(this.iterate, 0),
+                    startTime : Date.now()});
     }
   }
   nextIterationStatus(mArr, sArr, sArrInd, cellStatus, cellIndex) {
@@ -58,6 +81,7 @@ class App extends Component {
       // console.log(bottomRow);
     
     const neighorborArr = [
+      //N NE E SE S SW W NW
       arrAbove[x],
       arrAbove[rightMost ? 0 : x + 1],
       mArr[y][rightMost ? 0 : x + 1],
@@ -78,16 +102,31 @@ class App extends Component {
     else return false;
 
   }
+  handleDimensionChange(e) {
+    let newX = parseInt(e.target.value);
+    this.setState({xDimension: newX,
+                   arr: Array(newX).fill(Array(newX).fill(false))});
+    // let x = parseInt(this.state.xDimension);
+    // // this.setState({arr: ''});
+    // this.setState({arr: Array(x).fill(Array(x).fill(false))});
+  }
   render() {
     return (
       <div className="App">
-        <Grid arr={this.state.arr}/>
         <button onClick={this.initializeArr}>InitializeArr</button>
         <button onClick={this.onRandomizeClick}>
           Randomize
         </button>
         <button onClick={this.iterate}>Iterate</button>
         <button onClick={this.startStop}>Start/Stop</button>
+        {/*<button onClick={this.toggleOneK}>oneKGenerations</button>*/}
+        <button onClick={this.oneKGenerations}>oneKGenerations</button>
+        <input type="number" value={this.state.xDimension} onChange={this.handleDimensionChange} step='10'/>
+        <span>Generations: {this.state.generation}</span>
+        <span>Elapsedtime {this.state.elapsed}</span>
+        <span>Time Per Generation {this.state.timePerGeneration}</span>
+        <Grid arr={this.state.arr} iterate={this.iterate} 
+          xDimension={this.state.xDimension}/>
       </div>
     );
   }
