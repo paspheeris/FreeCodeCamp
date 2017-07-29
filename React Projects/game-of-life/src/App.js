@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import './App.css';
 import Grid from './components/Grid'
+/* eslint import/no-webpack-loader-syntax: off */
+// var MyWorker = require("worker-loader!./webworkers/worker.js");
+
 
 class App extends Component {
   constructor(props) {
     super(props);
     // let counter = 0;
     // let oneKMode = false;
+    this.initialStateSent = false;
+    this.MyWorker = require("worker-loader!./webworkers/worker.js");
+    this.worker = new this.MyWorker();
+    this.worker.onmessage = this.onWorkerMessage.bind(this);
     this.state = {
       xDimension: 100,
       generation: 0,
@@ -22,6 +29,9 @@ class App extends Component {
     this.nextIterationStatus = this.nextIterationStatus.bind(this);
     this.startStop = this.startStop.bind(this);
     this.handleDimensionChange = this.handleDimensionChange.bind(this);
+    this.webWorkerIterate = this.webWorkerIterate.bind(this);
+    // this.onWorkerMessage = this.onWorkerMessage.bind(this);
+    
     
     // this.toggleOneK = this.toggleOneK.bind(this);
     // this.oneKGenerations = this.oneKGenerations.bind(this);
@@ -47,6 +57,20 @@ class App extends Component {
     generation: 0});
   }
 
+  webWorkerIterate() {
+    if(!this.initialStateSent) {
+      this.initialStateSent = true;
+      console.log('posting message');
+      this.worker.postMessage(this.state.arr);
+    } else {
+      this.worker.postMessage('dummy');
+    }
+  }
+  onWorkerMessage(e) {
+    console.log('message received from worker');
+    this.setState({arr: e.data});
+  }
+
   iterate() {
     this.setState(
       {arr: this.state.arr.map((subArr, subArrInd) => {
@@ -63,7 +87,8 @@ class App extends Component {
       clearInterval(this.state.interval);
       this.setState({interval: false});
     } else {
-      this.setState({interval: setInterval(this.iterate, 0),
+      this.setState({interval: setInterval(this.webWorkerIterate, 0),
+                    generation: 0,
                     startTime : Date.now()});
     }
   }
