@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1 Timestamp Microservice
+  p Use this service by passing in a Unix timestamp or a natural language date (eg: January 1, 2016). A Unix timestamp and the natural language form of that date will be returned. If the query does not contain a date, an error will be returned.
+  h2 Example Usage
+  .codeExample
+    code.codeBlock 
+      span Query: localhost:3000/timestamp/October-16-1989
+      br
+      span Output: { "unix": 1450137600, "natural": "October 16, 1989" }
+    code.codeBlock
+      span Query: localhost:3000/timestamp/1450137600
+      br
+      span Output: { "unix": 1450137600, "natural": "October 16, 1989" }
+    code.codeBlock
+      span Query: localhost:3000/timestamp/foo
+      br
+      span Output: { "error": "The query must contain a valid Unix timestamp or natural language date" }

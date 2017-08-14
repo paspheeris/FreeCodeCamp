@@ -1,0 +1,24 @@
+body {
+  /*padding: 50px;*/
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+/*a {
+  color: #00B7FF;
+}*/
+.navbar > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+}
+.navbar-link {
+  display: inline-block;
+  color: white;
+  padding: 14px 16px;
+  text-align: center;
+}
+.codeBlock {
+  display: block;
+  margin: 15px;
+}

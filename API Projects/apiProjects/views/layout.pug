@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    nav.navbar
+      ul
+        a(href='/timestamp') 
+          li.navbar-link Timestamp Microservice
+        a(href='') 
+          li.navbar-link Request Header Parser Microservice
+        a(href='') 
+          li.navbar-link URL Shortener Microservice
+        a(href='') 
+          li.navbar-link Image Search Abstraction Layer
+        a(href='') 
+          li.navbar-link File Metadata Microservice
+    block content
