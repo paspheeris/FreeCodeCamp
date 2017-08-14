@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1 Header Parser Microservice
+  p This service returns information about the user making a request to the server, including the user's IP address, system language, operating system, browser, and browser version.
+  h2 Example Usage
+  .codeExample
+    code.codeBlock 
+      span Query: localhost:3000/headerparser/whoami
+      br
+      span Output: { "ipaddress": "::ffff:127.0.0.1", "language": "en-US", "os": "Linux 64", "browser": "Chrome", "version": "56.0.2924.87" }

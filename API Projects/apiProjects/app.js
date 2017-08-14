@@ -9,7 +9,10 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+var useragent = require('express-useragent');
 
+app.set('trust proxy', true);
+app.use(useragent.express());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
