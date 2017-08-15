@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 URL Shortener Microservice
+  p Pass a URL to this service to receive a JSON response that contains a shortened version of that URL. Visiting that shortened URL will redirect you to the original URL.
+  h2 Example Usage
+  .codeExample
+    code.codeBlock 
+      span Query: localhost:3000/url/https://www.washingtonpost.com/powerpost/as-polls-open-in-alabama-senate-race-republican-candidates-court-trump-voters/2017/08/15/b535cd58-81b1-11e7-ab27-1a21a8e006ab_story.html?utm_term=.66745f9666cf
+      br
+      br
+      span Output: { "short_url": "localhost:300/url/2912" }

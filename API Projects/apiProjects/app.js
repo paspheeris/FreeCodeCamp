@@ -10,6 +10,20 @@ var users = require('./routes/users');
 
 var app = express();
 var useragent = require('express-useragent');
+const mongoose = require('mongoose');
+
+// import environmental variables from out variables.env file
+require('dotenv').config({ path: 'variables.env'});
+
+//Connect to our Database and handle a bad connection
+mongoose.connect(process.env.DATABASE);
+mongoose.Promise = global.Promise; //tell mongoose to use ES6 promises
+mongoose.connection.on('error', (err) => {
+  console.error(err.message);
+})
+
+//import all of our models
+require('./models/URL');
 
 app.set('trust proxy', true);
 app.use(useragent.express());
