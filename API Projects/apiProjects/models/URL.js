@@ -12,7 +12,14 @@ const urlSchema = new Schema({
     required: true
   }
 });
+const counter = new Schema({
+  counter: {
+    type: Number,
+    required: true
+  }
+});
 
 const URL = mongoose.model('URL', urlSchema);
+const Counter = mongoose.model('Counter', counter);
 
 module.exports = URL;

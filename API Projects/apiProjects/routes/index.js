@@ -16,5 +16,6 @@ router.get('/headerparser', headerParserController.headerParserInfo);
 router.get('/headerparser/whoami', headerParserController.headerParserWhoami);
 
 router.get('/url', urlShortenerController.urlShortenerInfo);
+router.get('/url/*', urlShortenerController.url);
 
 module.exports = router;
