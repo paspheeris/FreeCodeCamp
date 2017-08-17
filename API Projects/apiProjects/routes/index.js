@@ -3,6 +3,7 @@ var router = express.Router();
 const timestampController = require('../controllers/timestamp.js');
 const headerParserController = require('../controllers/headerParser.js');
 const urlShortenerController = require('../controllers/urlShortener.js');
+const imageSearchController = require('../controllers/imageSearch.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -17,5 +18,9 @@ router.get('/headerparser/whoami', headerParserController.headerParserWhoami);
 
 router.get('/url', urlShortenerController.urlShortenerInfo);
 router.get('/url/*', urlShortenerController.url);
+
+router.get('/imageInfo', imageSearchController.imageSearchInfo);
+router.get('/image/history', imageSearchController.history);
+router.get('/image*', imageSearchController.apiEndpoint);
 
 module.exports = router;

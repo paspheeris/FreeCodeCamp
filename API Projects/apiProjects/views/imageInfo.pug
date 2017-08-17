@@ -1,0 +1,76 @@
+extends layout
+
+block content
+  h1 Image Search Abstraction Layer
+  p This API service performs an image search for a given term, and returns results in JSON format. It is built on top of 
+    a(href="https://cse.google.com") Google's Custom Search Engine
+  h2 Example Usage
+  .codeExample
+    code.codeBlock 
+      span Query: http://localhost:7777/image?q=forest
+      br
+      span
+        | Output: [
+        br
+        |{
+        br  
+        |   "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/New_hampshire_in_autumn.jpg/1200px-New_hampshire_in_autumn.jpg",
+        br
+        |  "snippet": "Autumn - Wikipedia",
+        br
+        |  "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi6AB3dYEQ1-uWuRzHLBrhmrJ8dxYQGynVQEG2cLDHqjZoAIIHJFwOkls",
+        br
+        |  "context": "https://en.wikipedia.org/wiki/Autumn"
+        br
+        |},
+        br
+        |{
+        | <i>...results 2 through 10...</i>
+        |}
+        br
+        |]
+  h2 Pagination
+  p The service returns 10 results per request. An offset may be given in order to return further results. For example, an offset of 1 will return results 11 through 20, an offset of 2 will return results 21 through 30, etc.
+  .codeExample
+    code.codeBlock 
+      span Query: http://localhost:7777/image?q=forest&offset=1
+      br
+      span
+        | Output: [
+        br
+        |{
+        br  
+        |   "url": "https://static1.squarespace.com/static/556a1885e4b0bdc6f0794659/t/577a8e0cebbd1a47dbec29ed/1467649577049/AdobeStock_27621934+%281%29.jpeg?format=2500w",
+        br
+        |  "snippet": "Blue Forest Conservation",
+        br
+        |  "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsa2S86wLJ1d1QbENfp9sO-kltFdR5qafUaxNSFxWmUBjoLrVjAs07Py0",
+        br
+        |  "context": "http://www.blueforestconservation.com/",
+        br
+        |},
+        br
+        |{
+        | <i>...results 12 through 20...</i>
+        |}
+        br
+        |]
+  h2 History
+  p A history of recently submitted searches can also be viewed.
+  .codeExample
+    code.codeBlock 
+      span Query: http://localhost:7777/image/history
+      br
+      span
+        | Output: [
+        br
+        | {
+        | "term": "forest"
+        | "when": "2017-08-17T21:08:40.002Z"
+        | },
+        br
+        | {
+        | <i>...results 2 through 10...</i> 
+        |}
+        br
+        | ]
