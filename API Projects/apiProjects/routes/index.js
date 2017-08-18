@@ -4,6 +4,12 @@ const timestampController = require('../controllers/timestamp.js');
 const headerParserController = require('../controllers/headerParser.js');
 const urlShortenerController = require('../controllers/urlShortener.js');
 const imageSearchController = require('../controllers/imageSearch.js');
+const fileSizeController = require('../controllers/fileSize');
+const multer = require('multer');
+var upload = multer({ 
+  dest: 'uploads/',
+  limits: { fileSize: 10000000}
+ });
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -23,4 +29,6 @@ router.get('/imageInfo', imageSearchController.imageSearchInfo);
 router.get('/image/history', imageSearchController.history);
 router.get('/image*', imageSearchController.apiEndpoint);
 
+router.get('/filesize', fileSizeController.main);
+router.post('/filesize/get-size', upload.single('photo'), fileSizeController.upload);
 module.exports = router;

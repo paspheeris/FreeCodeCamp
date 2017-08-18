@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1 File Metadata Microservice
+  p Upload a file to this microservice to receive a JSON response that contains metadata about the file, including its original name, size and mimetype.
+  p Please note that uploads are limited to ten megabytes or smaller.
+
+  h2 Example Response
+  .codeExample
+    code.codeBlock
+      span {
+      | "originalname": "ZU7U4LF.gif",
+      | "size": 1798036,
+      | "mimetype": "image/gif"
+      | }
+  h2 Service
+  form(action='filesize/get-size' method="POST" enctype="multipart/form-data")
+    input(type="file" name="photo" id="photo")
+    input(type="submit" value="Upload")
+
