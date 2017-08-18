@@ -3,7 +3,7 @@ exports.main = (req, res) => {
 }
 
 exports.upload = (req, res) => {
-  console.log(req.file);
+  // console.log(req.file);
   const {originalname, size, mimetype} = req.file;
   res.json({
     originalname,

@@ -7,7 +7,7 @@ const imageSearchController = require('../controllers/imageSearch.js');
 const fileSizeController = require('../controllers/fileSize');
 const multer = require('multer');
 var upload = multer({ 
-  dest: 'uploads/',
+  storage: multer.memoryStorage(),
   limits: { fileSize: 10000000}
  });
 
