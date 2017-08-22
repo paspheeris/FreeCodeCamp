@@ -10,6 +10,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import NavBar from './components/NavBar';
 import Polls from './components/Polls';
+import PollEditable from './components/PollEditable';
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={LandingPage} />
               <Route path="/polls" component={Polls} />
+              <Route path="/poll/:mode/:uuid?" component={PollEditable} />
             </Switch>
           </div>
         </BrowserRouter>        

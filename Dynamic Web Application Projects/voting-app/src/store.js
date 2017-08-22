@@ -22,7 +22,7 @@ const enhancers = compose(
 );
 
 const store = createStore(rootReducer, defaultState, enhancers);
-store.subscribe(() => saveState({state: store.getState()}));
+// store.subscribe(() => saveState({state: store.getState()}));
 
 if(module.hot) {
   module.hot.accept('./reducers/', () => {

@@ -1,15 +1,6 @@
 import React from 'react';  
 import Chart from 'chart.js';
 
-/*const SinglePollDisplay = ({question, votes, ind}) => {
-  return (
-    <div>
-      <canvas id={`myCanvas${ind}`} width="400" height="400"></canvas>
-    </div>
-  )
-}
-
-export default SinglePollDisplay;*/
 
 class SinglePollDisplay extends React.Component {
   constructor(props) {
