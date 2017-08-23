@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 
 import SinglePollDisplay from './SinglePollDisplay';
 
-const Polls = ({polls}) => {
+const Polls = ({polls, allIds}) => {
   return (
     <div className="pollsDisplay-wrapper">
-      {polls.map((poll, ind) => {
+      {allIds.map((pollId, ind) => {
+        const poll = polls[pollId];
         return (
-          <Link to={`/poll/vote/${poll.key}`}>
+          <Link key={ind} to={`/poll/vote/${poll.key}`}>
             <SinglePollDisplay key={ind} question={poll.poll_question} choices={poll.poll_choices} votes={poll.poll_votes} ind={ind}/>
           </Link>
           )
@@ -19,8 +20,10 @@ const Polls = ({polls}) => {
 }
 
 function mapStateToProps(state) {
+  console.log(state);
   return {
-    polls: state.polls
+    polls: state.polls.byId,
+    allIds: state.polls.allIds
   }
 };
 

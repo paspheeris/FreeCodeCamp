@@ -1,8 +1,12 @@
 import React from 'react';
+import FetchDataButton from './FetchDataButton';
 
 const LandingPage = () => {
   return (
-    <p>Hey, LandingPage</p>
+    <div>
+      <p>Hey, LandingPage</p>
+      <FetchDataButton />
+    </div>
   )
 }
 

@@ -12,6 +12,7 @@ import NavBar from './components/NavBar';
 import Polls from './components/Polls';
 import PollEditable from './components/PollEditable';
 
+
 class App extends Component {
   render() {
     return (

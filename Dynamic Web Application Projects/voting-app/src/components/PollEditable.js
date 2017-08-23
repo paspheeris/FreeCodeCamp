@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import SinglePollDisplay from './SinglePollDisplay';
-import { pollVote } from '../actions/actions';
+import { submitVote } from '../actions/actions';
 
 class PollEditable extends React.Component {
   constructor(props) {
@@ -17,13 +17,11 @@ class PollEditable extends React.Component {
 
   componentWillMount() {
     if (this.props.match.params.mode === 'vote') {
-      console.log("mode:", this.props.match.params.mode);
+      // console.log("mode:", this.props.match.params.mode);
       const {uuid} = this.props.match.params;
       this.setState({
-        poll: this.props.polls.find(poll => {
-          return poll.key === uuid;
-        })}
-      );
+        poll: this.props.polls[uuid]
+      });
     }
   }
 
@@ -41,7 +39,7 @@ class PollEditable extends React.Component {
   handleVoteSubmit (e) {
     e.preventDefault();
     // console.log(this.props.actions);
-    this.props.actions.pollVote(this.state.poll.key, this.state.currentVoteOption);
+    this.props.actions.submitVote(this.state.poll.key, this.state.currentVoteOption);
   }
   
   render() {
@@ -69,13 +67,14 @@ class PollEditable extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    polls: state.polls
+    polls: state.polls.byId,
+    allIds: state.polls.allIds
   }
 };
-console.log(pollVote);
+// console.log(submitVote);
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({pollVote}, dispatch)
+    actions: bindActionCreators({submitVote}, dispatch)
   }
 }
 

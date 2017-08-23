@@ -5,24 +5,29 @@ import { loadState, saveState } from './localStorage';
 import rootReducer from './reducers/index';
 import {users, polls} from './api/mockData';
 
-if(! loadState()) {
-  saveState({users, polls});
-}
+import freezer from 'redux-freezer';
+import thunk from 'redux-thunk';
 
-const defaultState = loadState() ? 
-  {users: loadState().users, polls: loadState().polls} :
-  {users, polls};
+// if(! loadState()) {
+//   saveState({users, polls});
+// }
 
-// const defaultState = {users: loadState().users,
-//                       polls: loadState().polls} || {users, polls};
+// const defaultState = loadState() ? 
+//   {users: loadState().users, polls: loadState().polls} :
+//   {users, polls};
 
+
+const defaultState = {users: {}, polls: {}};
 const enhancers = compose(
-  window.devToolsExtension ? window.devToolsExtension() : f => f,
-  applyMiddleware(reduxImmutableStateInvariant())
+  // applyMiddleware(thunk, freezer),
+  applyMiddleware(thunk, reduxImmutableStateInvariant()),  
+  window.devToolsExtension ? window.devToolsExtension() : f => f
+  // applyMiddleware(reduxImmutableStateInvariant())
+  // applyMiddleware(freezer)
 );
 
 const store = createStore(rootReducer, defaultState, enhancers);
-// store.subscribe(() => saveState({state: store.getState()}));
+store.subscribe(() => saveState(store.getState()));
 
 if(module.hot) {
   module.hot.accept('./reducers/', () => {
