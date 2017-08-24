@@ -26,14 +26,14 @@ class PollEditable extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-      if(this.state.poll === nextProps.poll) return;
-      console.log(this.state.poll.poll_votes);
-      const {uuid} = this.props.match.params;
-      this.setState({
-        poll: this.props.polls[uuid]
-      });
-  }
+  // componentWillReceiveProps(nextProps) {
+  //     if(this.state.poll === nextProps.poll) return;
+  //     console.log(this.state.poll.poll_votes);
+  //     const {uuid} = this.props.match.params;
+  //     this.setState({
+  //       poll: this.props.polls[uuid]
+  //     });
+  // }
   
   // componentWillUpdate() {
 

@@ -5,7 +5,7 @@ import Chart from 'chart.js';
 class SinglePollDisplay extends React.Component {
   constructor(props) {
     super(props);
-
+    this.myChart = null;
     this.drawChart = this.drawChart.bind(this);  
     this.randomRGBA = this.randomRGBA.bind(this);
   }
@@ -13,17 +13,17 @@ class SinglePollDisplay extends React.Component {
   drawChart(canvasEl) {
     // console.log(canvasEl);
     if(!canvasEl) return;
-    this.canvasEl = canvasEl;
+    // this.canvasEl = canvasEl;
     const {question, votes, ind, choices} = this.props;   
     // console.log(question) ;
-    var ctx = canvasEl;
-    var myChart = new Chart(ctx, {
+    const ctx = canvasEl;
+    this.myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
         labels: choices,
         datasets: [{
             label: '# of Votes',
-            data: [...votes],
+            data: votes,
             backgroundColor: choices.map(() => this.randomRGBA(.5)),
             // borderColor: [
             //     'rgba(255,99,132,1)',
@@ -50,16 +50,32 @@ class SinglePollDisplay extends React.Component {
     return `rgba(${randomRGBAVal()}, ${randomRGBAVal()}, ${randomRGBAVal()}, ${opacity})`
   }
   
-  componentWillUpdate() {
+  // componentWillReceiveProps() {
+  //   console.log(this.props);
+  //   this.drawChart(this.canvasEl);
+  // }
+  // componentWillUpdate() {
+  //   this.drawChart(this.canvasEl);
+  // }
+  componentDidUpdate() {
+    this.myChart.destroy();
     this.drawChart(this.canvasEl);
   }
+  
+  componentDidMount() {
+    this.drawChart(this.canvasEl);
+  }
+  
+  // componentWillUpdate() {
+  //   this.drawChart(this.canvasEl);
+  // }
   
   render() {
     const {question, votes, ind} = this.props;
     return (
     <div className="SinglePollDisplay-wrapper">
        {/*style={{width:"30%", height:"30%"}}*/}
-      <canvas ref={this.drawChart}></canvas>
+      <canvas ref={(canvas) => {this.canvasEl = canvas}}></canvas>
     </div>
   )
   }
