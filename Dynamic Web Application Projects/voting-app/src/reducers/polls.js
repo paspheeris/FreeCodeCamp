@@ -15,14 +15,19 @@ function polls(state = {}, action) {
       const uuid = action.payload.pollUUID;
       console.log('VOTE_SUCCESS in polls.js reducer');
       console.log(state.byId[uuid].poll_votes);
+      let updateInd = state.byId[uuid].poll_choices.indexOf(action.payload.choice);
+      let upArr = [...state.byId[uuid].poll_votes];
+      upArr[updateInd] = upArr[updateInd] + 1;
+      // let upObj = state.byId[uuid];
+      // let corObj = 
       return {
         ...state,
         // [state.byId[action.payload.pollUUID].poll_votes[0]] : (state.byId[action.payload.pollUUID].poll_votes[0] + 1)
         byId : {
           ...state.byId,
-          uuid : {
-            ...uuid,
-            [state.byId[uuid].poll_votes] : [...state.byId[uuid].poll_votes][0]++     
+          [uuid] : {
+            ...state.byId[uuid],
+            poll_votes : upArr     
       }
         }
       }

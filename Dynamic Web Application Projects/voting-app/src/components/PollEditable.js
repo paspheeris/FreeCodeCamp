@@ -10,6 +10,7 @@ class PollEditable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.uuid = this.props.match.params.uuid;
 
     this.handleVoteChoiceChange = this.handleVoteChoiceChange.bind(this);
     this.handleVoteSubmit = this.handleVoteSubmit.bind(this);
@@ -24,6 +25,19 @@ class PollEditable extends React.Component {
       });
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+      if(this.state.poll === nextProps.poll) return;
+      console.log(this.state.poll.poll_votes);
+      const {uuid} = this.props.match.params;
+      this.setState({
+        poll: this.props.polls[uuid]
+      });
+  }
+  
+  // componentWillUpdate() {
+
+  // }
 
   componentDidMount() {
     this.setState({
@@ -44,7 +58,9 @@ class PollEditable extends React.Component {
   
   render() {
     // const {question, votes, ind, choices} = this.state.poll;
-    const poll = this.state.poll;
+    // const poll = this.state.poll;
+    // console.log(this.uuid);
+    const poll = this.props.polls[this.uuid];
     return (
       <div>
         <form id="vote_select">
