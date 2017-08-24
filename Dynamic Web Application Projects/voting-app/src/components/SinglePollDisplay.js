@@ -23,7 +23,7 @@ class SinglePollDisplay extends React.Component {
         labels: choices,
         datasets: [{
             label: '# of Votes',
-            data: votes,
+            data: [...votes],
             backgroundColor: choices.map(() => this.randomRGBA(.5)),
             // borderColor: [
             //     'rgba(255,99,132,1)',
@@ -50,19 +50,26 @@ class SinglePollDisplay extends React.Component {
     return `rgba(${randomRGBAVal()}, ${randomRGBAVal()}, ${randomRGBAVal()}, ${opacity})`
   }
   
-  // componentWillReceiveProps() {
-  //   console.log(this.props);
-  //   this.drawChart(this.canvasEl);
-  // }
-  // componentWillUpdate() {
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(nextProps === this.props);
+    
+  //   this.myChart.destroy();
   //   this.drawChart(this.canvasEl);
   // }
   componentDidUpdate() {
     this.myChart.destroy();
     this.drawChart(this.canvasEl);
   }
+  // componentWillUpdate(nextProps) {
+  //   console.log(nextProps);
+  //   this.myChart.destroy();
+  //   this.drawChart(this.canvasEl);
+  // }
   
   componentDidMount() {
+    if(this.myChart) {
+      this.myChart.destroy();
+    }
     this.drawChart(this.canvasEl);
   }
   

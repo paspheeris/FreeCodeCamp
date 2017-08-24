@@ -13,8 +13,8 @@ function polls(state = {}, action) {
       };
     case VOTE_SUCCESS:
       const uuid = action.payload.pollUUID;
-      console.log('VOTE_SUCCESS in polls.js reducer');
-      console.log(state.byId[uuid].poll_votes);
+      // console.log('VOTE_SUCCESS in polls.js reducer');
+      // console.log('in polls reducer:', state.byId[uuid].poll_votes);
       let updateInd = state.byId[uuid].poll_choices.indexOf(action.payload.choice);
       let upArr = [...state.byId[uuid].poll_votes];
       upArr[updateInd] = upArr[updateInd] + 1;

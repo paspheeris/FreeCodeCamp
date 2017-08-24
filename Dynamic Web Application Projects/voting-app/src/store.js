@@ -17,7 +17,7 @@ import thunk from 'redux-thunk';
 //   {users, polls};
 
 
-const defaultState = {users: {}, polls: {}};
+const defaultState = {users, polls};
 const enhancers = compose(
   // applyMiddleware(thunk, freezer),
   applyMiddleware(thunk, reduxImmutableStateInvariant()),  
