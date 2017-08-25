@@ -7,7 +7,7 @@ import SinglePollDisplay from './SinglePollDisplay';
 import VotePicker from './VotePicker';
 import { submitVote } from '../actions/actions';
 
-const PollEditable =  ({poll, uuid, actions}) => {
+const PollVoteView =  ({poll, uuid, actions}) => {
   return (
     <div>
       <VotePicker poll_choices={poll.poll_choices} poll_key={uuid} submitVote={actions.submitVote} />
@@ -31,5 +31,5 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PollEditable);
+export default connect(mapStateToProps, mapDispatchToProps)(PollVoteView);
 

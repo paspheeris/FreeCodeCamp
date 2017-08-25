@@ -11,11 +11,18 @@ class SinglePollDisplay extends React.Component {
   }
 
   drawChart(canvasEl) {
-    // console.log(canvasEl);
-    if(!canvasEl) return;
-    // this.canvasEl = canvasEl;
-    const {question, votes, ind, choices} = this.props;   
-    // console.log(question) ;
+    // if(!canvasEl) return;
+    const {question, ind, choices} = this.props; 
+    let {votes} = this.props;
+    let noVotesYet = false;
+    //By default, no chart will be drawn if the array of votes for a poll
+    //only contains 0's. In that case, we substitute an array of 1's for the votes, and in the label callback for the chart below, we show a decremented version for the labels if the noVotesYet flag === true
+    if(votes.every(val => val === 0)) {
+      votes = votes.map(val => val + 1);
+      // console.log(votes);
+      noVotesYet = true;
+    }
+
     const ctx = canvasEl;
     this.myChart = new Chart(ctx, {
     type: 'doughnut',
@@ -25,23 +32,29 @@ class SinglePollDisplay extends React.Component {
             label: '# of Votes',
             data: [...votes],
             backgroundColor: choices.map(() => this.randomRGBA(.5)),
-            // borderColor: [
-            //     'rgba(255,99,132,1)',
-            //     'rgba(54, 162, 235, 1)',
-            //     'rgba(255, 206, 86, 1)',
-            // ],
-            // borderWidth: 1
         }]
     },
     options: {
       title: {
         display: true,
         text: question
+      },
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem, data) {
+        var dataLabel = data.labels[tooltipItem.index];
+				var value = ': ' + (data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] - (noVotesYet ? 1 : 0));
+
+				dataLabel += value;
+				
+
+				return dataLabel;
+          }
+        }
       }
     }
   });
-  // console.log(myChart.data.datasets.backgroundColor);
-  // console.log(choices.map(this.randomRGBA));
+
 }
   randomRGBA(opacity) {
     function randomRGBAVal() {
@@ -50,33 +63,27 @@ class SinglePollDisplay extends React.Component {
     return `rgba(${randomRGBAVal()}, ${randomRGBAVal()}, ${randomRGBAVal()}, ${opacity})`
   }
   
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps === this.props);
-    
-  //   this.myChart.destroy();
-  //   this.drawChart(this.canvasEl);
-  // }
+
   componentDidUpdate() {
-    this.myChart.destroy();
+    if(this.myChart) {
+      this.myChart.destroy();
+    }
     this.drawChart(this.canvasEl);
   }
-  // componentWillUpdate(nextProps) {
-  //   console.log(nextProps);
-  //   this.myChart.destroy();
-  //   this.drawChart(this.canvasEl);
-  // }
-  
+
   componentDidMount() {
     if(this.myChart) {
       this.myChart.destroy();
     }
     this.drawChart(this.canvasEl);
   }
-  
-  // componentWillUpdate() {
-  //   this.drawChart(this.canvasEl);
-  // }
-  
+
+  componentWillUnmount() {
+    if(this.myChart) {
+      this.myChart.destroy();
+    }
+  }
+
   render() {
     const {question, votes, ind} = this.props;
     return (
