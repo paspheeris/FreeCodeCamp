@@ -16,21 +16,60 @@ class PollCreateEdit extends Component {
       poll: this.props.poll
     }
     this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleChoiceChange = this.handleChoiceChange.bind(this);
+    this.manageNumberOfChoiceInputes = this.manageNumberOfChoiceInputes.bind(this);
+    this.keepVotesInSyncWithChoices = this.keepVotesInSyncWithChoices.bind(this);
   }
 
   handleTitleChange(e) {
-    console.log(e.target, e.target.value);
+    // console.log(e.target, e.target.value);
     this.setState({
       poll: {...this.state.poll, poll_question: e.target.value}
     })
   }
-  
+  handleChoiceChange(e) {
+    const ind = parseInt(e.target.name, 10);
+    let updatedChoiceArr = [...this.state.poll.poll_choices];
+    updatedChoiceArr[ind] = e.target.value;
+    updatedChoiceArr = this.manageNumberOfChoiceInputes(updatedChoiceArr);
+    // console.log(this.keepVotesInSyncWithChoices(updatedChoiceArr,this.state.poll.poll_votes));
+    this.setState({
+      poll: {...this.state.poll, poll_choices: updatedChoiceArr,
+            poll_votes: this.keepVotesInSyncWithChoices(updatedChoiceArr,this.state.poll.poll_votes)}
+    });
+    console.log(this.state.poll.poll_choices, this.state.poll.poll_votes);
+  }
+  manageNumberOfChoiceInputes(arrOfChoices) {
+    //If an index contained the empty string, and it's not in the last position of the array delete it
+    const filtered = arrOfChoices.filter((choice, ind) => {
+      if(choice === '' && ind !== arrOfChoices.length - 1) return false;
+      return true;
+    });   
+    //If the last item in the array isn't the empty string, concat on an empty string
+    if (filtered[filtered.length - 1] !== '') return filtered.concat('');
+    return filtered;
+  }
+  keepVotesInSyncWithChoices(arrOfChoices, arrOfVotes) {
+    // console.log(arrOfChoices);
+    return arrOfChoices.map((val, ind) => {
+      if (arrOfVotes[ind]) return arrOfVotes[ind];
+      else if(ind !== arrOfChoices.length - 1) return 0;
+      else return '';
+    })
+  }
+  componentDidMount() {
+    //Fix choice and vote arr in edit mode
+    const choices = this.manageNumberOfChoiceInputes(this.state.poll.poll_choices);
+    this.setState({
+      poll: { ...this.state.poll, poll_choices: choices, poll_votes: this.keepVotesInSyncWithChoices(choices,this.state.poll.poll_votes)}
+    });
+  }
   render() {
     const {poll} = this.state;
     const {uuid, actions} = this.props;
     return (
       <div>
-        <PollForm poll={poll} handleFormChange={this.handleTitleChange}/>
+        <PollForm poll={poll} handleTitleChange={this.handleTitleChange} handleChoiceChange={this.handleChoiceChange}/>
         <div>
           <SinglePollDisplay question={poll.poll_question} votes={poll.poll_votes} choices={poll.poll_choices} />
         </div>
@@ -45,8 +84,8 @@ const blankPoll = {
       author_name: "",
       created: Date.now(),
       poll_question: "Poll Question" ,
-      poll_choices: ['Choice A', 'Choice B'],
-      poll_votes: [0, 0],
+      poll_choices: ['Choice A', 'Choice B', ''],
+      poll_votes: [0, 0, ''],
       participants: []
 }
 

@@ -14,12 +14,14 @@ class PollForm extends Component {
   }
 
   render() {
-    const {poll} = this.props;
+    let {poll} = this.props;
+    // console.log(poll.poll_question);
+    // console.log(poll.poll_choices);
     return (
       <form>
-        <input type="text" name="poll_question" value={poll.poll_question} onChange={this.props.handleFormChange}/>
-        {poll.poll_choices.map((choice, ind) => {
-          return <input key={ind} type="text" name={choice} value={choice} onChange={this.props.handleFormChange}/>
+        <input type="text" name="poll_question" value={poll.poll_question} onChange={this.props.handleTitleChange}/>
+        {this.props.poll.poll_choices.map((choice, ind) => {
+          return <input key={ind} type="text" name={ind} value={choice} onChange={this.props.handleChoiceChange}/>
         })}
         {/*<input type="text" name="" onChange={this.props.handleFormChange}/>*/}
       </form>
