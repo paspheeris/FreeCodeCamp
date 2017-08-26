@@ -14,7 +14,7 @@ class PollForm extends Component {
   }
 
   render() {
-    let {poll} = this.props;
+    let {poll, submitPoll} = this.props;
     // console.log(poll.poll_question);
     // console.log(poll.poll_choices);
     return (
@@ -23,7 +23,7 @@ class PollForm extends Component {
         {this.props.poll.poll_choices.map((choice, ind) => {
           return <input key={ind} type="text" name={ind} value={choice} onChange={this.props.handleChoiceChange}/>
         })}
-        {/*<input type="text" name="" onChange={this.props.handleFormChange}/>*/}
+        <input type="submit" value={this.props.mode} onClick={submitPoll}/>
       </form>
     )
   }

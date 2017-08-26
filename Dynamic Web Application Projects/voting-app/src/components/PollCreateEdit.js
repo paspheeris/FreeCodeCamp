@@ -3,7 +3,7 @@ import Chart from 'chart.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitVote } from '../actions/actions';
+import { submitVote, createPoll } from '../actions/actions';
 
 
 import SinglePollDisplay from './SinglePollDisplay';
@@ -19,6 +19,8 @@ class PollCreateEdit extends Component {
     this.handleChoiceChange = this.handleChoiceChange.bind(this);
     this.manageNumberOfChoiceInputes = this.manageNumberOfChoiceInputes.bind(this);
     this.keepVotesInSyncWithChoices = this.keepVotesInSyncWithChoices.bind(this);
+    this.submitPoll = this.submitPoll.bind(this);
+    this.cleanChoicesVotes = this.cleanChoicesVotes.bind(this);
   }
 
   handleTitleChange(e) {
@@ -37,7 +39,7 @@ class PollCreateEdit extends Component {
       poll: {...this.state.poll, poll_choices: updatedChoiceArr,
             poll_votes: this.keepVotesInSyncWithChoices(updatedChoiceArr,this.state.poll.poll_votes)}
     });
-    console.log(this.state.poll.poll_choices, this.state.poll.poll_votes);
+    // console.log(this.state.poll.poll_choices, this.state.poll.poll_votes);
   }
   manageNumberOfChoiceInputes(arrOfChoices) {
     //If an index contained the empty string, and it's not in the last position of the array delete it
@@ -57,8 +59,26 @@ class PollCreateEdit extends Component {
       else return '';
     })
   }
+  submitPoll(e) {
+    e.preventDefault();
+    const cleaned = this.cleanChoicesVotes(this.state.poll);
+    //TODO: validation of the cleaned poll
+    this.props.actions.createPoll(cleaned);
+
+  }
+  cleanChoicesVotes(poll) {
+    let temp = {...poll};
+    temp.poll_choices = temp.poll_choices.filter(choice => choice !== '');
+    temp.poll_votes = temp.poll_votes.filter(vote => vote !== '');
+    return temp;
+  }
   componentDidMount() {
+    this.setState({
+      poll: {...this.state.poll, key: this.props.uuid}
+    });
     //Fix choice and vote arr in edit mode
+    if(this.props.mode !== 'edit') return;
+    // console.log('in');
     const choices = this.manageNumberOfChoiceInputes(this.state.poll.poll_choices);
     this.setState({
       poll: { ...this.state.poll, poll_choices: choices, poll_votes: this.keepVotesInSyncWithChoices(choices,this.state.poll.poll_votes)}
@@ -66,10 +86,12 @@ class PollCreateEdit extends Component {
   }
   render() {
     const {poll} = this.state;
-    const {uuid, actions} = this.props;
+    // console.log(poll.poll_choices);
+    const {uuid, actions, mode} = this.props;
+    // console.log(actions);
     return (
       <div>
-        <PollForm poll={poll} handleTitleChange={this.handleTitleChange} handleChoiceChange={this.handleChoiceChange}/>
+        <PollForm poll={poll} handleTitleChange={this.handleTitleChange} handleChoiceChange={this.handleChoiceChange} mode={mode} submitPoll={this.submitPoll}/>
         <div>
           <SinglePollDisplay question={poll.poll_question} votes={poll.poll_votes} choices={poll.poll_choices} />
         </div>
@@ -92,13 +114,14 @@ const blankPoll = {
 function mapStateToProps(state,ownProps) {
   return {
     poll: state.polls.byId[ownProps.match.params.uuid] || blankPoll,
-    uuid: ownProps.match.params.uuid
+    uuid: ownProps.match.params.uuid,
+    mode: ownProps.match.params.mode
   }
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({submitVote}, dispatch)
+    actions: bindActionCreators({submitVote, createPoll}, dispatch)
   }
 }
 

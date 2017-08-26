@@ -17,5 +17,12 @@ export default class mockApi {
         res("LOGGED_IN");
       }, DELAY);
     });
-}
+  } 
+  static createPoll() {
+    return new Promise((res, rej) => {
+      setTimeout(() => {
+        res("SUCCESS");
+      }, DELAY);
+    });
+  }
 }

@@ -44,6 +44,32 @@ export function submitVote(pollUUID, choice) {
   }
 }
 
+function thunkCreate(api, apiMethod, typePrefix) {
+  return (payload) => {
+    return dispatch => {
+      return apiMethod.apply(api, payload)
+        .then(res => {
+          if (res === 'SUCCESS') {
+            console.log('dispatching poll create success');
+            dispatch({
+              type: `${typePrefix}_SUCCESS`,
+              payload
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          dispatch({
+            type: `${typePrefix}_FAILURE`,
+            payload: {error}
+          });
+        })
+    }
+  }
+}
+
+export const createPoll = thunkCreate(mockApi, mockApi.createPoll, 'CREATE_POLL');
+
 export function fetchDataPending() {
   return {type: FETCH_DATA_PENDING}
 }
