@@ -8,16 +8,19 @@ import {users, polls} from './api/mockData';
 import freezer from 'redux-freezer';
 import thunk from 'redux-thunk';
 
-// if(! loadState()) {
-//   saveState({users, polls});
-// }
+import auth from './auth/Auth';
 
-// const defaultState = loadState() ? 
-//   {users: loadState().users, polls: loadState().polls} :
-//   {users, polls};
-
-
-const defaultState = {users, polls, ui: {votePending: false, voteError: false}};
+//Inject auth data into store from localstorage if there is valid auth data
+//(in case of a page reload etc)
+let authData = {};
+if(auth.isAuthenticated()) {
+  authData = {
+    expires_at: JSON.parse(localStorage.getItem('expires_at')),
+    access_token: localStorage.getItem('access_token'),
+    id_token: localStorage.getItem('id_token')
+  }
+}
+const defaultState = {users, polls, ui: {votePending: false, voteError: false}, auth: authData};
 const enhancers = compose(
   // applyMiddleware(thunk, freezer),
   applyMiddleware(thunk, reduxImmutableStateInvariant()),  

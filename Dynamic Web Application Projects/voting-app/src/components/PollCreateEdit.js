@@ -63,7 +63,7 @@ class PollCreateEdit extends Component {
     e.preventDefault();
     const cleaned = this.cleanChoicesVotes(this.state.poll);
     //TODO: validation of the cleaned poll
-    this.props.actions.createPoll(cleaned);
+    this.props.actions.createPoll({poll: cleaned});
 
   }
   cleanChoicesVotes(poll) {

@@ -2,10 +2,25 @@ import mockApi from '../api/mockApi';
 
 export const VOTE = 'VOTE';
 export const FETCH_DATA = 'FETCH_DATA';
+export const CREATE_POLL = 'CREATE_POLL';
+export const INJECT_AUTH_DATA = 'INJECT_AUTH_DATA';
+export const DROP_AUTH_DATA = 'DROP_AUTH_DATA';
 
 export const submitVote = thunkCreate(mockApi, mockApi.submitVote, VOTE);
-export const createPoll = thunkCreate(mockApi, mockApi.createPoll, 'CREATE_POLL');
+export const createPoll = thunkCreate(mockApi, mockApi.createPoll, CREATE_POLL);
 export const fetchData = thunkCreate(mockApi, mockApi.fetchAll, FETCH_DATA);
+
+export function injectAuthData(payload) {
+  return {
+    type: INJECT_AUTH_DATA,
+    payload,
+  }
+}
+export function dropAuthData() {
+  return {
+    type: DROP_AUTH_DATA
+  }
+}
 
 function thunkCreate(api, apiMethod, type) {
   return (payload={}) => {
@@ -18,7 +33,12 @@ function thunkCreate(api, apiMethod, type) {
       if(payload.nativeEvent) {
         payload = {};
       }
-    return dispatch => {
+    return (dispatch, getState) => {
+      console.log('getstate in thunkcreator', getState());
+      const {auth} = getState();
+      if(auth) {
+        payload = {...payload, auth};
+      }
       console.log(`dispatching initial ${type}`);
       dispatch({type});
       return apiMethod.apply(api, payload)

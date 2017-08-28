@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import { FETCH_DATA, VOTE } from '../actions/actions';
+import { FETCH_DATA, VOTE, CREATE_POLL } from '../actions/actions';
 
 
 function polls(state = {}, action) {
@@ -20,7 +20,7 @@ function polls(state = {}, action) {
       if(action.payload.error) return state;
       const uuid = action.payload.uuid;
       let updateInd = state.byId[uuid].poll_choices.indexOf(action.payload.choice);
-
+      console.log(action);
       return update(state, {byId: {[uuid]: {poll_votes: {[updateInd]: {$apply: x => x + 1}}}}});
       // let upArr = [...state.byId[uuid].poll_votes];
       // upArr[updateInd] = upArr[updateInd] + 1;
@@ -35,8 +35,20 @@ function polls(state = {}, action) {
       //     }
       //   }
       // }
+    case CREATE_POLL:
+      if(!action.payload) return state;
+      if(action.payload.error) return state;
+      console.log(action);
+      return update(state, {
+        byId: {$merge: {[action.payload.poll.key]: action.payload.poll}},
+        allIds: {$pushIfAbsent: action.payload.poll.key}
+      });
     default:
       return state;
   }
 }
 export default polls;
+
+update.extend('$pushIfAbsent', function(newItem, original) {
+  return original.includes(newItem) ? original : original.concat(newItem);
+});

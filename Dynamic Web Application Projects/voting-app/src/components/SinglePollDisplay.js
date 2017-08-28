@@ -67,7 +67,9 @@ class SinglePollDisplay extends React.Component {
   
   shouldComponentUpdate(nextProps, nextState) {
     //Don't redraw the chart simply because votePending changed
-    if(this.props.votePending || this.props.voteError) return false;
+    // console.log(nextProps);
+    if(!this.props.votePending && nextProps.votePending) return false;
+    // if(this.props.votePending || this.props.voteError) return false;
     return true;
   }
 

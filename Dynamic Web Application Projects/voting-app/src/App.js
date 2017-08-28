@@ -12,6 +12,7 @@ import NavBar from './components/NavBar';
 import Polls from './components/Polls';
 import PollVoteView from './components/PollVoteView';
 import PollCreateEdit from './components/PollCreateEdit';
+import Profile from './components/Profile';
 
 
 class App extends Component {
@@ -25,7 +26,8 @@ class App extends Component {
               <Route exact path="/" component={LandingPage} />
               <Route path="/polls" component={Polls} />
               <Route path="/poll/vote/:uuid" component={PollVoteView} />
-              <Route path="/poll/:mode/:uuid" component={PollCreateEdit} />              
+              <Route path="/poll/:mode/:uuid" component={PollCreateEdit} />
+              <Route path="/profile" component={Profile} />
             </Switch>
           </div>
         </BrowserRouter>        
