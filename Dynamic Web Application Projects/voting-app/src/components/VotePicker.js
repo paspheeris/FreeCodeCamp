@@ -24,10 +24,11 @@ class VotePicker extends Component {
   }
   handleVoteSubmit (e) {
     e.preventDefault();
-    this.props.submitVote(this.props.poll_key, this.state.currentVoteOption);
+    this.props.submitVote({uuid: this.props.poll_key, choice: this.state.currentVoteOption});
   }
 
   render() {
+    // console.log(this.props.voteError);
     return (
         <form id="vote_select">
           <select form="vote-select" onChange={this.handleVoteChoiceChange}>
@@ -37,7 +38,8 @@ class VotePicker extends Component {
               )
             })}
           </select>
-          <input type="submit" value="Vote" onClick={this.handleVoteSubmit}/>
+          {!this.props.votePending && <input type="submit" value="Vote" onClick={this.handleVoteSubmit}/>}
+          {!this.props.voteError || <p>There was an error submitting your vote. Please try again.</p>}
         </form>
     )
   }

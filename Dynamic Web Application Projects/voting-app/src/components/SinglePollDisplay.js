@@ -65,8 +65,14 @@ class SinglePollDisplay extends React.Component {
     return `rgba(${randomRGBAVal()}, ${randomRGBAVal()}, ${randomRGBAVal()}, ${opacity})`
   }
   
+  shouldComponentUpdate(nextProps, nextState) {
+    //Don't redraw the chart simply because votePending changed
+    if(this.props.votePending || this.props.voteError) return false;
+    return true;
+  }
 
   componentDidUpdate() {
+
     if(this.myChart) {
       this.myChart.destroy();
     }

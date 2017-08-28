@@ -1,13 +1,16 @@
-import { POLL_VOTE, FETCH_DATA_PENDING, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../actions/actions';
+import { POLL_VOTE, FETCH_DATA } from '../actions/actions';
 
 function users(state = {}, action) {
   switch(action.type) {
-    case FETCH_DATA_SUCCESS:
-      return {
-        ...state,
-        byId: action.payload.data.users.byId,
-        allIds: action.payload.data.users.allIds
-      };
+    case FETCH_DATA:
+      if(action.payload && !action.payload.error) {
+      // console.log('action in users reducers:', action);
+        return {
+          ...state,
+          byId: action.payload.users.byId,
+          allIds: action.payload.users.allIds
+        };
+      }
     default:
       return state;
   }

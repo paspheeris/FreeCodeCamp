@@ -7,21 +7,25 @@ export default class mockApi {
   static fetchAll() {
     return new Promise((res, rej) => {
       setTimeout(() => {
-        res({users, polls});
+        res({status: "SUCCESS",
+             apiData: {users, polls}});
       }, DELAY);
     }); 
   }
   static submitVote() {
     return new Promise((res, rej) => {
       setTimeout(() => {
-        res("LOGGED_IN");
+        res({status: "SUCCESS"});
       }, DELAY);
+      // setTimeout(() => {
+      //   rej("FAILURE");
+      // }, DELAY);
     });
   } 
   static createPoll() {
     return new Promise((res, rej) => {
       setTimeout(() => {
-        res("SUCCESS");
+        res({status: "SUCCESS"});
       }, DELAY);
     });
   }

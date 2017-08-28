@@ -1,36 +1,40 @@
-import { FETCH_DATA_PENDING, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE, VOTE_SUCCESS } from '../actions/actions';
+import update from 'immutability-helper';
+
+import { FETCH_DATA, VOTE } from '../actions/actions';
 
 
 function polls(state = {}, action) {
       // console.log(state);
-      console.log(action);
+      // console.log(action);
   switch(action.type) {
-    case FETCH_DATA_SUCCESS:
-      return {
-        ...state,
-        byId: action.payload.data.polls.byId,
-        allIds: action.payload.data.polls.allIds
-      };
-    case VOTE_SUCCESS:
-      const uuid = action.payload.pollUUID;
-      // console.log('VOTE_SUCCESS in polls.js reducer');
-      // console.log('in polls reducer:', state.byId[uuid].poll_votes);
+    case FETCH_DATA:
+      if(action.payload && !action.payload.error) {
+        return {
+          ...state,
+          byId: action.payload.polls.byId,
+          allIds: action.payload.polls.allIds
+        };
+      }
+    case VOTE:
+      if(!action.payload) return state;
+      if(action.payload.error) return state;
+      const uuid = action.payload.uuid;
       let updateInd = state.byId[uuid].poll_choices.indexOf(action.payload.choice);
-      let upArr = [...state.byId[uuid].poll_votes];
-      upArr[updateInd] = upArr[updateInd] + 1;
-      // let upObj = state.byId[uuid];
-      // let corObj = 
-      return {
-        ...state,
-        // [state.byId[action.payload.pollUUID].poll_votes[0]] : (state.byId[action.payload.pollUUID].poll_votes[0] + 1)
-        byId : {
-          ...state.byId,
-          [uuid] : {
-            ...state.byId[uuid],
-            poll_votes : upArr     
-      }
-        }
-      }
+
+      return update(state, {byId: {[uuid]: {poll_votes: {[updateInd]: {$apply: x => x + 1}}}}});
+      // let upArr = [...state.byId[uuid].poll_votes];
+      // upArr[updateInd] = upArr[updateInd] + 1;
+      // return {
+      //   ...state,
+      //   // [state.byId[action.payload.pollUUID].poll_votes[0]] : (state.byId[action.payload.pollUUID].poll_votes[0] + 1)
+      //   byId : {
+      //     ...state.byId,
+      //     [uuid] : {
+      //       ...state.byId[uuid],
+      //       poll_votes : upArr     
+      //     }
+      //   }
+      // }
     default:
       return state;
   }
