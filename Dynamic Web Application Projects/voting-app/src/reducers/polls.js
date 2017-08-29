@@ -15,6 +15,7 @@ function polls(state = {}, action) {
           allIds: action.payload.polls.allIds
         };
       }
+      break;
     case VOTE:
       if(!action.payload) return state;
       if(action.payload.error) return state;

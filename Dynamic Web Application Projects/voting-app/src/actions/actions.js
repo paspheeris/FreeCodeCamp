@@ -6,6 +6,7 @@ export const FETCH_DATA = 'FETCH_DATA';
 export const CREATE_POLL = 'CREATE_POLL';
 export const INJECT_AUTH_DATA = 'INJECT_AUTH_DATA';
 export const DROP_AUTH_DATA = 'DROP_AUTH_DATA';
+export const INJECT_PROFILE = 'INJECT_PROFILE';
 
 export const submitVote = thunkCreate(mockApi, mockApi.submitVote, VOTE);
 export const createPoll = thunkCreate(mockApi, mockApi.createPoll, CREATE_POLL);
@@ -33,7 +34,18 @@ export function injectAuthData(payload) {
           type: INJECT_AUTH_DATA,
           payload: data
         });
-      }).catch(err => {
+        return new Promise((res, rej) => {
+          auth.getProfile(res, rej);
+        })
+      }).then(profile => {
+        console.log(profile);
+        localStorage.setItem('profile', JSON.stringify(profile));
+        dispatch({
+          type: INJECT_PROFILE,
+          payload: profile
+        })
+      })
+        .catch(err => {
         console.log(err);
       })
     //   console.log(payload2);
@@ -44,6 +56,7 @@ export function injectAuthData(payload) {
   }
 }
 export function dropAuthData() {
+  auth.logout();
   return {
     type: DROP_AUTH_DATA
   }

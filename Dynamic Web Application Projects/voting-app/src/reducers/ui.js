@@ -19,6 +19,7 @@ function ui(state = {}, action) {
       if(!action.payload.error) {
         return update(state, {votePending: {$apply: bool => !bool}});
       }
+      break;
     default:
       return state;
   }

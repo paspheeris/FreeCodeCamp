@@ -13,7 +13,7 @@ class Auth {
     redirectUri: 'http://localhost:3000/profile',
     audience: 'https://paspheeris.auth0.com/userinfo',
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile'
   });
 
   login() {
@@ -67,5 +67,21 @@ class Auth {
     let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
   }
+  getAccessToken() {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      throw new Error('No access token found');
+    }
+    return accessToken;
+  }
+  getProfile(res, rej) {
+  let accessToken = this.getAccessToken();
+  this.auth0.client.userInfo(accessToken, (err, profile) => {
+    if (profile) {
+      res(profile);
+    }
+    rej(err, profile);
+  });
+}
 }
 export default new Auth();

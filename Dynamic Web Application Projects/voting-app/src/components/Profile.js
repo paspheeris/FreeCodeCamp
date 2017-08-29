@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { injectAuthData } from '../actions/actions';
+
+import Polls from './Polls';
 // // import PropTypes from 'prop-types'
 // import styles from './style.css'
 
@@ -29,7 +31,7 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit</h1>
+        {this.props.profile && <Polls filterType='authorId' filter={this.props.profile.sub}/>}
       </div>
     )
   }
@@ -45,6 +47,11 @@ class Profile extends Component {
 //     mode: ownProps.match.params.mode
 //   }
 // };
+function mapStateToProps(state,ownProps) {
+  return {
+    profile: state.auth.profile
+  }
+};
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -52,6 +59,6 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 // export default Profile

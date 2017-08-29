@@ -9,6 +9,7 @@ import freezer from 'redux-freezer';
 import thunk from 'redux-thunk';
 
 import auth from './auth/Auth';
+import {injectAuthData} from './actions/actions';
 
 //Inject auth data into store from localstorage if there is valid auth data
 //(in case of a page reload etc)
@@ -17,7 +18,8 @@ if(auth.isAuthenticated()) {
   authData = {
     expires_at: JSON.parse(localStorage.getItem('expires_at')),
     access_token: localStorage.getItem('access_token'),
-    id_token: localStorage.getItem('id_token')
+    id_token: localStorage.getItem('id_token'),
+    profile: JSON.parse(localStorage.getItem('profile'))
   }
 }
 const defaultState = {users, polls, ui: {votePending: false, voteError: false}, auth: authData};
@@ -31,7 +33,7 @@ const enhancers = compose(
 
 const store = createStore(rootReducer, defaultState, enhancers);
 store.subscribe(() => saveState(store.getState()));
-
+// store.dispatch(injectAuthData);
 if(module.hot) {
   module.hot.accept('./reducers/', () => {
     const nextRootReducer = require('./reducers/index').default;

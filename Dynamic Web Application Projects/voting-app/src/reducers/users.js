@@ -11,6 +11,7 @@ function users(state = {}, action) {
           allIds: action.payload.users.allIds
         };
       }
+      break;
     default:
       return state;
   }

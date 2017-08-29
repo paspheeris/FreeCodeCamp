@@ -4,7 +4,7 @@ export const polls = {
   byId : {
     "4d4cdb42-3475-432f-bccc-c3cb5d7765d9":  {
       key: "4d4cdb42-3475-432f-bccc-c3cb5d7765d9",
-      author_uuid: '"ae650b55-e8b0-4138-97ba-86493d7c4f2d"',
+      author_id: "google-oauth2|105786279754106054402",
       author_name: 'Paul',
       created: 11111222333,
       poll_question: 'What\'s the best city?' ,
@@ -14,18 +14,18 @@ export const polls = {
     },
     "e4c25936-55d8-44a8-8684-eb0bc7720442":  {
       key: "e4c25936-55d8-44a8-8684-eb0bc7720442",
-      author_uuid: '"ae650b55-e8b0-4138-97ba-86493d7c4f2d"',
+      author_id: "google-oauth2|105786279754106054402",
       author_name: 'Paul',
       created: 11111222333,
-      poll_question: 'What\s the best color',
+      poll_question: 'What\'s the best color',
       poll_choices: ['Red', 'Green', 'Blue'],
       poll_votes: [8, 9, 10],
       participants: ['someuuid', 'someuuid', 'someuuid']
     },
     "27fb4dab-c512-4685-a6a4-2003a8276439": {
       key: "27fb4dab-c512-4685-a6a4-2003a8276439",
-      author_uuid: '"ae650b55-e8b0-4138-97ba-86493d7c4f2d"',
-      author_name: 'Paul',
+      author_id: "github|20876393",
+      author_name: 'Brandon',
       created: 11111222333,
       poll_question: 'What\'s your favorite food?',
       poll_choices: ['Pizza', 'Sushi', 'Hamburgers'],
@@ -34,7 +34,7 @@ export const polls = {
     },
     "f66e9aea-0d84-438c-bffe-d7fec535929b": {
       key: "f66e9aea-0d84-438c-bffe-d7fec535929b",
-      author_uuid: '"bc466e9d-ec0a-48fd-ac98-89bbbfe5fd58"',
+      author_id: "github|20876393",
       author_name: 'Brandon',
       created: 11111222333,
       poll_question: 'What\'s your favorite sport?',
