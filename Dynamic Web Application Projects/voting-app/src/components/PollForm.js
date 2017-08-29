@@ -15,8 +15,6 @@ class PollForm extends Component {
 
   render() {
     let {poll, submitPoll} = this.props;
-    // console.log(poll.poll_question);
-    // console.log(poll.poll_choices);
     return (
       <form>
         <input type="text" name="poll_question" value={poll.poll_question} onChange={this.props.handleTitleChange}/>

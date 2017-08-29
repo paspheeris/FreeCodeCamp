@@ -4,22 +4,21 @@ import { Link } from 'react-router-dom';
 
 import SinglePollDisplay from './SinglePollDisplay';
 
-const Polls = ({polls, allIds, filterType, filter}) => {
+const Polls = ({allPolls, allIds, filteredPolls}) => {
   // console.log(polls);
-  let idsToShow = allIds;
-  if(filterType === 'showNone') return false;
-  if(filterType === 'authorId') {
-    idsToShow = allIds.filter(id => {
-      return polls[id].author_id === filter;
-    });
+  console.log(allPolls);
+  let pollsToShow = filteredPolls || allPolls;
+  // if(filterType === 'showNone') return false;
+  // if(filterType === 'authorId') {
+  //   idsToShow = allIds.filter(id => {
+  //     return polls[id].author_id === filter;
+  //   });
     
-  }
+  
   // console.log(idsToShow);
   return (
     <div className="pollsDisplay-wrapper">
-      {idsToShow.map((pollId, ind) => {
-        const poll = polls[pollId];
-        if(!poll) return false;
+      {Object.values(pollsToShow).map((poll, ind) => {
         return (
           <Link key={ind} to={`/poll/vote/${poll.key}`}>
             <SinglePollDisplay key={ind} question={poll.poll_question} choices={poll.poll_choices} votes={poll.poll_votes} ind={ind}/>
@@ -33,7 +32,7 @@ const Polls = ({polls, allIds, filterType, filter}) => {
 function mapStateToProps(state) {
   console.log(state);
   return {
-    polls: state.polls.byId,
+    allPolls: state.polls.byId,
     allIds: state.polls.allIds
   }
 };

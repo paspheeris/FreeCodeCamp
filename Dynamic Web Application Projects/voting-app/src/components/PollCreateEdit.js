@@ -8,6 +8,7 @@ import { submitVote, createPoll } from '../actions/actions';
 
 import SinglePollDisplay from './SinglePollDisplay';
 import PollForm from './PollForm';
+import LoginNotice from './LoginNotice';
 
 class PollCreateEdit extends Component {
   constructor(props) {
@@ -74,7 +75,7 @@ class PollCreateEdit extends Component {
   }
   componentDidMount() {
     this.setState({
-      poll: {...this.state.poll, key: this.props.uuid}
+      poll: {...this.state.poll, key: this.props.uuid, author_id: this.props.userId}
     });
     //Fix choice and vote arr in edit mode
     if(this.props.mode !== 'edit') return;
@@ -87,8 +88,9 @@ class PollCreateEdit extends Component {
   render() {
     const {poll} = this.state;
     // console.log(poll.poll_choices);
-    const {uuid, actions, mode} = this.props;
+    const {uuid, actions, mode, userId} = this.props;
     // console.log(actions);
+    if(!userId) return (<LoginNotice message="You must be logged in to create or edit a poll."/>);
     return (
       <div>
         <PollForm poll={poll} handleTitleChange={this.handleTitleChange} handleChoiceChange={this.handleChoiceChange} mode={mode} submitPoll={this.submitPoll}/>
@@ -102,7 +104,7 @@ class PollCreateEdit extends Component {
 
 const blankPoll = {
       key: "",
-      author_uuid: "",
+      author_id: "",
       author_name: "",
       created: Date.now(),
       poll_question: "Poll Question" ,
@@ -115,7 +117,8 @@ function mapStateToProps(state,ownProps) {
   return {
     poll: state.polls.byId[ownProps.match.params.uuid] || blankPoll,
     uuid: ownProps.match.params.uuid,
-    mode: ownProps.match.params.mode
+    mode: ownProps.match.params.mode,
+    userId: state.auth.profile ? state.auth.profile.sub : null
   }
 };
 

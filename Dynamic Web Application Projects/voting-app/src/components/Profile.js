@@ -31,7 +31,7 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        {this.props.profile && <Polls filterType='authorId' filter={this.props.profile.sub}/>}
+        {this.props.profile && <Polls filteredPolls={this.props.userPolls}/>}
       </div>
     )
   }
@@ -47,9 +47,16 @@ class Profile extends Component {
 //     mode: ownProps.match.params.mode
 //   }
 // };
+function getUserPolls(state) {
+  if(!state.auth.profile) return null;
+  return Object.values(state.polls.byId).filter(poll => {
+    return poll.author_id === state.auth.profile.sub;
+  });
+}
 function mapStateToProps(state,ownProps) {
   return {
-    profile: state.auth.profile
+    profile: state.auth.profile,
+    userPolls: getUserPolls(state)
   }
 };
 
