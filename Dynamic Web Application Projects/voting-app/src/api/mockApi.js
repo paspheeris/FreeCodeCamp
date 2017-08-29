@@ -25,7 +25,7 @@ export default class mockApi {
   } 
   static createPoll() {
     return new Promise((res, rej) => {
-    if(!auth.isAuthenticated()) rej("You must be logged in to create a poll");    
+    // if(!auth.isAuthenticated()) rej("You must be logged in to create a poll");    
       setTimeout(() => {
         res({status: "SUCCESS"});
       }, DELAY);

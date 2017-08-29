@@ -1,4 +1,5 @@
 import mockApi from '../api/mockApi';
+import auth from '../auth/Auth';
 
 export const VOTE = 'VOTE';
 export const FETCH_DATA = 'FETCH_DATA';
@@ -10,10 +11,36 @@ export const submitVote = thunkCreate(mockApi, mockApi.submitVote, VOTE);
 export const createPoll = thunkCreate(mockApi, mockApi.createPoll, CREATE_POLL);
 export const fetchData = thunkCreate(mockApi, mockApi.fetchAll, FETCH_DATA);
 
+// export function injectAuthData(payload) {
+//   console.log(payload);
+//   const payload2 = auth.handleAuthentication(payload.hash);
+  
+
+//   console.log(payload2);
+//   return {
+//     type: INJECT_AUTH_DATA,
+//     payload,
+//   }
+// }
 export function injectAuthData(payload) {
-  return {
-    type: INJECT_AUTH_DATA,
-    payload,
+    return dispatch => {
+      // console.log(payload);
+      return new Promise((res, rej) => {
+        return auth.handleAuthentication(payload.hash, res, rej);
+      }).then(data => {
+        // console.log(data);
+        dispatch({
+          type: INJECT_AUTH_DATA,
+          payload: data
+        });
+      }).catch(err => {
+        console.log(err);
+      })
+    //   console.log(payload2);
+    //   return {
+    //     type: INJECT_AUTH_DATA,
+    //     payload,
+    // }
   }
 }
 export function dropAuthData() {

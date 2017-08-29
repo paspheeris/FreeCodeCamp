@@ -18,13 +18,12 @@ class Profile extends Component {
     }
   }
   componentDidMount() {
-    auth.handleAuthentication();
-    //Dispatch action to put auth data in store from localstorage
-    this.props.actions.injectAuthData({
-    expires_at: JSON.parse(localStorage.getItem('expires_at')),
-    access_token: localStorage.getItem('access_token'),
-    id_token: localStorage.getItem('id_token')
-    });
+      if(this.props.location.hash) {
+      this.props.actions.injectAuthData({
+        hash: this.props.location.hash
+      });
+      this.props.history.replace('/profile');
+    }
   }
 
   render() {

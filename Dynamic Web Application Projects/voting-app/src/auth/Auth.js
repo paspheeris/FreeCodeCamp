@@ -19,14 +19,24 @@ class Auth {
   login() {
     this.auth0.authorize();
   }
-  handleAuthentication() {
-    this.auth0.parseHash((err, authResult) => {
+  handleAuthentication(hash, res, rej) {
+    this.auth0.parseHash({hash}, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
+        let expires_at = this.setSession(authResult);
         // history.replace('/home');
+        // console.log(authResult);
+        // console.log(expires_at);
+        let obj = {
+          expires_at,
+          access_token: authResult.accessToken,
+          id_token: authResult.idToken
+        };
+        // console.log('obj', obj);
+        res(obj);
       } else if (err) {
         // history.replace('/home');
         console.log(err);
+        rej(err);
       }
     });
   }
@@ -38,6 +48,8 @@ class Auth {
     localStorage.setItem('expires_at', expiresAt);
     // navigate to the home route
     // history.replace('/home');
+
+    return expiresAt;
   }
 
   logout() {
