@@ -19,10 +19,10 @@ function polls(state = {}, action) {
     case VOTE:
       if(!action.payload) return state;
       if(action.payload.error) return state;
-      const uuid = action.payload.uuid;
-      let updateInd = state.byId[uuid].allChoices.indexOf(action.payload.choice);
+      const {uuid, choice} = action.payload;
       console.log(action);
-      return update(state, {byId: {[uuid]: {poll_votes: {[updateInd]: {$apply: x => x + 1}}}}});
+      return update(state, {byId: {[uuid]: {votesByChoice: {[choice]: {$apply: x => x + 1}}}}});
+      // let updateInd = state.byId[uuid].allChoices.indexOf(action.payload.choice);
       // let upArr = [...state.byId[uuid].poll_votes];
       // upArr[updateInd] = upArr[updateInd] + 1;
       // return {

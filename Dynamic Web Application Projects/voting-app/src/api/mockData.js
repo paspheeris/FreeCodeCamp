@@ -1,6 +1,7 @@
 const uuidv4 = require('uuid/v4');
 //poll_choices => allChoices
 //poll_votes => votesByChoice
+//poll_question => question
 export const polls = {
   byId : {
     "4d4cdb42-3475-432f-bccc-c3cb5d7765d9":  {
@@ -8,7 +9,7 @@ export const polls = {
       author_id: "google-oauth2|105786279754106054402",
       author_name: 'Paul',
       created: 11111222333,
-      poll_question: 'What\'s the best city?' ,
+      question: 'What\'s the best city?' ,
       allChoices: ['SF', 'NYC', 'Chicago'],
       votesByChoice: {SF: 5, NYC: 2, Chicago: 6},
       participants: ['someuuid', 'someuuid', 'someuuid']
@@ -18,7 +19,7 @@ export const polls = {
       author_id: "google-oauth2|105786279754106054402",
       author_name: 'Paul',
       created: 11111222333,
-      poll_question: 'What\'s the best color',
+      question: 'What\'s the best color',
       allChoices: ['Red', 'Green', 'Blue'],
       votesByChoice: {Red: 8, Green: 9, Blue: 10},
       participants: ['someuuid', 'someuuid', 'someuuid']
@@ -28,7 +29,7 @@ export const polls = {
       author_id: "github|20876393",
       author_name: 'Brandon',
       created: 11111222333,
-      poll_question: 'What\'s your favorite food?',
+      question: 'What\'s your favorite food?',
       allChoices: ['Pizza', 'Sushi', 'Hamburgers'],
       votesByChoice: {Pizza: 90, Sushi: 31, Hamburgers: 32},
       participants: ['someuuid', 'someuuid', 'someuuid']
@@ -38,7 +39,7 @@ export const polls = {
       author_id: "github|20876393",
       author_name: 'Brandon',
       created: 11111222333,
-      poll_question: 'What\'s your favorite sport?',
+      question: 'What\'s your favorite sport?',
       allChoices: ['Soccer', 'Football', 'Tennis'],
       votesByChoice: {Soccer: 0, Football: 1, Tennis: 1},
       participants: ['someuuid', 'someuuid', 'someuuid']
