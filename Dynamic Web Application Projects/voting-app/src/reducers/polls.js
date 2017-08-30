@@ -20,7 +20,7 @@ function polls(state = {}, action) {
       if(!action.payload) return state;
       if(action.payload.error) return state;
       const uuid = action.payload.uuid;
-      let updateInd = state.byId[uuid].poll_choices.indexOf(action.payload.choice);
+      let updateInd = state.byId[uuid].allChoices.indexOf(action.payload.choice);
       console.log(action);
       return update(state, {byId: {[uuid]: {poll_votes: {[updateInd]: {$apply: x => x + 1}}}}});
       // let upArr = [...state.byId[uuid].poll_votes];

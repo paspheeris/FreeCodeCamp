@@ -9,10 +9,10 @@ const defaultProps = {}
 class VotePicker extends Component {
   constructor(props) {
     super(props)
-    this.poll_choices = this.props.poll_choices;
+    this.allChoices = this.props.allChoices;
     
     this.state = {
-      currentVoteOption: this.poll_choices[0]
+      currentVoteOption: this.allChoices[0]
     }
 
     this.handleVoteChoiceChange = this.handleVoteChoiceChange.bind(this);
@@ -32,7 +32,7 @@ class VotePicker extends Component {
     return (
         <form id="vote_select">
           <select form="vote-select" onChange={this.handleVoteChoiceChange}>
-            {this.poll_choices.map((choice, ind) => {
+            {this.allChoices.map((choice, ind) => {
               return (
                 <option key={ind} value={choice}>{choice}</option>
               )

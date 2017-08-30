@@ -10,9 +10,9 @@ import { submitVote } from '../actions/actions';
 const PollVoteView =  ({poll, uuid, actions, votePending, voteError}) => {
   return (
     <div>
-      <VotePicker poll_choices={poll.poll_choices} poll_key={uuid} submitVote={actions.submitVote} votePending={votePending} voteError={voteError} />
+      <VotePicker allChoices={poll.allChoices} poll_key={uuid} submitVote={actions.submitVote} votePending={votePending} voteError={voteError} />
       <div>
-        <SinglePollDisplay question={poll.poll_question} votes={poll.poll_votes} choices={poll.poll_choices} votePending={votePending} voteError={voteError}/>
+        <SinglePollDisplay poll={poll} votePending={votePending} voteError={voteError}/>
       </div>
     </div>
   )

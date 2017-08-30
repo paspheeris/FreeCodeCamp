@@ -12,17 +12,18 @@ class SinglePollDisplay extends React.Component {
 
   drawChart(canvasEl) {
     // if(!canvasEl) return;
-    const {question, ind} = this.props; 
-    let {votes, choices} = this.props;
+    const {question, allChoices, votesByChoice} = this.props.poll; 
+    // let {votes, choices} = this.props;
+    // const choices = Object.keys(this.props.poll.choicesAndVotes).sort();
+    // let votes = choices.map(key => this.props.poll.choicesAndVotes[key]);
+    const choices = allChoices;
+    let votes = allChoices.map(choice => votesByChoice[choice]);
     let noVotesYet = false;
     //By default, no chart will be drawn if the array of votes for a poll
     //only contains 0's. In that case, we substitute an array of 1's for the votes, and in the label callback for the chart below, we show a decremented version for the labels if the noVotesYet flag === true
-    if(votes.slice(0, votes.length - 1).every(val => val === 0) && votes[votes.length - 1] === '') {
-      votes = votes.slice(0, votes.length - 1).map(val => val + 1);
+    if(votes.every(val => val === 0)) {
+      votes = votes.map(val => val + 1);
       noVotesYet = true;
-    }
-    if (choices[choices.length - 1] === '') {
-      choices = choices.slice(0, choices.length - 1);
     }
 
     const ctx = canvasEl;
@@ -95,7 +96,7 @@ class SinglePollDisplay extends React.Component {
   }
 
   render() {
-    const {question, votes, ind} = this.props;
+    // const {question, votes, ind} = this.props;
     return (
     <div className="SinglePollDisplay-wrapper">
        {/*style={{width:"30%", height:"30%"}}*/}

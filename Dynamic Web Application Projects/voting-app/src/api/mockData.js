@@ -1,5 +1,6 @@
 const uuidv4 = require('uuid/v4');
-
+//poll_choices => allChoices
+//poll_votes => votesByChoice
 export const polls = {
   byId : {
     "4d4cdb42-3475-432f-bccc-c3cb5d7765d9":  {
@@ -8,8 +9,8 @@ export const polls = {
       author_name: 'Paul',
       created: 11111222333,
       poll_question: 'What\'s the best city?' ,
-      poll_choices: ['SF', 'NYC', 'Chicago'],
-      poll_votes: [5, 2, 6],
+      allChoices: ['SF', 'NYC', 'Chicago'],
+      votesByChoice: {SF: 5, NYC: 2, Chicago: 6},
       participants: ['someuuid', 'someuuid', 'someuuid']
     },
     "e4c25936-55d8-44a8-8684-eb0bc7720442":  {
@@ -18,8 +19,8 @@ export const polls = {
       author_name: 'Paul',
       created: 11111222333,
       poll_question: 'What\'s the best color',
-      poll_choices: ['Red', 'Green', 'Blue'],
-      poll_votes: [8, 9, 10],
+      allChoices: ['Red', 'Green', 'Blue'],
+      votesByChoice: {Red: 8, Green: 9, Blue: 10},
       participants: ['someuuid', 'someuuid', 'someuuid']
     },
     "27fb4dab-c512-4685-a6a4-2003a8276439": {
@@ -28,8 +29,8 @@ export const polls = {
       author_name: 'Brandon',
       created: 11111222333,
       poll_question: 'What\'s your favorite food?',
-      poll_choices: ['Pizza', 'Sushi', 'Hamburgers'],
-      poll_votes: [90, 31, 32],
+      allChoices: ['Pizza', 'Sushi', 'Hamburgers'],
+      votesByChoice: {Pizza: 90, Sushi: 31, Hamburgers: 32},
       participants: ['someuuid', 'someuuid', 'someuuid']
     },
     "f66e9aea-0d84-438c-bffe-d7fec535929b": {
@@ -38,8 +39,8 @@ export const polls = {
       author_name: 'Brandon',
       created: 11111222333,
       poll_question: 'What\'s your favorite sport?',
-      poll_choices: ['Soccer', 'Football', 'Tennis'],
-      poll_votes: [0, 1, 1],
+      allChoices: ['Soccer', 'Football', 'Tennis'],
+      votesByChoice: {Soccer: 0, Football: 1, Tennis: 1},
       participants: ['someuuid', 'someuuid', 'someuuid']
     },
   },

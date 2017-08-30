@@ -21,7 +21,7 @@ const Polls = ({allPolls, allIds, filteredPolls}) => {
       {Object.values(pollsToShow).map((poll, ind) => {
         return (
           <Link key={ind} to={`/poll/vote/${poll.key}`}>
-            <SinglePollDisplay key={ind} question={poll.poll_question} choices={poll.poll_choices} votes={poll.poll_votes} ind={ind}/>
+            <SinglePollDisplay key={ind} poll={poll} ind={ind}/>
           </Link>
           )
       })}
