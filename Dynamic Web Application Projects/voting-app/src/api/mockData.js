@@ -12,7 +12,7 @@ export const polls = {
       question: 'What\'s the best city?' ,
       allChoices: ['SF', 'NYC', 'Chicago'],
       votesByChoice: {SF: 5, NYC: 2, Chicago: 6},
-      participants: ['someuuid', 'someuuid', 'someuuid']
+      participants: ['11.111.111.111', '33.333.333.333']
     },
     "e4c25936-55d8-44a8-8684-eb0bc7720442":  {
       key: "e4c25936-55d8-44a8-8684-eb0bc7720442",
@@ -22,7 +22,7 @@ export const polls = {
       question: 'What\'s the best color',
       allChoices: ['Red', 'Green', 'Blue'],
       votesByChoice: {Red: 8, Green: 9, Blue: 10},
-      participants: ['someuuid', 'someuuid', 'someuuid']
+      participants: ['11.111.111.111', '33.333.333.333']
     },
     "27fb4dab-c512-4685-a6a4-2003a8276439": {
       key: "27fb4dab-c512-4685-a6a4-2003a8276439",
@@ -32,7 +32,7 @@ export const polls = {
       question: 'What\'s your favorite food?',
       allChoices: ['Pizza', 'Sushi', 'Hamburgers'],
       votesByChoice: {Pizza: 90, Sushi: 31, Hamburgers: 32},
-      participants: ['someuuid', 'someuuid', 'someuuid']
+      participants: ['22.222.222.222', '33.333.333.333']
     },
     "f66e9aea-0d84-438c-bffe-d7fec535929b": {
       key: "f66e9aea-0d84-438c-bffe-d7fec535929b",
@@ -42,7 +42,7 @@ export const polls = {
       question: 'What\'s your favorite sport?',
       allChoices: ['Soccer', 'Football', 'Tennis'],
       votesByChoice: {Soccer: 0, Football: 1, Tennis: 1},
-      participants: ['someuuid', 'someuuid', 'someuuid']
+      participants: ['22.222.222.222', '33.333.333.333']
     },
   },
   allIds : ["4d4cdb42-3475-432f-bccc-c3cb5d7765d9", "e4c25936-55d8-44a8-8684-eb0bc7720442", "27fb4dab-c512-4685-a6a4-2003a8276439", "f66e9aea-0d84-438c-bffe-d7fec535929b"]

@@ -1,4 +1,5 @@
 import mockApi from '../api/mockApi';
+import prodApi from '../api/prodApi';
 import auth from '../auth/Auth';
 
 export const VOTE = 'VOTE';
@@ -8,10 +9,11 @@ export const INJECT_AUTH_DATA = 'INJECT_AUTH_DATA';
 export const DROP_AUTH_DATA = 'DROP_AUTH_DATA';
 export const INJECT_PROFILE = 'INJECT_PROFILE';
 
-export const submitVote = thunkCreate(mockApi, mockApi.submitVote, VOTE);
-export const createPoll = thunkCreate(mockApi, mockApi.createPoll, CREATE_POLL);
-export const fetchData = thunkCreate(mockApi, mockApi.fetchAll, FETCH_DATA);
-
+const mock = new mockApi();
+const prod = new prodApi();
+export const submitVote = thunkCreate(prod.submitVote, VOTE);
+export const createPoll = thunkCreate(mock.createPoll, CREATE_POLL);
+export const fetchData = thunkCreate(mock.fetchAll, FETCH_DATA);
 // export function injectAuthData(payload) {
 //   console.log(payload);
 //   const payload2 = auth.handleAuthentication(payload.hash);
@@ -62,7 +64,7 @@ export function dropAuthData() {
   }
 }
 
-function thunkCreate(api, apiMethod, type) {
+function thunkCreate(apiMethod, type) {
   return (payload={}) => {
       // console.log(payload.nativeEvent);
 
@@ -81,21 +83,18 @@ function thunkCreate(api, apiMethod, type) {
       }
       console.log(`dispatching initial ${type}`);
       dispatch({type});
-      return apiMethod.apply(api, payload)
-        .then(res => {
-          // console.log('res:', res);
-          if (res.status === 'SUCCESS') {
-            console.log(`dispatching ${type} success`);
-            if(res.apiData) {
-              //Data received from the api; merge it with the payload data 
-              //from when the action initiated
-              payload = {...payload, ...res.apiData};
-            }
-            dispatch({
-              type,
-              payload
-            });
-          }
+      console.log(payload);
+      // return apiMethod.apply(api, payload)
+      return apiMethod(payload)
+        .then(responseData => {
+          console.log(`dispatching ${type} success`);
+          //Data received from the api; merge it with the payload data 
+          //from when the action initiated
+          payload = {...payload, responseData};
+          dispatch({
+            type,
+            payload
+          });
         })
         .catch(error => {
           console.log(error);

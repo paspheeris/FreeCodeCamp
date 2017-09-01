@@ -8,8 +8,12 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
-var app = express();
+var cors = require('cors');
 
+var app = express();
+if(process.env.NODE_ENV === 'development') {
+  app.use(cors());
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

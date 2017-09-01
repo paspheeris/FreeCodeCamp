@@ -13,9 +13,10 @@ import {injectAuthData} from './actions/actions';
 
 //Inject auth data into store from localstorage if there is valid auth data
 //(in case of a page reload etc)
-let authData = {};
+let authData = {ipAddress: '11.111.111.111'};
 if(auth.isAuthenticated()) {
   authData = {
+    ...authData,
     expires_at: JSON.parse(localStorage.getItem('expires_at')),
     access_token: localStorage.getItem('access_token'),
     id_token: localStorage.getItem('id_token'),
