@@ -17,7 +17,7 @@ class SinglePollDisplay extends React.Component {
     // const choices = Object.keys(this.props.poll.choicesAndVotes).sort();
     // let votes = choices.map(key => this.props.poll.choicesAndVotes[key]);
     const choices = allChoices;
-    let votes = allChoices.map(choice => votesByChoice[choice]);
+    let votes = votesByChoice.map(obj => obj.count);
     let noVotesYet = false;
     //By default, no chart will be drawn if the array of votes for a poll
     //only contains 0's. In that case, we substitute an array of 1's for the votes, and in the label callback for the chart below, we show a decremented version for the labels if the noVotesYet flag === true

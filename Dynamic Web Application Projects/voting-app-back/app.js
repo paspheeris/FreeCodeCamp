@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -14,6 +15,15 @@ var app = express();
 if(process.env.NODE_ENV === 'development') {
   app.use(cors());
 }
+require('dotenv').config();
+
+//Connect to our Database and handle a bad connection
+// console.log('PROCESS CHEXCK', process.env.DATABASE);
+mongoose.connect(process.env.DATABASE);
+mongoose.Promise = global.Promise; //tell mongoose to use ES6 promises
+mongoose.connection.on('error', (err) => {
+  console.error(err.message);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
