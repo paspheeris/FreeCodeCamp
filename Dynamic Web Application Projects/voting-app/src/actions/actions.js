@@ -13,7 +13,7 @@ const mock = new mockApi();
 const prod = new prodApi();
 export const submitVote = thunkCreate(prod.submitVote, VOTE);
 export const createPoll = thunkCreate(mock.createPoll, CREATE_POLL);
-export const fetchData = thunkCreate(mock.fetchAll, FETCH_DATA);
+export const fetchData = thunkCreate(prod.fetchAll, FETCH_DATA);
 // export function injectAuthData(payload) {
 //   console.log(payload);
 //   const payload2 = auth.handleAuthentication(payload.hash);
@@ -86,7 +86,11 @@ function thunkCreate(apiMethod, type) {
       console.log(payload);
       // return apiMethod.apply(api, payload)
       return apiMethod(payload)
+        .then(response => {
+          return response.json();
+        })
         .then(responseData => {
+          console.log('responseData in thunkCreator', responseData);
           console.log(`dispatching ${type} success`);
           //Data received from the api; merge it with the payload data 
           //from when the action initiated

@@ -14,8 +14,7 @@ function polls(state = {}, action) {
           byId: action.payload.polls.byId,
           allIds: action.payload.polls.allIds
         };
-      }
-      break;
+      } else return state;
     case VOTE:
       if(!action.payload) return state;
       if(action.payload.error) return state;

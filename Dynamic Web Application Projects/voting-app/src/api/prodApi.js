@@ -10,15 +10,19 @@ export default class mockApi {
     this.endpoint = 'http://localhost:7777/';
 
     this.submitVote = this.submitVote.bind(this);
+    this.fetchAll = this.fetchAll.bind(this);
   }
-  static fetchAll() {
-    return new Promise((res, rej) => {
-      setTimeout(() => {
-        res({status: "SUCCESS",
-             apiData: {users, polls}});
-      }, DELAY);
-    }); 
-  }
+  fetchAll(payload, endpoint=this.endpoint) {
+      endpoint = endpoint+ `polls`;
+      return fetch(endpoint);
+    }
+    // return new Promise((res, rej) => {
+    //   setTimeout(() => {
+    //     res({status: "SUCCESS",
+    //          apiData: {users, polls}});
+    //   }, DELAY);
+    // }); 
+  
   submitVote(payload, endpoint=this.endpoint) {
     endpoint = endpoint + `poll/vote/${payload.uuid}`;
     return fetch(endpoint, {

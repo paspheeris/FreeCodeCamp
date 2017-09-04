@@ -11,26 +11,37 @@ const Poll = require('../models/Poll');
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+router.get('/polls', (req, res) => {
+  Poll.find({}).exec()
+    .then(data => {
+      console.log(data)
+      res.json(data);
+    })
+    .catch(error => {
+      console.log(error)
+      res.json({error})
+    })
+});
 router.patch('/poll/vote/:uuid', (req, res) => {
-//   console.log(req.body);
-//   Poll.find({}, function(err, docs) {
-//     if (!err){ 
-//         console.log(docs);
-//         process.exit();
-//     } else {throw err;}
-// });
-  const poll = Poll.find({});
-  // const poll = Poll.findOne({ 'key': '4d4cdb42-3475-432f-bccc-c3cb5d7765d9' });
-  //  const poll = Poll.findOneAndUpdate({ key: req.params.uuid}, req.body, {
-  //   new: true, //return the new Poll instead of the old one
-  //   runValidators: true
-  // }).exec();
-    // .then(something => {
-    //   res.json(something);
-    // })
-    // .catch(e => res.json({e}));
-    poll.then(some => console.log(some));
-    res.send('ol');
+  console.log(req.body);
+
+  // if(req.body.addedChoice) {
+  //   Poll.find
+  // }
+   const poll = Poll.findOneAndUpdate(
+     { key: req.params.uuid, 'votesByChoice.choiceName': 'SF'}, 
+    { $inc: {'votesByChoice.$.count': 1}}, {
+    new: true, //return the new Poll instead of the old one
+    runValidators: true
+  }).exec()
+    .then(something => {
+      console.log(something);
+      res.json(something);
+      // res.json(JSON.stringify(something));
+    })
+    .catch(error => res.json({error}));
+    // poll.then(some => console.log(some));
+    // res.send('ol');
     // res.json(JSON.stringify(poll));
 })
 
