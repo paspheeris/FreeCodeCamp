@@ -26,10 +26,16 @@ class VotePicker extends Component {
   }
   handleVoteSubmit (e) {
     e.preventDefault();
+    console.log('props in voteSubmit', this.props);
+    let addedChoice = false;
+    if(this.state.optionInputForm !== '' &&
+      !this.allChoices.includes(this.state.optionInputForm)) {
+        addedChoice = true;
+      }
     this.props.submitVote({
-      uuid: this.props.poll_key, 
+      uuid: this.props._id, 
       choice: this.state.optionInputForm ? this.state.optionInputForm : this.state.currentVoteOption,
-      addedChoice: this.state.optionInputForm ? true : false});
+      addedChoice});
   }
   handleOptionInput(e) {
     this.setState({optionInputForm: e.target.value});

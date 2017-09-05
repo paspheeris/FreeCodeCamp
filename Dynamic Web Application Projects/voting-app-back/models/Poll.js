@@ -19,7 +19,8 @@ const pollSchema = new mongoose.Schema({
   }],
   participantsByIp: {
     type: [String],
-    default: 'An IP must be provided!'
+    required: false
+    // default: 'An IP must be provided!'
   },
   participantsById: [String],
 });

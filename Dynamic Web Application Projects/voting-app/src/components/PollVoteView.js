@@ -7,10 +7,11 @@ import SinglePollDisplay from './SinglePollDisplay';
 import VotePicker from './VotePicker';
 import { submitVote } from '../actions/actions';
 
-const PollVoteView =  ({poll, uuid, actions, votePending, voteError}) => {
+const PollVoteView =  ({poll, _id, actions, votePending, voteError}) => {
+  if(!poll) return false;
   return (
     <div>
-      <VotePicker allChoices={poll.allChoices} poll_key={uuid} submitVote={actions.submitVote} votePending={votePending} voteError={voteError} />
+      <VotePicker allChoices={poll.allChoices} _id={_id} submitVote={actions.submitVote} votePending={votePending} voteError={voteError} />
       <div>
         <SinglePollDisplay poll={poll} votePending={votePending} voteError={voteError}/>
       </div>
@@ -21,7 +22,7 @@ const PollVoteView =  ({poll, uuid, actions, votePending, voteError}) => {
 function mapStateToProps(state,ownProps) {
   return {
     poll: state.polls.byId[ownProps.match.params.uuid],
-    uuid: ownProps.match.params.uuid,
+    _id: ownProps.match.params.uuid,
     votePending: state.ui.votePending,
     voteError: state.ui.voteError
   }

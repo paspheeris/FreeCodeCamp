@@ -12,6 +12,7 @@ class SinglePollDisplay extends React.Component {
 
   drawChart(canvasEl) {
     // if(!canvasEl) return;
+    console.log(this.props);
     const {question, allChoices, votesByChoice} = this.props.poll; 
     // let {votes, choices} = this.props;
     // const choices = Object.keys(this.props.poll.choicesAndVotes).sort();
@@ -97,6 +98,7 @@ class SinglePollDisplay extends React.Component {
 
   render() {
     // const {question, votes, ind} = this.props;
+    if(!this.props.poll) return false;
     return (
     <div className="SinglePollDisplay-wrapper">
        {/*style={{width:"30%", height:"30%"}}*/}

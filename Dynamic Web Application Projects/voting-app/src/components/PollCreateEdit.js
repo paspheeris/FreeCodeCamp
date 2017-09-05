@@ -35,37 +35,58 @@ class PollCreateEdit extends Component {
     console.log(e.target.name, 'hur', e.target.value);
 
     let oldval = this.state.votesByChoice[e.target.name];
-    // console.log(update(this.state, {choicesAndVotes: {$merge: {[e.target.value]: oldval}},
-    //                                                  {$unset: [e.target.name]}}));
-    // this.setState(
-    //   update(this.state, {choicesAndVotes: {
-    //     $merge: {[e.target.value]: oldval}},
-    //     $unset: [e.target.name]
-    //   })
-    // );
-    this.setState(
+
+    let ind = this.state.votesByChoice.findIndex((obj, ind) => obj.choiceName === e.target.name);
+    console.log('ind in PollCreateEdit.js', ind);
+      if(ind === - 1) {
+        this.setState(update(this.state, {votesByChoice: {
+                                            $push: [{choiceName: e.target.value, count: 0}]},
+                                          allChoices: {
+                                            $push: [e.target.value]
+                                          }}));
+        return;
+      }
+      this.setState(
       update(this.state, {votesByChoice: {
-                            $merge: {[e.target.value]: oldval || 0},
-                            $unset: [e.target.name, '']},
+                          [ind]: {choiceName: {$set: e.target.value} }},
                           allChoices: {
                             $apply: (choices) => {
                               if(e.target.name === '') return choices.concat(e.target.value);
                               else return choices.map(choice => choice === e.target.name ? e.target.value : choice)
                             }
                           }}
+      ))
+    
+    
+    // this.setState(
+    //   update(this.state, {votesByChoice: {
+    //                         $merge: {[e.target.value]: oldval || 0},
+    //                         $unset: [e.target.name, '']},
+    //                       allChoices: {
+    //                         $apply: (choices) => {
+    //                           if(e.target.name === '') return choices.concat(e.target.value);
+    //                           else return choices.map(choice => choice === e.target.name ? e.target.value : choice)
+    //                         }
+    //                       }}
 
-    ))
+    // ))
   }
   submitPoll(e) {
-  //   e.preventDefault();
+    e.preventDefault();
   //   const cleaned = this.cleanChoicesVotes(this.state.poll);
-  //   //TODO: validation of the cleaned poll
-  //   this.props.actions.createPoll({poll: cleaned});
+    //TODO: validation of the cleaned poll
+    this.props.actions.createPoll({poll: this.state});
   }
 
   componentDidMount() {
     this.setState({
       ...this.state.poll, key: this.props.uuid, author_id: this.props.userId
+    });
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log('nextProps in CWRP', nextProps);
+    this.setState({
+      ...nextProps.poll
     });
   }
   render() {
@@ -92,7 +113,8 @@ const blankPoll = {
       question: "Poll Question" ,
 
       allChoices: ["Choice A", "Choice B"],
-      votesByChoice: {"Choice A": 0, "Choice B": 0},
+      // votesByChoice: {"Choice A": 0, "Choice B": 0},
+      votesByChoice: [{choiceName: "Choice A", count: 0}, {choiceName: "Choice B", count: 0}],
       participants: []
 }
 

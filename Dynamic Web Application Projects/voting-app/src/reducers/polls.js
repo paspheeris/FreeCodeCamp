@@ -8,13 +8,26 @@ function polls(state = {}, action) {
       // console.log(action);
   switch(action.type) {
     case FETCH_DATA:
+      // console.log(action);
       if(action.payload && !action.payload.error) {
         return {
           ...state,
-          byId: action.payload.polls.byId,
-          allIds: action.payload.polls.allIds
+          // byId: action.payload.responseData.map(obj => {
+          //   return {[obj._id]: obj};
+          byId: action.payload.responseData.reduce((accum, obj) => {
+            accum[obj._id] = obj;
+            return accum;
+          }, {}),
+          allIds: action.payload.responseData.map(obj => obj._id)
         };
       } else return state;
+      // if(action.payload && !action.payload.error) {
+      //   return {
+      //     ...state,
+      //     byId: action.payload.polls.byId,
+      //     allIds: action.payload.polls.allIds
+      //   };
+      // } else return state;
     case VOTE:
       if(!action.payload) return state;
       if(action.payload.error) return state;
@@ -54,8 +67,8 @@ function polls(state = {}, action) {
       if(action.payload.error) return state;
       console.log(action);
       return update(state, {
-        byId: {$merge: {[action.payload.poll.key]: action.payload.poll}},
-        allIds: {$pushIfAbsent: action.payload.poll.key}
+        byId: {$merge: {[action.payload.responseData._id]: action.payload.responseData._id}},
+        allIds: {$pushIfAbsent: action.payload.responseData._id}
       });
     default:
       return state;

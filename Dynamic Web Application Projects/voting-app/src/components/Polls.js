@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import SinglePollDisplay from './SinglePollDisplay';
 
-const Polls = ({allPolls, allIds, filteredPolls}) => {
+const Polls = ({allPolls, allIds, filteredPolls, linkToEdit}) => {
   // console.log(polls);
   console.log(allPolls);
   let pollsToShow = filteredPolls || allPolls;
@@ -20,7 +20,7 @@ const Polls = ({allPolls, allIds, filteredPolls}) => {
     <div className="pollsDisplay-wrapper">
       {Object.values(pollsToShow).map((poll, ind) => {
         return (
-          <Link key={ind} to={`/poll/vote/${poll.key}`}>
+          <Link key={ind} to={linkToEdit ? `/poll/edit/${poll._id}` : `/poll/vote/${poll._id}`}>
             <SinglePollDisplay key={ind} poll={poll} ind={ind}/>
           </Link>
           )

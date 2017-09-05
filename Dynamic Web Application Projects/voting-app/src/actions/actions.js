@@ -12,7 +12,7 @@ export const INJECT_PROFILE = 'INJECT_PROFILE';
 const mock = new mockApi();
 const prod = new prodApi();
 export const submitVote = thunkCreate(prod.submitVote, VOTE);
-export const createPoll = thunkCreate(mock.createPoll, CREATE_POLL);
+export const createPoll = thunkCreate(prod.createPoll, CREATE_POLL);
 export const fetchData = thunkCreate(prod.fetchAll, FETCH_DATA);
 // export function injectAuthData(payload) {
 //   console.log(payload);

@@ -31,7 +31,7 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        {this.props.profile && <Polls filteredPolls={this.props.userPolls}/>}
+        {this.props.profile && <Polls filteredPolls={this.props.userPolls} linkToEdit={true}/>}
       </div>
     )
   }
