@@ -1,27 +1,53 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { SEARCH_BOX_KEY_PRESS } from '../constants/actionTypes.js';
+
+import APIs from '../asyncActions.js';
+// import { connect } from 'react-redux';
+// import { SEARCH_BOX_KEY_PRESS } from '../constants/actionTypes.js';
 
 const propTypes = {
-  onKeyPress: PropTypes.func.isRequired
+  searchFormSubmit: PropTypes.func.isRequired,
+  searchFormValue: PropTypes.string.isRequired
 }
 
-const defaultProps = {}
-
-const searchForm = ({ onKeyPress }) => (
-  <div>
-    <input type="text" />
-  </div>
-)
+const defaultProps = {
+  searchFormValue: ''
+}
+// = ({ onKeyDown, searchFormValue }) => {
+class SearchForm extends Component { 
+  constructor(props) {
+    super(props);
+    this.state = {
+      formText: ''
+    };
+  }
+  render() {
+  const {searchFormValue} = this.props;
+    return (
+      <form onSubmit={this.hur}>
+        <input type="text" value={this.state.value} placeholder="enter a location" onKeyDown={this.handleKeyDown}/>
+      </form>
+    )
+  }
+  handleKeyDown = (event) => {
+    this.setState({ formText: event.target.value });
+  }
+  hur = (event) => {
+    console.log('in function submit');
+    event.preventDefault();
+    const payload = APIs.Yelp.getBars(this.state.formText);
+    this.props.searchFormSubmit(payload);
+  };
+}
 // bindActionCreators({ actions }, dispatch)
-const mapDispatchToProps = dispatch => ({
-  onKeyPress: payload =>
-    dispatch({ type: SEARCH_BOX_KEY_PRESS, payload })
-})
+// const mapDispatchToProps = dispatch => ({
+//   onKeyDown: payload =>
+//     dispatch({ type: SEARCH_BOX_KEY_PRESS, payload })
+// })
 
-searchForm.propTypes = propTypes
+SearchForm.propTypes = propTypes
 
-searchForm.defaultProps = defaultProps
+SearchForm.defaultProps = defaultProps
 
-export default connect(() => {}, mapDispatchToProps)(searchForm);
+export default SearchForm;
+// export default connect(() => {}, mapDispatchToProps)(SearchForm);

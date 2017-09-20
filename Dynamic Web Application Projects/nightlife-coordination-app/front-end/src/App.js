@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import store from './store';
 
 import NavBar from './components/NavBar';
-import SearchForm from './components/SearchForm';
+import MainView from './components/MainView';
 
 
 
@@ -18,7 +18,7 @@ class App extends Component {
         <BrowserRouter>
         <div>
           <NavBar />
-          <SearchForm />
+          <MainView />
         </div>
         </BrowserRouter>
       </Provider>
