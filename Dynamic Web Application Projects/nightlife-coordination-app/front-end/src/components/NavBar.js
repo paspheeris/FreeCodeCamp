@@ -9,7 +9,7 @@ const defaultProps = {
   isLoggedIn: false
 }
 
-const NavBar = ({isLoggedIn}) => {
+const NavBar = ({ isLoggedIn }) => {
   return (
   <div>
     <LoggedIn isLoggedIn={isLoggedIn}/>

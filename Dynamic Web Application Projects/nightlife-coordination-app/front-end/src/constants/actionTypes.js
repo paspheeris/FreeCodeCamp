@@ -1,0 +1,1 @@
+export const SEARCH_BOX_KEY_PRESS = 'SEARCH_BOX_KEY_PRESS';
