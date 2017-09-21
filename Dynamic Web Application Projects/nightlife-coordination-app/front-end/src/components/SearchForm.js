@@ -33,7 +33,7 @@ class SearchForm extends Component {
     this.setState({ formText: event.target.value });
   }
   hur = (event) => {
-    console.log('in function submit');
+    // console.log('in function submit');
     event.preventDefault();
     const payload = APIs.Yelp.getBars(this.state.formText);
     this.props.searchFormSubmit(payload);

@@ -8,11 +8,11 @@ const responseBody = (response) => {
       store.dispatch({type: 'fetch success', payload: json})
     })
     .catch(error => {
-      console.log('async actions', 'json parse error?');
+      // console.log('async actions', 'json parse error?');
     })
 }
 const errorHandler = (error) => {
-  console.log('errorHandler catch function in asyncActions:', error);
+  // console.log('errorHandler catch function in asyncActions:', error);
   store.dispatch({type: 'dunno, catch error in asyncactions.js', payload: error});
 }
 
@@ -20,7 +20,8 @@ const requests = {
   // del: url =>
   //   superagent.del(`${API_ROOT}${url}`).use(tokenPlugin).then(responseBody),
   get: url =>
-    fetch(`${YELP_API_ROOT}${url}`).then(responseBody).catch(errorHandler)
+    fetch(`${YELP_API_ROOT}${url}`)
+    // const promiseMiddleware = store => next => action => {
   // put: (url, body) =>
   //   superagent.put(`${API_ROOT}${url}`, body).use(tokenPlugin).then(responseBody),
   // post: (url, body) =>
