@@ -17,7 +17,25 @@
 .App-intro {
   font-size: large;
 }
-
+.bar-image {
+  width: 200px;
+  height: 200px;
+}
+.mainview-wrapper {
+  display: flex;
+}
+.search-form {
+  flex: 1;
+}
+.bar-list {
+  display: flex;
+  flex-direction: column;
+}
+.map-iframe {
+  width : 450px; 
+  height: 250px;
+  frameborder: "0";
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

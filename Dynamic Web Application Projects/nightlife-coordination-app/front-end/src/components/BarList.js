@@ -12,16 +12,21 @@ const defaultProps = {
 const BarList = ({bars}) => {
   console.log(bars);
   return (
-  <ul>
+  <ul className="bar-list">
     {bars.map(bar => {
-      return (<Bar id={bar.id} key={bar.id} name={bar.name} img_url={bar.img_url} 
-      url={bar.url} rating={bar.rating} price={bar.price} display_phone={bar.display_phone} />)}
+      return (<Bar id={bar.id} key={bar.id} name={bar.name} image_url={bar.image_url} 
+      url={bar.url} rating={bar.rating} price={bar.price} display_phone={bar.display_phone} 
+      categories={getBarCategories(bar)}/>)}
     )
     }
   </ul>
   )
 }
-  
+const getBarCategories = (bar) => {
+  return bar.categories.map(category =>{
+    if(category.title !== "Bars") return category.title;
+  })
+}
 
 BarList.propTypes = propTypes
 

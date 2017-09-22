@@ -24,7 +24,7 @@ class SearchForm extends Component {
   render() {
   const {searchFormValue} = this.props;
     return (
-      <form onSubmit={this.hur}>
+      <form className="search-form" onSubmit={this.hur}>
         <input type="text" value={this.state.value} placeholder="enter a location" onKeyDown={this.handleKeyDown}/>
       </form>
     )

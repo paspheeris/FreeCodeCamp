@@ -36,6 +36,14 @@ router.get('/yelp/bars/:location', (req, res) => {
     })
     .then(json => {
       // console.log(json);
+    //   var fs = require('fs');
+    //   fs.writeFileSync("./test", JSON.stringify(json), function(err) {
+    //   if(err) {
+    //       return console.log(err);
+    //   }
+
+    // console.log("The file was saved!");
+// }); 
       res.json(json);
     })
     .catch(error => {

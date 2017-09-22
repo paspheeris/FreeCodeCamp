@@ -5,16 +5,16 @@ import {
 
 } from '../constants/actionTypes';
 
-export default (state = [], action) => {
+export default (state = {}, action) => {
   // console.log('action at top of searchForm.js reducer:', action);
   switch (action.type) {
     case SEARCH_FORM_SUBMIT_SUCCESS:
       // console.log('SEARCH_FORM_SUBMIT', action.payload);
-      return [
+      return {
         // ...state,
-        ...action.payload.businesses,
-        // region: action.payload.businesses,
-      ];
+        locations: action.payload.businesses.map(business => business.coordinates),
+        region: action.payload.region.center
+      };
     default:
       return state;
   }
