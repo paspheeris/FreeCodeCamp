@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { SEARCH_FORM_SUBMIT } from '../constants/actionTypes.js';
 
 import SearchForm from './SearchForm';
+import BarList from './BarList'
 
 const propTypes = {
   searchFormSubmit: PropTypes.func.isRequired,
@@ -15,9 +16,10 @@ const defaultProps = {
   searchFormValue: ''
 }
 
-const MainView = ({ searchFormSubmit, searchFormValue }) => (
+const MainView = ({ searchFormSubmit, searchFormValue, bars }) => (
   <div>
     <SearchForm searchFormSubmit={searchFormSubmit} searchFormValue={searchFormValue} />
+    <BarList bars={bars}/>
   </div>
 )
 const mapDispatchToProps = dispatch => ({
@@ -26,7 +28,8 @@ const mapDispatchToProps = dispatch => ({
 })
 const mapStateToProps = state => {
   return ({
-    searchFormValue: state.searchForm.value
+    searchFormValue: state.searchForm.value,
+    bars: state.bars
   })
 }
 MainView.propTypes = propTypes

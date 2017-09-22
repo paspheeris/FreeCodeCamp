@@ -9,16 +9,17 @@ export const promiseMiddleware = store => next => action => {
     store.dispatch({type: ASYNC_START, subtype: action.type});
     console.log(action.payload);
     action.payload.then(response => {
-      return response.JSON();
+      return response.json();
     })
     .then(json => {
       // console.log(json);
-      store.dispatch({type: action.type, payload: json});
+      console.log(json);
+      store.dispatch({type: `${action.type}_SUCCESS`, payload: json});
       store.dispatch({type: ASYNC_END, subtype: action.type});
     })
     .catch(error => {
       // console.log(error);
-      store.dispatch({type: action.type, payload: {error}});
+      store.dispatch({type: `${action.type}_FAILURE`, payload: {error}});
       store.dispatch({type: ASYNC_END, subtype: action.type});
     })
     // next(action);
