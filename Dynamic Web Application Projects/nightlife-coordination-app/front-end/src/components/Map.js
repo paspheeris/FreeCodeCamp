@@ -1,49 +1,35 @@
+/* eslint-disable no-undef */
 import React from 'react'
 import PropTypes from 'prop-types'
+import loadJS from 'loadjs';
 
 const propTypes = {}
 
 const defaultProps = {}
-const gmapApiKey = "AIzaSyCvo4V76TY-2If3vpxYt1wK5hRP0M6BA6A";
+
 const Map = props => (
-  <div ref={refMount}>
-  
-    {/*<script
-     src={`https://maps.googleapis.com/maps/api/js?key=${gmapApiKey}&callback=initMap`}>
-    </script>*/}
+  <div className="gmap-div" ref={divRef => refMount(divRef)}>
   </div>
-
 )
+
+const gmapApiKey = "AIzaSyCvo4V76TY-2If3vpxYt1wK5hRP0M6BA6A";
+
 const refMount = (divRef) => {
-  const script = document.createElement("script");
-
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${gmapApiKey}&callback=initMap`;
-  script.async = true;
-  script.defer = true;
-
-  divRef.appendChild(script);
-  // fetch(`https://maps.googleapis.com/maps/api/js?key=${gmapApiKey}`)
-  //   .then(res => {
-  //     console.log(res);
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //   })
-  console.log(script.src);
-}
-  const initMap = () => {
-    console.log('in initMap');
-    // console.log(something);
-            var uluru = {lat: -25.363, lng: 131.044};
-          var map = new google.maps.Map(divRef, {
-            zoom: 4,
-            center: uluru
-          });
-          var marker = new google.maps.Marker({
-            position: uluru,
-            map: map
-          });
+  // console.log('in refMount');
+  loadJS(`https://maps.googleapis.com/maps/api/js?key=${gmapApiKey}&callback=initMap`);
+  window.initMap = () => {
+    // console.log('in initMap');
+    var uluru = {lat: -25.363, lng: 131.044};
+    var map = new google.maps.Map(divRef, {
+      zoom: 4,
+      center: uluru
+    });
+    var marker = new google.maps.Marker({
+      position: uluru,
+      map: map
+    });
   }
+}
 
 Map.propTypes = propTypes
 
