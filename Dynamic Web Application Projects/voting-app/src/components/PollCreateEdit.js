@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import update from 'immutability-helper';
 
-import { submitVote, createPoll } from '../actions/actions';
+import { submitVote, createPoll, submitEdit } from '../actions/actions';
 
 
 import SinglePollDisplay from './SinglePollDisplay';
@@ -72,6 +72,11 @@ class PollCreateEdit extends Component {
     // ))
   }
   submitPoll(e) {
+    if(this.props.mode === 'edit') {
+      e.preventDefault();
+      this.props.actions.submitEdit({poll: this.state});
+      return;
+    }
     e.preventDefault();
   //   const cleaned = this.cleanChoicesVotes(this.state.poll);
     //TODO: validation of the cleaned poll
@@ -129,7 +134,7 @@ function mapStateToProps(state,ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({submitVote, createPoll}, dispatch)
+    actions: bindActionCreators({submitVote, createPoll, submitEdit}, dispatch)
   }
 }
 

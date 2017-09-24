@@ -6,7 +6,7 @@ import SinglePollDisplay from './SinglePollDisplay';
 
 const Polls = ({allPolls, allIds, filteredPolls, linkToEdit}) => {
   // console.log(polls);
-  console.log(allPolls);
+  // console.log(allPolls);
   let pollsToShow = filteredPolls || allPolls;
   // if(filterType === 'showNone') return false;
   // if(filterType === 'authorId') {
@@ -30,7 +30,7 @@ const Polls = ({allPolls, allIds, filteredPolls, linkToEdit}) => {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
+  // console.log(state);
   return {
     allPolls: state.polls.byId,
     allIds: state.polls.allIds

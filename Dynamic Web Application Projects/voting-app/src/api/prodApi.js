@@ -12,6 +12,7 @@ export default class mockApi {
     this.submitVote = this.submitVote.bind(this);
     this.fetchAll = this.fetchAll.bind(this);
     this.createPoll = this.createPoll.bind(this);
+    this.submitEdit = this.submitEdit.bind(this);
   }
   fetchAll(payload, endpoint=this.endpoint) {
       endpoint = endpoint+ `polls`;
@@ -33,6 +34,18 @@ export default class mockApi {
     endpoint = endpoint + `poll/create`;
     return fetch(endpoint, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Allow: ['GET', 'POST','HEAD', 'OPTIONS','PUT', 'PATCH']
+      },
+      body: JSON.stringify(payload)
+    });
+  }
+  submitEdit(payload, endpoint=this.endpoint) {
+    console.log(payload);
+    endpoint = endpoint + `poll/edit/${payload.poll._id}`;
+    return fetch(endpoint, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         Allow: ['GET', 'POST','HEAD', 'OPTIONS','PUT', 'PATCH']

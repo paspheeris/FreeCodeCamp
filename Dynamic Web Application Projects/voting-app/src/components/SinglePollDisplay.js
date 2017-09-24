@@ -12,7 +12,7 @@ class SinglePollDisplay extends React.Component {
 
   drawChart(canvasEl) {
     // if(!canvasEl) return;
-    console.log(this.props);
+    // console.log(this.props);
     const {question, allChoices, votesByChoice} = this.props.poll; 
     // let {votes, choices} = this.props;
     // const choices = Object.keys(this.props.poll.choicesAndVotes).sort();
