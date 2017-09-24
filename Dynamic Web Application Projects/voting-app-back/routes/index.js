@@ -74,5 +74,27 @@ router.post('/poll/create', (req, res) => {
       res.json({error});
     });
 });
+router.patch('/poll/edit/:_id', (req, res) => {
+  console.log(req.params._id);
+  const newPoll = new Poll(req.body.poll);
+
+  Poll.findByIdAndUpdate({_id: req.params._id}, newPoll, {new: true}).exec()
+    .then(updatedPoll => {
+      console.log(updatedPoll);
+      res.json(updatedPoll);
+    })
+    .catch(error => {
+      console.log(error);
+      res.json({error});
+    })
+  // const poll = Poll.find({_id: req.params._id}).exec();
+  // poll.then(something => {
+  //   console.log(something);
+  // })
+  //   .catch(error => {
+  //     console.log(error);
+  //     res.json({error});
+  //   })
+});
 
 module.exports = router;
