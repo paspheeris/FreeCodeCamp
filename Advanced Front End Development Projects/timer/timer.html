@@ -36,7 +36,7 @@
   drawArc(99.99999, false);
   // drawArc(25);
 
-  function setTimer(mins) {
+  function setTimer(mins, sessionType = "session") {
     const lengthMil = mins * 60 * 1000;
     const startMil = Date.now();
     const endMil = startMil + lengthMil;
@@ -47,8 +47,8 @@
       let elapsed = Date.now() - startMil;
       let elapsedPercent = (elapsed / lengthMil) * 100;
 
-      // let displayMin =Math.floor(((lengthMil - elapsed) / 1000) / 60);
-      // let displaySecs = Math.floor(((lengthMil - elapsed) - (displayMin * 1000 * 60)) / 1000);
+      let displayMin =Math.floor(((lengthMil - elapsed) / 1000) / 60);
+      let displaySecs = Math.floor(((lengthMil - elapsed) - (displayMin * 1000 * 60)) / 1000);
       // console.log({displayMin, displaySecs});
       clockRemaining.innerText = `${displayMin}:${displaySecs}`;
 
@@ -58,6 +58,7 @@
         elapsedPercent = 99.99999;
         drawArc(elapsedPercent, true);
         clearInterval(interv);
+        if(sessionType === "session") {setTimer(breakInput.value, 'break')};
         return;
       }
       drawArc(elapsedPercent, true);
@@ -87,7 +88,11 @@ arcCanvas.addEventListener('click', function() {
     setTimer(sessionInput.value);
   }
 });
-
+sessionInput.addEventListener('input', function() {
+  if(pause) {
+    clockRemaining.innerText = sessionInput.value + ':00';    
+  }
+})
 
 
 
