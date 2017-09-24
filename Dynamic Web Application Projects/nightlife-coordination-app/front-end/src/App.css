@@ -1,3 +1,6 @@
+body {
+  overflow: hidden;
+}
 .App {
   text-align: center;
 }
@@ -23,18 +26,43 @@
 }
 .mainview-wrapper {
   display: flex;
+  max-height: 100vh;
 }
-.search-form {
+.mainview-left-group {
   flex: 1;
 }
-.bar-list {
-  display: flex;
-  flex-direction: column;
+.search-form {
+  /*height: 10%;*/
 }
-.gmap-div {
+.bar-list {
+  overflow-y: scroll;
+  height: 90%;
+}
+.mainview-right-group {
+  flex: 1;
+}
+
+/*.gmap-div {
   height: 300px;
   width: 300px;
+}*/
+.gmap-div {
+  height: 100%;
+  width: 100%;
 }
+/*.map-responsive{
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height:0;
+}*/
+/*.map-responsive iframe{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+}*/
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

@@ -12,7 +12,7 @@ export default (state = {}, action) => {
       // console.log('SEARCH_FORM_SUBMIT', action.payload);
       return {
         // ...state,
-        locations: action.payload.businesses.map(business => business.coordinates),
+        latLngs : action.payload.businesses.map(business => business.coordinates),
         region: action.payload.region.center
       };
     default:

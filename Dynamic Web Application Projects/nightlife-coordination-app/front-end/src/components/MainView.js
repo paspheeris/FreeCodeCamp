@@ -17,17 +17,23 @@ const defaultProps = {
   searchFormValue: ''
 }
 
-const MainView = ({ searchFormSubmit, searchFormValue, bars }) => (
+const MainView = ({ searchFormSubmit, searchFormValue, bars, latLngs, center }) => (
   <div className="mainview-wrapper">
+    {/*{console.log(extractLatLngFromBars(bars))}*/}
     <div className="mainview-left-group">
-      <SearchForm searchFormSubmit={searchFormSubmit} searchFormValue={searchFormValue} />
-      <BarList bars={bars}/>
+      <SearchForm className="search-form" searchFormSubmit={searchFormSubmit} searchFormValue={searchFormValue} />
+      <BarList bars={bars} />
     </div>
     <div className="mainview-right-group">
-     <Map /> 
+     <Map latLngs={latLngs} center={center}/> 
     </div>
   </div>
 )
+// const extractLatLngFromBars = (bars) => {
+//   return bars.map(bar => {
+//     return bar.coordinates;
+//   })
+// }
 const mapDispatchToProps = dispatch => ({
   searchFormSubmit: payload => 
     dispatch({type: SEARCH_FORM_SUBMIT, payload})
@@ -35,7 +41,9 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => {
   return ({
     searchFormValue: state.searchForm.value,
-    bars: state.bars
+    bars: state.bars,
+    latLngs: state.location.latLngs,
+    center: state.location.center 
   })
 }
 MainView.propTypes = propTypes
