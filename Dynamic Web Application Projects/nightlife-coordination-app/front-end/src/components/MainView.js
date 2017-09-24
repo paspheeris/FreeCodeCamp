@@ -43,7 +43,7 @@ const mapStateToProps = state => {
     searchFormValue: state.searchForm.value,
     bars: state.bars,
     latLngs: state.location.latLngs,
-    center: state.location.center 
+    center: state.location.center
   })
 }
 MainView.propTypes = propTypes

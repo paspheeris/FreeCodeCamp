@@ -12,8 +12,18 @@ export default (state = {}, action) => {
       // console.log('SEARCH_FORM_SUBMIT', action.payload);
       return {
         // ...state,
-        latLngs : action.payload.businesses.map(business => business.coordinates),
-        region: action.payload.region.center
+        latLngs : action.payload.businesses.map(business => {
+          return ({
+            id: business.id,
+            name: business.name,
+            lat: business.coordinates.latitude,
+            lng: business.coordinates.longitude,
+
+        })}),
+        center: {
+          lat: action.payload.region.center.latitude,
+          lng: action.payload.region.center.longitude
+        }
       };
     default:
       return state;

@@ -9,8 +9,17 @@ const enhancers = compose(
 );
 const bars = mockData.businesses;
 const location = {
-  latLngs: mockData.businesses.map(business => business.coordinates),
-  center: mockData.region.center 
+  latLngs: mockData.businesses.map(business => {
+    return ({
+      id: business.id,
+      name: business.name,
+      lat: business.coordinates.latitude,
+      lng: business.coordinates.longitude
+  })}),
+  center: {
+          lat: mockData.region.center.latitude,
+          lng: mockData.region.center.longitude
+        } 
 }
 const store = createStore(reducer, {bars, location}, enhancers);
 export default store;
