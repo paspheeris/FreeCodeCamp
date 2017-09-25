@@ -1,284 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Twitch Viewer</title>
-  
+
   <link rel="stylesheet" href="style.css">
+  <script src="scripts/dom.js" type="text/javascript" defer></script>
+  <script src="scripts/api.js" type="text/javascript" defer></script>
+  <script src="scripts/index.js" type="text/javascript" defer></script>
 </head>
+
 <body>
   <div class="wrapper">
-      <div class="streams-div section-titles">All Streams</div>
-      <div class="streams-content content">
+    <div class="streams-div section-titles">All Streams</div>
+    <div class="streams-content content">
       <div class="controls">
         <input class="input-field" type="text" placeholder="Stream Name">
         <button class="add-button">Add stream</button>
         <button class="remove-button">Remove a stream</button>
         <button class="remove-all-button">Remove all streams</button>
       </div>
-      </div>
-      <div class="online-div section-titles">Online</div>
-      <div class="online-content content">
-      </div>      
-      <div class="offline-div section-titles">Offline</div>
-      <div class="offline-content content">
-      </div>
+    </div>
+    <div class="online-div section-titles">Online</div>
+    <div class="online-content content">
+    </div>
+    <div class="offline-div section-titles">Offline</div>
+    <div class="offline-content content">
+    </div>
   </div>
-  <script>
-    ///////////////////////////////////////
-    //elements and data
-    const sectionTitles = document.querySelectorAll('.section-titles');
-    const streamsContent = document.querySelector('.streams-content');
-    const onlineContent = document.querySelector('.online-content');
-    const offlineContent = document.querySelector('.offline-content');
-    const removeButton = document.querySelector('.remove-button');
-    const inputField = document.querySelector('.input-field');
-    const addButton = document.querySelector('.add-button');
-
-
-    let firstLoadFlag = JSON.parse(localStorage.getItem('firstLoadFlag')) || true;
-    const streamersObject = JSON.parse(localStorage.getItem('streamersObject')) || {};
-    
-    function userNameApiCall(userName) {
-      const endpoint = `https://api.twitch.tv/kraken/users?login=${userName}`;
-      return fetch(endpoint, {
-        headers: {
-        'Accept': 'application/vnd.twitchtv.v5+json',
-        'Client-ID': 'dll0wzapy7w7ich3dmaqpc0w1yopkc'
-        }
-      })
-      .then(data => {
-        return data.json();
-          });
-    }
-
-    function idApiCall(id) {
-      endpoint = `https://api.twitch.tv/kraken/streams/${id}`;
-      // let parsedData;
-      return fetch(endpoint, {
-        headers: {
-        'Accept': 'application/vnd.twitchtv.v5+json',
-        'Client-ID': 'dll0wzapy7w7ich3dmaqpc0w1yopkc'
-        }
-      })
-      .then(data => {
-        // console.log(data);
-        return data.json();
-          })
-      .then(parsedData => {
-        //  console.log('ID:', parsedData);
-        return parsedData;
-      });
-    }
-
-    /////////////////////////////////////////
-    //function
-    function toggleSubsections() {
-      //toggles the display of the next element in the node list, after the one clicked on
-      // console.log('Subsection slick');
-      // console.dir(this.nextElementSibling);
-      (this.nextElementSibling.style.display === "none") ?
-        (this.nextElementSibling.style.display = "flex") :
-        (this.nextElementSibling.style.display = "none") 
-    }
-
-    //Given a username, performs an api call and then, if the username isnt already in the streamersObject, it adds in an object with data for that user
-    function addStreamerToObject(userName) {
-      userNameApiCall(userName)
-        .then(result => {
-          // console.log(result);
-          name = result.users[0].name;
-          //If the streamersObject doesn't already have that streamer
-          if(! streamersObject.hasOwnProperty(name)) {
-            // console.log('in if');
-            streamersObject[name] = {};
-            streamersObject[name]['name'] = result.users[0].name;            
-            streamersObject[name]['_id'] = result.users[0]._id;
-            streamersObject[name]['display_name'] = result.users[0].display_name;
-            streamersObject[name]['bio'] = result.users[0].bio;
-            streamersObject[name]['logo'] = result.users[0].logo;
-
-            localStorage.setItem('streamersObject', JSON.stringify(streamersObject));
-            updateStreamersObject();
-            console.log('streamersObject:', streamersObject);
-          }
-             
-        // }).then(res => {
-        //   console.log('in then');
-        //     localStorage.setItem('streamersObject', JSON.stringify(streamersObject));
-        //     updateStreamersObject();
-        //      console.log('streamersObject:', streamersObject);
-        })
-        //Create a modal with a popup 'invalid username'
-        .catch(reject => console.log('reject'));
-    }
-
-    function updateStreamersObject() {
-      //Delete all currently existing nodes
-      deleteContentDivs();
-      // console.log('streamers object', streamersObject);
-      for(let object in streamersObject) {
-        // let name = object[Object.keys(object)[0]];
-        // console.log('name', name);
-        let id = streamersObject[object]._id;
-        // console.dir(object.itshafu);
-        idApiCall(id)
-        .then(result => {
-          //if stream is online
-          // console.log(result);
-          if(result.stream !== null) {
-          streamersObject[object]['stream_type'] = result.stream.stream_type;
-          streamersObject[object]['game'] = result.stream.game;
-          streamersObject[object]['preview'] = result.stream.preview.medium;
-          streamersObject[object]['statusMessage'] = result.stream.channel.status;
-          } else {
-            streamersObject[object]['stream_type'] = "offline";
-          }
-          // console.log(result);
-          //Render the div
-          // console.log(object);
-          console.log('about to call renderStreamer');
-          renderStreamer(object);
-        // }).then(res => {
-        //   console.log('streamsObject length:', Object.keys(streamersObject).length);
-        // console.log('about to call renderStreamer');
-        //   renderStreamer(object);
-         })
-      }
-    }
-    function renderStreamer(streamer) {
-      console.log(streamer);
-      //Create the streamer box for all streams
-      let streamerBox = document.createElement('div');
-      let offlineBox = document.createElement('div');
-      streamerBox.innerHTML = `
-        <div class="dummy" data-streamer="${streamer}">
-          <span class="title">${streamersObject[streamer].display_name}</span>
-          <a href=https://www.twitch.tv/${streamersObject[streamer].name} target="_blank" data-link="https://www.twitch.tv/${streamersObject[streamer].name}">
-            <img class="logo" src="${streamersObject[streamer].logo}" data-logo="${streamersObject[streamer].logo}" />
-          </a>
-          <span class="bio">${streamersObject[streamer].bio}</span>
-        </div>
-      `;
-      offlineBox.innerHTML = streamerBox.innerHTML;
-      streamsContent.appendChild(streamerBox);
-      if(streamersObject[streamer].stream_type === 'offline') {
-      offlineContent.appendChild(offlineBox);
-      }
-      //If online
-      // console.log(streamersObject[streamer].stream_type === 'live');
-      if(streamersObject[streamer].stream_type === 'live') {
-        let onlineBox = document.createElement('div');
-        onlineBox.innerHTML = `
-          <div class="dummy" data-streamer="${streamer}">
-            <span class="title">${streamersObject[streamer].display_name}</span>
-            <img class="screenshot" src="${streamersObject[streamer].preview}" data-logo="${streamersObject[streamer].logo}" />
-            <span class="bio"> Playing: ${streamersObject[streamer].game}</span>
-          </div>
-        `;
-        onlineContent.appendChild(onlineBox);
-      }
-     
-      //Attach it to all the sections it belongs in
-      
-    }
-
-    /////////////////////////////////////////////////
-    //event listeners
-    sectionTitles.forEach(section => {
-      section.addEventListener('click', toggleSubsections)
-    });
-    //Remove mode
-    removeButton.addEventListener('click', function() {
-      console.dir(this);
-      const imgs = streamsContent.querySelectorAll('img');
-      if(this.innerHTML === "Remove a stream") {
-        this.innerHTML = "Done";
-        imgs.forEach(img => {
-          // console.dir(this);
-          img.src = './can.png';
-          img.parentNode.href = "javascript:function() { return false; }";
-          img.addEventListener('click', removeDivFun)
-        })
-      } else if (this.innerHTML === "Done") {
-        // console.log('in else if');
-        this.innerHTML = "Remove a stream";
-        imgs.forEach(img => {
-          console.dir(img);
-          img.src = img.dataset.logo;
-          img.parentNode.href = img.parentNode.dataset.link;
-          img.removeEventListener('click', removeDivFun);
-        });
-        console.dir(streamersObject);
-        updateStreamersObject();
-      }
-      function removeDivFun() {
-            let streamer = this.parentNode.parentNode.streamer;
-            console.log('remove streamer div');
-            console.dir(streamersObject[this.parentNode.parentNode.dataset.streamer]);
-            delete streamersObject[this.parentNode.parentNode.dataset.streamer];
-            console.log('this.parentNode.parentNode: ', this.parentNode.parentNode.parentNode.parentNode);
-            this.parentNode.parentNode.parentNode.remove();
-            
-          }
-    });
-    function deleteContentDivs() {
-      const contentNodeList = document.querySelectorAll('.content');
-      contentNodeList.forEach(section => {
-        let subNodes = section.querySelectorAll('.dummy');
-        subNodes.forEach(streamerDiv => {
-          streamerDiv.remove();
-        });
-      });
-      // const streamerBoxesNodeList = document.querySelectorAll('.dummy');
-      // streamerBoxesNodeList.forEach(box => {
-        // document.removeChild(box);
-      // });
-    }
-    inputField.addEventListener('keydown', function(e) {
-      console.dir(e);
-      console.dir(this);
-      if (e.code === "Enter" && this.value !== "") {
-
-      }
-    })
-    inputField.addEventListener('keydown', function(e) {
-      // console.dir(e);
-      // console.dir(this);
-      if(this.value in streamersObject) {
-        //Create modal saying that stream has already been added
-        // console.log('already in streamers list');
-      }
-      else if (e.key === "Enter" && this.value !== "") {
-        // console.log('in if');
-        addStreamerToObject(this.value)
-      }
-    })
-    addButton.addEventListener('click', function(e) {
-      if(this.value in streamersObject) {
-        //Create modal saying that stream has already been added
-        // console.log('already in streamers list');
-      }
-      else if(this.value !== "") {
-        // console.log('in');
-        addStreamerToObject(this.value);
-      }
-    })
-
-    // userNameApiCall('itshafu').then(result => {console.dir(result)});
-    if(firstLoadFlag !== 'true') {
-      console.log(firstLoadFlag);
-      // addStreamerToObject('itshafu');
-      // addStreamerToObject('etup');
-      // addStreamerToObject('freecodecamp');
-      addStreamerToObject('vanguardstv');
-      addStreamerToObject('hsdogdog');
-      localStorage.setItem('firstLoadFlag', 'false');
-      firstLoadFlag = false;
-      updateStreamersObject();
-    }
-    // updateStreamersObject();
-  </script>
-
 </body>
+
 </html>
