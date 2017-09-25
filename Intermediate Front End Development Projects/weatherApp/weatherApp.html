@@ -1,293 +1,55 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="weatherApp.css">
+    <script src="scripts/index.js" type="text/javascript" defer="true"></script>
+    <title>
 
-  </title>
+    </title>
 </head>
+
 <body>
-    <style>
-        html {
-            height: 100%;
-            width: 100%;
-            background: #B2EBF2;
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: bold;
-        }
-        body {
-            height: 100%;
-            width: 100%;
-        }
-        .container {
-            margin: 60px auto;
-            display: flex;
-            flex-wrap: wrap;
-            width: 50%;
-            height: 50%;
-            font-size: 4vh;
-        }
-        .box {
-            width: 50%;
-        }
-        .box1 { 
-            height: 40%;
-            display: flex;
-            }
-        .left {
-            display: flex;  
-            flex-direction: column;    
-            width: 85%;                  
-        }
-        .current-temp-value {
-            display: block;
-            font-size: 3em;
-            width: 80%;
-        }
-        .current-time {
-            display: block;
-            width: 20%;
-        }
-        .right {
-            display: flex;
-            flex-direction: column;
-            width: 15%;
-            justify-content: space-around;
-        }
-        .toggle {
-            /*display: block;*/
-        }
-        /*.refresh-button {
-            background: #B2EBF2;
-            border: 2px solid black;
-            border-radius: 6%;
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: bold;
-        }*/
-        .box2 { 
-            /*background:#3498db;*/
-            height: 40%;
-            display: flex;            
-            }
-        .box3 { 
-            /*background:#9b59b6;*/
-            width: 100%;
-            height: 60%;
-            display: flex;
-            text-align: center;
-            padding: 10px;
-            border-top: 1px solid black;
-            }
-        .day-box {
-            /*flex: 1;*/
-            border-right: 1px solid black;
-            /*font-size: 1em;*/
-            width: 14.2857142857;
-            /*display: flex;
-            flex-direction: column;
-            justify-content: space-between;*/
-        }
-        img {
-            max-width: 100%;
-        }
-        .max {
-            display: block;
-        }
-        .current-weather-summary {
-            display: block;
-            margin: auto;
-            
-        }
-        .current-weather-image {
-            
-        }
-        .day-box7 {
-            border-right: none;
-        }
-        /*.box4 { background:#34495e;}*/
-    </style>
-
-  <div class="container">
-    <div class="box box1">
-        43 F
-    </div>
-    <div class="box box2">
-        <img src="./cloudy.svg">
-        cloudyy
-    </div>
-    <div class="box box3">
-        <div class="day-box day-box1">
-            Mon
-            <img src="./cloudy.svg">
-            70F
-            50F
+    <div class="container">
+        <div class="box current-temp-div">
+            43 F
         </div>
-        <div class="day-box day-box2">
-             Mon
-            <img src="./cloudy.svg">
-            70F
-            50F
+        <div class="box box2">
+            <img src="./images/cloudy.svg"> cloudyy
         </div>
-        <div class="day-box day-box3">
-             Mon
-            <img src="./cloudy.svg">
-            70F
-            50F
-        </div>
-        <div class="day-box day-box4">
-             Mon
-            <img src="./cloudy.svg">
-            70F
-            50F
-        </div>
-        <div class="day-box day-box5">
-             Mon
-            <img src="./cloudy.svg">
-            70F
-            50F
-        </div>
-        <div class="day-box day-box6">
-             Mon
-            <img src="./cloudy.svg">
-            70F
-            50F
-        </div>
-        <div class="day-box day-box7">
-             Mon
-            <img src="./cloudy.svg">
-            70F
-            50F
+        <div class="box weekday-wrapper">
+            <!-- <div class="day-box day-current-temp-div">
+                Mon
+                <img src="./images/cloudy.svg"> 70F 50F
+            </div>
+            <div class="day-box day-box2">
+                Mon
+                <img src="./images/cloudy.svg"> 70F 50F
+            </div>
+            <div class="day-box day-box3">
+                Mon
+                <img src="./images/cloudy.svg"> 70F 50F
+            </div>
+            <div class="day-box day-box4">
+                Mon
+                <img src="./images/cloudy.svg"> 70F 50F
+            </div>
+            <div class="day-box day-box5">
+                Mon
+                <img src="./images/cloudy.svg"> 70F 50F
+            </div>
+            <div class="day-box day-box6">
+                Mon
+                <img src="./images/cloudy.svg"> 70F 50F
+            </div>
+            <div class="day-box day-box7">
+                Mon
+                <img src="./images/cloudy.svg"> 70F 50F
+            </div> -->
         </div>
     </div>
-    <!--<div class="box box4">4</div>-->
-  </div>
-  <script>
-//Data and Elements      
-// 
-//    
-      //cachedData will hold all the data retrieved from the API
-      let cachedData;
-      let scale = "fahrenheit"; 
-      
-    //   `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/502110c7a4981f8355529b2f656802e5/${lat},${long}`
-      const currentTemp = document.querySelector('.box1')
-      const currentWeather = document.querySelector('.box2')
-      const weekDaysNodeList = document.querySelectorAll('.day-box');
-      //responseObj will hold all the data retrieved from the API
-      let responseObj;
-    //   let lat;
-    //   let long;
-    //   navigator.geolocation.getCurrentPosition(position => {
-    //       lat = position.coords.latitude;
-    //       long = position.coords.longitude;
-    //   }).then( data => {
-        navigator.geolocation.getCurrentPosition(position => {
-          lat = position.coords.latitude;
-          long = position.coords.longitude;
-        //   console.log(lat);
-            
-
-        fetch(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/502110c7a4981f8355529b2f656802e5/${lat},${long}`)
-        .then(response => {
-            return response.json();
-            })
-        .then(parsedData => {
-                cachedData = parsedData;
-                setCurrentTemp(parsedData), scale;
-                setCurrentWeather(parsedData);
-                setWeekWeather(parsedData);
-                return parsedData;
-                
-            });
-        }, err => {alert("Please allow geolocation")});
-      
-//Event Listeners 
-// 
-// 
-
-// .then(parsedData => {
-    // const toggle = document.querySelector('.toggle');
-    // toggle.addEventListener('click', function() {
-    //     console.log("toggle clicked");
-    // });
-
-    // console.log(toggle);
-    // console.log(parsedData);
-    // toggle.addEventListener('click', function() {
-    //     console.log('in');
-    //      (scale === "fahrenheit") ? scale = "celsius" : scale = "fahrenheit";
-    //      console.log(scale);
-    //     // setCurrentTemp(parsedData, scale);
-    
-    // });
-// toggle.addEventListener('click', () => {
-//     console.log('clicked');
-//     (scale === "fahrenheit") ? scale = "celsius" : scale = "fahrenheit";
-//  });
-// });
-//Functions
-// 
-// 
-function setCurrentTemp(data, scale) {
-    currentTime = new Date();
-    let temp;
-    //is scale is in celsius, convert to fahrenheit, otherwise set temp as given
-    (scale === "celsius") ? temp = (data.currently.temperature -32) * (5/9) : temp = data.currently.temperature;
-    currentTemp.innerHTML = `
-    <div class="left">
-        <div class="current-temp-value">
-            ${Math.floor(temp)} &#176
-        </div>
-        <div class="current-time">${currentTime.getHours()}:${currentTime.getMinutes()}</div>
-    </div>
-    <div class="right">
-        <div class="toggle">
-            F&#176<br /> C&#176
-        </div>
-        
-    </div>
-    `
-    let toggle;
-    toggle = document.querySelector('.toggle');
-    // console.log(toggle);
-    if(toggle !== "undefined") {
-    toggle.addEventListener('click', function() {
-        // console.log('in');
-         (scale === "fahrenheit") ? scale = "celsius" : scale = "fahrenheit";
-        //  console.log(scale);
-         setCurrentTemp(cachedData, scale);
-         setWeekWeather(cachedData, scale);
-    });
-}
-}
-function setCurrentWeather(data) {
-    currentWeather.innerHTML = `
-        <img class="current-weather-image" src="./${data.currently.icon}.svg">
-        <span class="current-weather-summary">${data.currently.summary}
-        </span>
-    `
-
-}
-function setWeekWeather(data, scale) {
-    
-    // console.log(tempMax);
-    // console.log(tempMin);
-    //data.daily.data (8 item array)
-    weekDaysNodeList.forEach((day, index) => {
-        let tempMax;
-        (scale === "celsius") ? tempMax = (data.daily.data[index].temperatureMax -32) * (5/9) : tempMax = data.daily.data[index].temperatureMax;
-        let tempMin;
-        (scale === "celsius") ? tempMin = (data.daily.data[index].temperatureMin -32) * (5/9) : tempMin = data.daily.data[index].temperatureMin;
-        day.innerHTML = `
-        Mon
-        <img src="./${data.daily.data[index].icon}.svg">
-        <span class="max">${Math.floor(tempMax)}
-        </span>
-        ${Math.floor(tempMin)}
-    `
-    })
-}
-  </script>
 
 </body>
+
 </html>
