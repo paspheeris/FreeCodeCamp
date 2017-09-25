@@ -64,15 +64,17 @@ body {
     display: flex;
     text-align: center;
     padding: 10px;
-    border-top: 1px solid black;
 }
 
 .day-box {
     border-right: 1px solid black;
+    border-top: 1px solid black;
     width: 14.2857142857;
 }
 
 img {
+    min-width: 60px;
+    min-height: 60px;
     max-width: 100%;
 }
 
@@ -85,6 +87,14 @@ img {
     margin: auto;
 }
 
-.day-box7 {
+.weekday-wrapper>div:last-child {
     border-right: none;
+}
+
+.temp-max {
+    display: block;
+}
+
+.temp-min {
+    display: block;
 }

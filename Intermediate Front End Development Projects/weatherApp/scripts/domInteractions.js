@@ -49,8 +49,8 @@ function weekDayDivsMarkup(data, scale) {
     return `<div class="day-box day-box3">
               <span class="weekday">${dayStrRepArr[date.getDay()]}</span>
               <img src=./images/${day.icon}.svg> 
-              <span class="tempMax">${getFormattedTemp(day.temperatureMax, scale)}</span> 
-              <span class="tempMin">${getFormattedTemp(day.temperatureMin, scale)}</span>
+              <span class="temp-max">${getFormattedTemp(day.temperatureMax, scale)}</span> 
+              <span class="temp-min">${getFormattedTemp(day.temperatureMin, scale)}</span>
             </div>`
   }).join('');
 }
