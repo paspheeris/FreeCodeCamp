@@ -12,10 +12,11 @@ navigator.geolocation.getCurrentPosition(position => {
       return response.json();
     })
     .then(parsedData => {
+      console.log(parsedData);
       cachedData = parsedData;
       createCurrentTempDiv(parsedData, scale, currentTempDiv);
       setCurrentWeather(parsedData);
-      setWeekWeather(parsedData);
+      createWeekWeatherDivs(parsedData, scale);
       registerToggleListener(cachedData, scale);
       return parsedData;
 
@@ -32,29 +33,10 @@ function createCurrentTempDiv(data, scale, domNode) {
   console.log(domNode);
   domNode.innerHTML = currentTempDivMarkup(temperature, scale);
 }
-function setCurrentWeather(data) {
-  currentWeather.innerHTML = `
-        <img class="current-weather-image" src="./images/${data.currently.icon}.svg">
-        <span class="current-weather-summary">${data.currently.summary}
-        </span>
-    `
-}
-function setWeekWeather(data, scale) {
+
+function createWeekWeatherDivs(data, scale) {
   console.log(data);
-  weekDaysNodeList.forEach((day, index) => {
-    let tempMax;
-    (scale === "celsius") ? tempMax = (data.daily.data[index].temperatureMax - 32) * (5 / 9) : tempMax = data.daily.data[index].temperatureMax;
-    let tempMin;
-    (scale === "celsius") ? tempMin = (data.daily.data[index].temperatureMin - 32) * (5 / 9) : tempMin = data.daily.data[index].temperatureMin;
-    //   day.innerHTML = `
-    //       Mon
-    //       <img src="./images/${data.daily.data[index].icon}.svg">
-    //       <span class="max">${Math.floor(tempMax)}
-    //       </span>
-    //       ${Math.floor(tempMin)}
-    //   `
-    // })
-    // weekDayWrapper.appendChild('di')
-  })
+  weekDayWrapper.innerHTML = weekDayDivsMarkup(data, scale);
+
 }
 // function createDayWeatherDiv(tempMax, tempMin)
