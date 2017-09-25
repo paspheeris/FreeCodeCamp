@@ -1,6 +1,3 @@
-// import { currentTempDiv } from './domInteractions.js';
-const currentTempDiv = require('./domInteractions.js');
-
 //cachedData will hold all the data retrieved from the API
 let cachedData;
 //default temp. scale is fahrenheit
@@ -16,46 +13,24 @@ navigator.geolocation.getCurrentPosition(position => {
     })
     .then(parsedData => {
       cachedData = parsedData;
-      setCurrentTemp(parsedData, scale, currentTempDiv);
+      createCurrentTempDiv(parsedData, scale, currentTempDiv);
       setCurrentWeather(parsedData);
       setWeekWeather(parsedData);
+      registerToggleListener(cachedData, scale);
       return parsedData;
 
     });
 }, err => { alert("Please allow geolocation") });
-
-setCurrentTemp(data, scale, domNode)
-function setCurrentTemp(data, scale) {
+function getFormattedTemp(temperatureInF, scale) {
+  return Math.floor(scale === "celsius"
+    ? (temperatureInF - 32) * (5 / 9)
+    : temperatureInF)
+}
+function createCurrentTempDiv(data, scale, domNode) {
   currentTime = new Date();
-  let temp;
-  //is scale is in celsius, convert to fahrenheit, otherwise set temp as given
-  (scale === "celsius") ? temp = (data.currently.temperature - 32) * (5 / 9) : temp = data.currently.temperature;
-  domNode.innerHTML = `
-    <div class="left">
-        <div class="current-temp-value">
-            ${Math.floor(temp)}&#176
-        </div>
-        <div class="current-time">${currentTime.getHours()}:${currentTime.getMinutes()}</div>
-    </div>
-    <div class="right">
-        <div class="toggle">
-            F&#176<br /> C&#176
-        </div>
-        
-    </div>
-    `
-  let toggle;
-  toggle = document.querySelector('.toggle');
-  // console.log(toggle);
-  if (toggle !== "undefined") {
-    toggle.addEventListener('click', function () {
-      // console.log('in');
-      (scale === "fahrenheit") ? scale = "celsius" : scale = "fahrenheit";
-      //  console.log(scale);
-      setCurrentTemp(cachedData, scale);
-      setWeekWeather(cachedData, scale);
-    });
-  }
+  const temperature = getFormattedTemp(data.currently.temperature, scale);
+  console.log(domNode);
+  domNode.innerHTML = currentTempDivMarkup(temperature, scale);
 }
 function setCurrentWeather(data) {
   currentWeather.innerHTML = `
