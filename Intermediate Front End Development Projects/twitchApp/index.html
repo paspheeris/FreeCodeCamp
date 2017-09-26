@@ -9,15 +9,19 @@
   <script src="scripts/dom.js" type="text/javascript" defer></script>
   <script src="scripts/api.js" type="text/javascript" defer></script>
   <script src="scripts/index.js" type="text/javascript" defer></script>
+  <script src="scripts/events.js" type="text/javascript" defer></script>
 </head>
 
 <body>
   <div class="wrapper">
     <div class="streams-div section-titles">All Streams</div>
     <div class="streams-content content">
-      <div class="controls">
+      <div class="form-message"></div>
+      <form class="add-form">
         <input class="input-field" type="text" placeholder="Stream Name">
-        <button class="add-button">Add stream</button>
+        <input type="submit" value="Add Stream" class="add-button">
+      </form>
+      <div class="control-buttons">
         <button class="remove-button">Remove a stream</button>
         <button class="remove-all-button">Remove all streams</button>
       </div>

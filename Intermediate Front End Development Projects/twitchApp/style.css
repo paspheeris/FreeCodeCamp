@@ -1,14 +1,15 @@
 body {
     background-color: #19171c;
 }
+
 .wrapper {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     width: 80%;
-    background-color:#dad8de
-
+    background-color: #dad8de
 }
+
 .section-titles {
     background-color: #dad8de;
     color: black;
@@ -18,11 +19,12 @@ body {
     font-weight: 400;
     font-family: Helvetica Neue, sans-serif;
     /*flex: 1;*/
-    
 }
+
 .section-titles:hover {
-  background:rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
 }
+
 .content {
     /*flex: 1;*/
     display: flex;
@@ -32,11 +34,14 @@ body {
     align-content: center;
     border-bottom: 3px solid #6441a4;
 }
+
+
 /*.content div {
     height: 250px;
     width: 250px;
     border: 1px solid blck;
 }*/
+
 .dummy {
     height: 250px;
     width: 250px;
@@ -52,47 +57,69 @@ body {
     /*align-content: center;*/
     /*align-items: center;*/
     padding: 10px;
-   background-size: cover;
-   background-color: rgba(0,0,0,0.3);
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.3);
 }
+
 .delete-dummy {
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0, 0, 0, 0.3);
 }
+
 .dummy .logo {
     height: 100px;
     width: 100px;
 }
+
 .dummy .title {
     display: block;
     font-size: 2em;
     width: 100%;
     text-align: center;
 }
+
 .dummy .bio {
     display: block;
+    overflow: hidden;
+    max-height: 33%;
 }
+
 .screenshot {
     width: 272px;
     height: 136px;
 }
-.controls {
+
+.form-message {
     width: 100%;
     align-self: flex-end;
     order: 2;
-    margin-top: 20px;
+    color: red;
+}
+
+.add-form {
+    width: 50%;
+    align-self: flex-end;
+    order: 3;
+    /* margin-top: 20px; */
     display: flex;
     /*justify-content: center;*/
 }
-.input-field {
 
-}
-.add-button {
-
-}
-.remove-button {
-    justify-content: flex-end;
-    margin-left: auto;
-}
-.remove-all-button {
+.control-buttons {
+    width: 50%;
     align-self: flex-end;
+    order: 4;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.input-field {}
+
+.add-button {}
+
+.remove-button {
+    /* justify-content: flex-end; */
+}
+
+.remove-all-button {
+    /* justify-content: flex-end; */
 }
