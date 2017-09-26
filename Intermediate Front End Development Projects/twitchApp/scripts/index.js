@@ -182,10 +182,9 @@ if (firstLoadFlag !== 'true') {
   // addStreamerToObject('freecodecamp');
   Promise.all([
     twitch.getUserName('vanguardstv'),
-    twitch.getUserName('etup')],
-    twitch.getUserName('trumpsc'))
+    twitch.getUserName('etup'),
+    twitch.getUserName('trumpsc')])
     .then(() => {
-
       twitch.update();
     })
   // addStreamerToObject('hsdogdog');
@@ -193,4 +192,5 @@ if (firstLoadFlag !== 'true') {
   firstLoadFlag = false;
   updateStreamersObject();
 }
+else twitch.update();
     // updateStreamersObject();

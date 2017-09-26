@@ -5,6 +5,9 @@ class TwitchApi {
     this.baseEndPoint = `https://api.twitch.tv/kraken/`;
     // this.update = this.update.bind(this);
   }
+  hydrate() {
+
+  }
   getUserName(userName) {
     const endpoint = `${this.baseEndPoint}users?login=${userName}`;
     return fetch(endpoint, {
@@ -26,24 +29,11 @@ class TwitchApi {
   }
 
   update() {
-    // console.log(this.cachedData);
-    // if (this.cachedData.vanguardstv === 'undefined') return;
-    // console.log('past if');
-    // // console.log(this);
-    // const id = this.cachedData.vanguardstv._id;
-    // const endpoint = `${this.baseEndPoint}streams/${id}`;
-    // let parsedData;
     console.log('cachedData in twitch.update', this.cachedData);
-    // console.log(Object.values(this.cachedData)[1]._id);
-    // const id = Object.values(this.cachedData)[1]._id;
-    const ids = Object.values(this.cachedData).map(streamer => {
-      return streamer._id;
-    });
-    console.log('ids:', ids);
+    const entries = Object.entries(this.cachedData);
     const baseEndpoint = this.baseEndPoint;
-    Promise.all(ids.map(id => {
-      const endpoint = `${baseEndpoint}streams/${id}`;
-      console.log('endpoint:', endpoint);
+    return Promise.all(entries.map(entry => {
+      const endpoint = `${baseEndpoint}streams/${entry[1]._id}`;
       return fetch(endpoint, {
         headers: {
           'Accept': 'application/vnd.twitchtv.v5+json',
@@ -54,22 +44,24 @@ class TwitchApi {
           return data.json();
         })
         .then(parsedData => {
-          console.log('parsedData', parsedData);
+          // console.log('parsedData', parsedData);
+          this.cachedData[entry[1].name].stream = parsedData.stream;
+          // console.log('this.cachedData at end of twitch.update()', this.cachedData);
           return parsedData;
-        });
-    }))
-      .then(promiseResults => {
-        console.log(promiseResults);
-      })
-      .catch(error => {
-        console.log(error);
-      })
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }));
   }
 }
 
 class LocalStore {
   saveStreamers(cachedData) {
     localStorage.setItem('streamers', cachedData);
+  }
+  getStreamers() {
+    return localStorage.getItem('streamers');
   }
 }
 
