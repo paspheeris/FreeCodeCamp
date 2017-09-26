@@ -180,8 +180,14 @@ if (firstLoadFlag !== 'true') {
   // addStreamerToObject('itshafu');
   // addStreamerToObject('etup');
   // addStreamerToObject('freecodecamp');
-  twitch.getUserName('vanguardstv');
-  twitch.getUserName('etup');
+  Promise.all([
+    twitch.getUserName('vanguardstv'),
+    twitch.getUserName('etup')],
+    twitch.getUserName('trumpsc'))
+    .then(() => {
+
+      twitch.update();
+    })
   // addStreamerToObject('hsdogdog');
   // localStorage.setItem('firstLoadFlag', 'false');
   firstLoadFlag = false;
