@@ -1,10 +1,3 @@
-///////////////////////////////////////
-//elements and data
-
-
-
-let firstLoadFlag = JSON.parse(localStorage.getItem('firstLoadFlag')) || true;
-const streamersObject = JSON.parse(localStorage.getItem('streamersObject')) || {};
 const ls = new LocalStore();
 const twitch = new TwitchApi('dll0wzapy7w7ich3dmaqpc0w1yopkc', ls);
 
@@ -19,56 +12,20 @@ function toggleSubsections() {
     (this.nextElementSibling.style.display = "flex") :
     (this.nextElementSibling.style.display = "none")
 }
-
-
-
-function updateStreamersObject() {
-  //Delete all currently existing nodes
-  deleteContentDivs();
-  // console.log('streamers object', streamersObject);
-  for (let object in streamersObject) {
-    // let name = object[Object.keys(object)[0]];
-    // console.log('name', name);
-    let id = streamersObject[object]._id;
-    // console.dir(object.itshafu);
-    twitch.getId(id)
-      .then(result => {
-        //if stream is online
-        // console.log(result);
-        if (result.stream !== null) {
-          streamersObject[object]['stream_type'] = result.stream.stream_type;
-          streamersObject[object]['game'] = result.stream.game;
-          streamersObject[object]['preview'] = result.stream.preview.medium;
-          streamersObject[object]['statusMessage'] = result.stream.channel.status;
-        } else {
-          streamersObject[object]['stream_type'] = "offline";
-        }
-        // console.log(result);
-        //Render the div
-        // console.log(object);
-        console.log('about to call renderStreamer');
-        renderStreamer(object);
-        // }).then(res => {
-        //   console.log('streamsObject length:', Object.keys(streamersObject).length);
-        // console.log('about to call renderStreamer');
-        //   renderStreamer(object);
-      })
-  }
-}
+// function updateStreamersObject() {
+//         if (result.stream !== null) {
+//           streamersObject[object]['stream_type'] = result.stream.stream_type;
+//           streamersObject[object]['game'] = result.stream.game;
+//           streamersObject[object]['preview'] = result.stream.preview.medium;
+//           streamersObject[object]['statusMessage'] = result.stream.channel.status;
+//         } else {
+//           streamersObject[object]['stream_type'] = "offline";
+//         }
+// }
 function renderStreamer(streamer) {
   console.log(streamer);
   //Create the streamer box for all streams
-  let streamerBox = document.createElement('div');
-  let offlineBox = document.createElement('div');
-  streamerBox.innerHTML = `
-        <div class="dummy" data-streamer="${streamer}">
-          <span class="title">${streamersObject[streamer].display_name}</span>
-          <a href=https://www.twitch.tv/${streamersObject[streamer].name} target="_blank" data-link="https://www.twitch.tv/${streamersObject[streamer].name}">
-            <img class="logo" src="${streamersObject[streamer].logo}" data-logo="${streamersObject[streamer].logo}" />
-          </a>
-          <span class="bio">${streamersObject[streamer].bio}</span>
-        </div>
-      `;
+
   offlineBox.innerHTML = streamerBox.innerHTML;
   streamsContent.appendChild(streamerBox);
   if (streamersObject[streamer].stream_type === 'offline') {
@@ -76,17 +33,17 @@ function renderStreamer(streamer) {
   }
   //If online
   // console.log(streamersObject[streamer].stream_type === 'live');
-  if (streamersObject[streamer].stream_type === 'live') {
-    let onlineBox = document.createElement('div');
-    onlineBox.innerHTML = `
-          <div class="dummy" data-streamer="${streamer}">
-            <span class="title">${streamersObject[streamer].display_name}</span>
-            <img class="screenshot" src="${streamersObject[streamer].preview}" data-logo="${streamersObject[streamer].logo}" />
-            <span class="bio"> Playing: ${streamersObject[streamer].game}</span>
-          </div>
-        `;
-    onlineContent.appendChild(onlineBox);
-  }
+  // if (streamersObject[streamer].stream_type === 'live') {
+  //   let onlineBox = document.createElement('div');
+  //   onlineBox.innerHTML = `
+  //         <div class="dummy" data-streamer="${streamer}">
+  //           <span class="title">${streamersObject[streamer].display_name}</span>
+  //           <img class="screenshot" src="${streamersObject[streamer].preview}" data-logo="${streamersObject[streamer].logo}" />
+  //           <span class="bio"> Playing: ${streamersObject[streamer].game}</span>
+  //         </div>
+  //       `;
+  //   onlineContent.appendChild(onlineBox);
+  // }
 
   //Attach it to all the sections it belongs in
 
@@ -174,23 +131,8 @@ addButton.addEventListener('click', function (e) {
   }
 })
 
-
-if (firstLoadFlag !== 'true') {
-  console.log(firstLoadFlag);
-  // addStreamerToObject('itshafu');
-  // addStreamerToObject('etup');
-  // addStreamerToObject('freecodecamp');
-  Promise.all([
-    twitch.getUserName('vanguardstv'),
-    twitch.getUserName('etup'),
-    twitch.getUserName('trumpsc')])
-    .then(() => {
-      twitch.update();
-    })
-  // addStreamerToObject('hsdogdog');
-  // localStorage.setItem('firstLoadFlag', 'false');
-  firstLoadFlag = false;
-  updateStreamersObject();
-}
-else twitch.update();
-    // updateStreamersObject();
+twitch.hydrate()
+  .then(streamers => {
+    // console.log('sometiing', something);
+    createAndAppend(streamers);
+  })

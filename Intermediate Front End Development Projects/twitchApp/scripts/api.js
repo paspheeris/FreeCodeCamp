@@ -6,7 +6,19 @@ class TwitchApi {
     // this.update = this.update.bind(this);
   }
   hydrate() {
-
+    const stored = ls.getStreamers();
+    if (stored === null) {
+      return Promise.all([
+        this.getUserName('vanguardstv'),
+        this.getUserName('etup'),
+        this.getUserName('trumpsc')])
+        .then(() => {
+          return this.update();
+        })
+    } else {
+      this.cachedData = stored;
+      return this.update();
+    }
   }
   getUserName(userName) {
     const endpoint = `${this.baseEndPoint}users?login=${userName}`;
@@ -52,7 +64,13 @@ class TwitchApi {
         .catch(error => {
           console.log(error);
         })
-    }));
+    }))
+      .then(promises => {
+        return this.cachedData;
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
 }
 
@@ -61,7 +79,7 @@ class LocalStore {
     localStorage.setItem('streamers', cachedData);
   }
   getStreamers() {
-    return localStorage.getItem('streamers');
+    return JSON.parse(localStorage.getItem('streamers'));
   }
 }
 
