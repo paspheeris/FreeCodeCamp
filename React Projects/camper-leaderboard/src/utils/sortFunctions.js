@@ -1,7 +1,8 @@
-import {SORT_TYPES} from '../actions/actionTypes';
+/* eslint default-case: 0 */
+import { SORT_TYPES } from '../actions/actionTypes';
 
 const sortFunction = (sortTypeString) => {
-  switch(sortTypeString) {
+  switch (sortTypeString) {
     case SORT_TYPES.NAME_DESC:
       return (a, b) => {
         let nameA = a.username.toUpperCase();
@@ -22,8 +23,8 @@ const sortFunction = (sortTypeString) => {
       return (a, b) => b.alltime - a.alltime;
     case SORT_TYPES.ALL_TIME_ASC:
       return (a, b) => a.alltime - b.alltime;
-      }
-    }
-  
+  }
+}
+
 
 export default sortFunction;

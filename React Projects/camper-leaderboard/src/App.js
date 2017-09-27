@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as camperActions from './actions/actions'
 
 import Header from './components/Header';
@@ -10,18 +10,13 @@ import Footer from './components/Footer';
 
 
 class App extends Component {
-  // constructor(props, context) {
-  //   super(props, context);
-  // }
-
   render() {
-    // console.log('this.props', this.props);
     return (
       <div className="App">
         <Header />
         <Table campers={this.props.campers}
-               sortBy={this.props.sortBy}
-               sort={this.props.actions.sort}/>
+          sortBy={this.props.sortBy}
+          sort={this.props.actions.sort} />
         <Footer />
       </div>
     );
@@ -29,13 +24,12 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  // console.log(state);
   return {
     campers: state.campers,
     sortBy: state.sortBy
   };
 }
-  
+
 
 function mapDispatchToProps(dispatch) {
   return {
