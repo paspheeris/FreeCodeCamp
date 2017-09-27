@@ -7,6 +7,9 @@ class TwitchApi {
   }
   hydrate() {
     const stored = ls.getStreamers();
+    if (ls.hasRemovedAll() && stored === null) {
+      return Promise.reject(undefined);
+    }
     if (stored === null) {
       return Promise.all([
         this.getUserName('vanguardstv'),
@@ -32,11 +35,15 @@ class TwitchApi {
         return data.json();
       })
       .then(parsedData => {
-        // console.log(this);
-        const obj = parsedData.users[0];
-        this.cachedData[userName] = obj;
-        ls.saveStreamers(JSON.stringify(this.cachedData));
-        return parsedData
+        // console.log(parsedData);
+
+        if (parsedData.users.length < 1) return Promise.reject('invalid user name');
+        else {
+          const obj = parsedData.users[0];
+          this.cachedData[userName] = obj;
+          ls.saveStreamers(JSON.stringify(this.cachedData));
+          return parsedData
+        }
       })
   }
 
@@ -72,6 +79,18 @@ class TwitchApi {
         console.log(error);
       })
   }
+  removeUser(name) {
+    delete this.cachedData[name];
+    console.log(this.cachedData);
+    ls.saveStreamers(JSON.stringify(this.cachedData));
+  }
+  getAllCachedNames() {
+    return Object.keys(this.cachedData);
+  }
+  deleteCachedData() {
+    this.cachedData = {};
+    ls.clear();
+  }
 }
 
 class LocalStore {
@@ -81,20 +100,11 @@ class LocalStore {
   getStreamers() {
     return JSON.parse(localStorage.getItem('streamers'));
   }
+  clear() {
+    localStorage.clear();
+    localStorage.setItem('hasRemovedAll', 'true');
+  }
+  hasRemovedAll() {
+    return JSON.parse(localStorage.getItem('hasRemovedAll')) === true;
+  }
 }
-
-
-//Given a username, performs an api call and then, if the username isnt already in the streamersObject, it adds in an object with data for that user
-// function addStreamerToObject(userName) {
-//   twitch.getUserName(userName)
-
-
-//       // }).then(res => {
-//       //   console.log('in then');
-//       //     localStorage.setItem('streamersObject', JSON.stringify(streamersObject));
-//       //     updateStreamersObject();
-//       //      console.log('streamersObject:', streamersObject);
-//     })
-//     //Create a modal with a popup 'invalid username'
-//     .catch(reject => console.log('reject'));
-// }
