@@ -1,15 +1,14 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 
-import { loadState, saveState } from './localStorage';
+import {  saveState } from './localStorage';
 import rootReducer from './reducers/index';
 // import {users, polls} from './api/mockData';
 
-import freezer from 'redux-freezer';
 import thunk from 'redux-thunk';
 
 import auth from './auth/Auth';
-import {injectAuthData, fetchData} from './actions/actions';
+import { fetchData} from './actions/actions';
 
 //Inject auth data into store from localstorage if there is valid auth data
 //(in case of a page reload etc)

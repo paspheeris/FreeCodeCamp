@@ -23,7 +23,7 @@ function polls(state = {}, action) {
     case VOTE:
       if (!action.payload) return state;
       if (action.payload.error) return state;
-      const { uuid, choice } = action.payload;
+      const { uuid } = action.payload;
       console.log(action);
       return update(state, { byId: { [uuid]: { $set: action.payload.responseData } } })
 

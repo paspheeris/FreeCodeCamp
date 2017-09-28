@@ -1,4 +1,4 @@
-import mockApi from '../api/mockApi';
+// import mockApi from '../api/mockApi';
 import prodApi from '../api/prodApi';
 import auth from '../auth/Auth';
 
@@ -10,7 +10,7 @@ export const DROP_AUTH_DATA = 'DROP_AUTH_DATA';
 export const INJECT_PROFILE = 'INJECT_PROFILE';
 export const EDIT_POLL = 'EDIT_POLL';
 
-const mock = new mockApi();
+// const mock = new mockApi();
 const prod = new prodApi();
 export const submitVote = thunkCreate(prod.submitVote, VOTE);
 export const createPoll = thunkCreate(prod.createPoll, CREATE_POLL);

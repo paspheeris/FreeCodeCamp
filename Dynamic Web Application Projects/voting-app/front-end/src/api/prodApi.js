@@ -1,10 +1,3 @@
-import { polls, users } from './mockData';
-import auth from '../auth/Auth';
-import update from 'immutability-helper';
-
-const DELAY = 500;
-
-
 export default class mockApi {
   constructor() {
     this.endpoint = 'http://localhost:7777/';

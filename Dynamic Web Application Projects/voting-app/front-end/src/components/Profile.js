@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import auth from '../auth/Auth';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {Message, Divider } from 'semantic-ui-react';

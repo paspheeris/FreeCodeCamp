@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Chart from 'chart.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import update from 'immutability-helper';
 import { Redirect } from 'react-router';
 import { Message } from 'semantic-ui-react';
 
@@ -34,7 +32,7 @@ class PollCreateEdit extends Component {
   handleChoiceChange(e) {
     // console.log(e.target.name, 'hur', e.target.value);
     // console.log(e.target.dataset.something);
-    const ind = parseInt(e.target.dataset.something);
+    const ind = parseInt(e.target.dataset.something, 10);
     //Typing into the empty field
   if(e.target.name === '') {
     // console.log('if')
@@ -114,7 +112,7 @@ class PollCreateEdit extends Component {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />
     }
-    const { uuid, actions, mode, userId } = this.props;
+    const {   mode, userId } = this.props;
     if (!userId) return (<LoginNotice message="You must be logged in to create or edit a poll." />);
     return (
       <div>

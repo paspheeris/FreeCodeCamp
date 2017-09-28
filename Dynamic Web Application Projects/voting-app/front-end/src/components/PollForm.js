@@ -1,6 +1,7 @@
+/* eslint no-mixed-operators: 0 */
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Form, Dropdown, Input, Select, Button, Divider } from 'semantic-ui-react'
+// import PropTypes from 'prop-types'
+import { Form,    Button} from 'semantic-ui-react'
 
 // const propTypes = {}
 
@@ -15,7 +16,6 @@ class PollForm extends Component {
   createButtonIsActive = () => {
     // if(!this.props.choices[1]) return false;
     // console.log(this.props.choices[0], this.props.choices[1], this.props.question);
-    console.log(this.props.areDuplicateFormChoices);
     if(this.props.choices[0] === "Choice A"
        && this.props.choices[1] === "Choice B"
        && this.props.question === "Poll Question"

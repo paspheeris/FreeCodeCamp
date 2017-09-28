@@ -1,83 +1,47 @@
 .pollsDisplay-wrapper {
     width: 100vw;
-    /* margin: 0; */
     justify-content: center;
     flex-wrap: wrap;
     display: flex;
-    /* background-color: rgba(0, 0, 0, .05); */
 }
 
 .pollsDisplay-topText {
-    flex-basis: 80%;
+    flex-basis: 100%;
     max-width: 80%;
     margin-left: 10%;
     margin-right: 10%;
-    max-height: 10vh;
 }
 
-
-/* body {
-    background-color: rgba(0, 0, 0, .95);
-} */
-
-
-/* .SinglePollDisplay-wrapper {
-    flex-basis: 30%;
-    flex-shrink: 1;
-} */
+.LandingPage-topText {
+    font-size: 4em;
+}
 
 .PollVoteView {
     max-width: 80%;
     margin: 0 auto;
 }
 
-
-/* .Profile-wrapper {
-    max-width: 80%;
-    margin: 0 auto;
-} */
-
 canvas {
     margin-top: 15px;
     margin-bottom: 15px;
-    /* margin: 15px; */
 }
-
-
-/* .VotePicker-form {
-    margin: 0 auto;
-} */
 
 .LandingPage-wrapper {
+    max-width: 80%;
+    margin: 0 auto;
     display: flex;
-    flex-wrap: wrap;
-    height: 80vh;
-}
-
-.LandingPage-Segment {
-    width: 60%;
-    margin: 0px;
-    padding: 2em;
+    flex-direction: column;
+    height: 100vh;
+    /* justify-content: center; */
+    align-items: center;
 }
 
 .ballotBox-image {
-    /* flex-basis: .5;
-    flex-grow: 1; */
     width: 40%;
-    /* float: right; */
-    /* vertical-align: center */
 }
-
-
-/* 
-ul {
-    display: block;
-    vertical-align: center;
-} */
 
 .LandingPage-lowerSegment {
     flex-basis: 100%;
-    /* height: 100%; */
     min-height: 80%;
     display: flex;
 }
@@ -85,4 +49,12 @@ ul {
 .PollForm-wrapper {
     max-width: 80%;
     margin: 0 auto;
+}
+
+.features-list {
+    font-size: 1.5em;
+}
+
+.ui.divider {
+    width: 100%;
 }

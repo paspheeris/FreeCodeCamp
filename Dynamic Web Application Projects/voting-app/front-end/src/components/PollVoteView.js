@@ -1,5 +1,4 @@
 import React from 'react';
-import Chart from 'chart.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -9,7 +8,6 @@ import { submitVote } from '../actions/actions';
 
 const PollVoteView = ({ poll, _id, actions, votePending, voteError }) => {
   if (!poll) return false;
-  let hasVoted = false;
 
   return (
     <div className="PollVoteView">

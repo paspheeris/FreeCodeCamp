@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types';
-import {Form, Dropdown, Input, Select, Button, Divider } from 'semantic-ui-react'
+// import PropTypes from 'prop-types';
+import {Form,   Select, Button, Divider } from 'semantic-ui-react'
 
 
-const propTypes = {}
+// const propTypes = {}
 
-const defaultProps = {}
+// const defaultProps = {}
 
 class VotePicker extends Component {
   constructor(props) {
@@ -66,19 +66,6 @@ class VotePicker extends Component {
         </Form.Field>
         <Button disabled={!voteButtonIsActive} color={voteButtonIsActive ? 'green' : 'grey'} type="submit" onClick={this.handleVoteSubmit}>Vote!</Button>
       </Form>
-      // <form id="vote_select">
-      //   <select form="vote-select" disabled={this.state.optionInputForm ? true : false} onChange={this.handleVoteChoiceChange}>
-      //     {this.allChoices.map((choice, ind) => {
-      //       return (
-      //         <option key={ind} value={choice}>{choice}</option>
-      //       )
-      //     })}
-      //   </select>
-      //   <span>Or add your own choice to the poll:</span>
-      //   {/* <input type="text" value={this.state.optionInputForm} onChange={this.handleOptionInput} />
-      //   {!this.props.votePending && <input type="submit" value="Vote" onClick={this.handleVoteSubmit} />} */}
-      //   {!this.props.voteError || <p>There was an error submitting your vote. Please try again.</p>}
-      // </form>
     )
   }
 }

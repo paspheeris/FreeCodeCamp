@@ -1,5 +1,4 @@
 import { INJECT_AUTH_DATA, DROP_AUTH_DATA, INJECT_PROFILE } from '../actions/actions';
-import update from 'immutability-helper';
 
 function auth(state = {}, action) {
   // console.log('state in auth reducer', action);
