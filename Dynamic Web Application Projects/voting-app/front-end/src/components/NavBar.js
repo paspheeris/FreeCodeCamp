@@ -45,7 +45,7 @@ function loginOrLogout() {
       {isLoggedIn() && <Menu.Item as={Link} to="/profile" active={location.pathname === '/profile'} name="Profile" disabled={!isLoggedIn()} />}
       <Menu.Menu position="right">
         <Menu.Item name="Login" disabled={isLoggedIn()} onClick={auth.login} />
-        <Menu.Item name="Logout" disabled={!isLoggedIn()} onClick={actions.dropAuthData} />
+        <Menu.Item as={Link} to="/" name="Logout" disabled={!isLoggedIn()} onClick={actions.dropAuthData} />
       </Menu.Menu>
     </Menu>
     // <nav className="navbar">

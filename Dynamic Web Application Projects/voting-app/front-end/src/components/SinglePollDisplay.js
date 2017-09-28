@@ -26,11 +26,11 @@ class SinglePollDisplay extends React.Component {
     let noVotesYet = false;
     //Only redraw chart colors first time
     if (!this.backgroundColors) {
-      this.backgroundColors = choices.map(() => this.randomRGBA(.5));
+      this.backgroundColors = choices.map(() => this.randomRGBA(.4));
     }
     //Or also redraw chart colors if a new choice is added
     if (this.backgroundColors.length !== choices.length) {
-      this.backgroundColors = choices.map(() => this.randomRGBA(.5));
+      this.backgroundColors = choices.map(() => this.randomRGBA(.4));
     }
     //By default, no chart will be drawn if the array of votes for a poll
     //only contains 0's. In that case, we substitute an array of 1's for the votes, and in the label callback for the chart below, we show a decremented version for the labels if the noVotesYet flag === true

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import auth from '../auth/Auth';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {Message } from 'semantic-ui-react';
+import {Message, Divider } from 'semantic-ui-react';
 
 import { injectAuthData } from '../actions/actions';
 
@@ -41,6 +41,7 @@ class Profile extends Component {
       <div className="pollsDisplay-topText">
         <h1>Your Polls:</h1>
         <i>Click on a poll to edit or delete it.</i>
+        <Divider />
       </div>
       {this.props.profile && 
         <Polls filteredPolls={this.props.userPolls} linkToEdit={true}/>}
