@@ -14,8 +14,6 @@ class PollForm extends Component {
     }
   }
   createButtonIsActive = () => {
-    // if(!this.props.choices[1]) return false;
-    // console.log(this.props.choices[0], this.props.choices[1], this.props.question);
     if(this.props.choices[0] === "Choice A"
        && this.props.choices[1] === "Choice B"
        && this.props.question === "Poll Question"
@@ -51,16 +49,5 @@ class PollForm extends Component {
     )
   }
 }
-// <form>
-//   <input type="text" name="question" value={question} onChange={this.props.handleTitleChange}/>
-//   {choices.concat('').map((choice, ind) => {
-//     return <input key={ind} type="text" name={choice} value={choice} onChange={this.props.handleChoiceChange}/>
-//   })}
-//   <input type="submit" value={this.props.mode} onClick={submitPoll}/>
-// </form>
-
-// PollForm.propTypes = propTypes
-
-// PollForm.defaultProps = defaultProps
 
 export default PollForm

@@ -29,7 +29,6 @@ class Profile extends Component {
   }
 
   render() {
-    console.log('this.props.profile:', this.props.profile);
     return (
       <div className="Profile-wrapper">
       {!this.props.profile && 
@@ -52,13 +51,7 @@ class Profile extends Component {
 // Profile.propTypes = propTypes
 
 // Profile.defaultProps = defaultProps
-// function mapStateToProps(state,ownProps) {
-//   return {
-//     poll: state.polls.byId[ownProps.match.params.uuid] || blankPoll,
-//     uuid: ownProps.match.params.uuid,
-//     mode: ownProps.match.params.mode
-//   }
-// };
+
 function getUserPolls(state) {
   if(!state.auth.profile) return null;
   return Object.values(state.polls.byId).filter(poll => {

@@ -1,7 +1,6 @@
 import { INJECT_AUTH_DATA, DROP_AUTH_DATA, INJECT_PROFILE } from '../actions/actions';
 
 function auth(state = {}, action) {
-  // console.log('state in auth reducer', action);
   switch(action.type){
   case INJECT_AUTH_DATA:
     const {access_token, expires_at, id_token} = action.payload;

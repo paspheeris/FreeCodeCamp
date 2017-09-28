@@ -27,7 +27,6 @@ const Polls = ({allPolls, allIds, filteredPolls, linkToEdit}) => {
 }
 
 function mapStateToProps(state) {
-  // console.log(state);
   return {
     allPolls: state.polls.byId,
     allIds: state.polls.allIds

@@ -16,7 +16,6 @@ function isLoggedIn() {
   return expires_at > Date.now();
 }
 
-  console.log('location.pathname', location.pathname);
   return (
     <Menu stackable>
       <Menu.Item as={Link} to="/" active={location.pathname === '/'} name="Home" />

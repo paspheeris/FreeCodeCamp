@@ -10,7 +10,6 @@ function ui(state = {}, action) {
           voteError: {$set: false}});
       }
       if(action.payload.error) {
-        // console.log(action.payload.error);
         return update(state, {
           votePending: {$apply: bool => !bool},
           voteError: {$set: true}

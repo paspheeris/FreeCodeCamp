@@ -12,15 +12,10 @@ class SinglePollDisplay extends React.Component {
   }
 
   drawChart(canvasEl) {
-    // if(!canvasEl) return;
-    // console.log(this.props);
     const { question, allChoices, votesByChoice } = this.props.poll;
     if (!votesByChoice) {
       return;
     }
-    // let {votes, choices} = this.props;
-    // const choices = Object.keys(this.props.poll.choicesAndVotes).sort();
-    // let votes = choices.map(key => this.props.poll.choicesAndVotes[key]);
     const choices = allChoices;
     let votes = votesByChoice.map(obj => obj.count);
     let noVotesYet = false;
@@ -81,10 +76,7 @@ class SinglePollDisplay extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    //Don't redraw the chart simply because votePending changed
-    // console.log(nextProps);
     if (!this.props.votePending && nextProps.votePending) return false;
-    // if(this.props.votePending || this.props.voteError) return false;
     return true;
   }
 
@@ -110,11 +102,9 @@ class SinglePollDisplay extends React.Component {
   }
 
   render() {
-    // const {question, votes, ind} = this.props;
     if (!this.props.poll) return false;
     return (
       <div className="SinglePollDisplay-wrapper">
-        {/*style={{width:"30%", height:"30%"}}*/}
         <canvas ref={(canvas) => { this.canvasEl = canvas }}></canvas>
       </div>
     )

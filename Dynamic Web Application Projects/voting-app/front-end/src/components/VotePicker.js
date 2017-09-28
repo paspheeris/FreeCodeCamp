@@ -23,13 +23,10 @@ class VotePicker extends Component {
   }
 
   handleVoteChoiceChange(e, data) {
-    console.dir(e.target);
-    console.log(data);
     this.setState({ currentVoteOption: data.value });
   }
   handleVoteSubmit(e) {
     e.preventDefault();
-    console.log('props in voteSubmit', this.props);
     let addedChoice = false;
     if (this.state.optionInputForm !== '' &&
       !this.allChoices.includes(this.state.optionInputForm)) {
@@ -47,7 +44,6 @@ class VotePicker extends Component {
   }
 
   render() {
-    // console.log(this.props.voteError);
     const dropdownOptions = this.allChoices.map((choice, ind) => {return {key: choice, value: choice, text: choice}})
     const dropdownIsDisabled = this.state.optionInputForm ? true : false;
     const voteButtonIsActive = this.state.optionInputForm || this.state.currentVoteOption;
@@ -58,7 +54,6 @@ class VotePicker extends Component {
         </Form.Field>
         <Select placeholder="Choose an option..." options={dropdownOptions} 
           disabled={dropdownIsDisabled} onChange={this.handleVoteChoiceChange}/>
-        {/* <Input action="Vote" placeholder="Enter your choice..." onChange={this.handleOptionInput} onSubmit={this.handleVoteSubmit} /> */}
         <Divider horizontal>or</Divider>
         <Form.Field>
           <label>Enter your own option:</label>

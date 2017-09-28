@@ -24,18 +24,14 @@ class PollCreateEdit extends Component {
   }
 
   handleTitleChange(e) {
-    // console.log(e.target, e.target.value);
     this.setState({
       question: e.target.value
     })
   }
   handleChoiceChange(e) {
-    // console.log(e.target.name, 'hur', e.target.value);
-    // console.log(e.target.dataset.something);
     const ind = parseInt(e.target.dataset.something, 10);
     //Typing into the empty field
   if(e.target.name === '') {
-    // console.log('if')
     this.setState({
       allChoices:  [...this.state.allChoices, e.target.value],
       votesByChoice: this.state.votesByChoice.concat({choiceName: e.target.value, count: 0})
@@ -43,7 +39,6 @@ class PollCreateEdit extends Component {
   }
   //Backspace deleting a field 
   else if(!e.target.value) {
-    // console.log('else if');
     this.setState({
       allChoices: this.state.allChoices.filter(el => el !== e.target.name),
       votesByChoice: this.state.votesByChoice.filter(choice => choice.choiceName !== e.target.name)
@@ -51,17 +46,12 @@ class PollCreateEdit extends Component {
   }
   //Modifying an existing field
   else {
-    // console.log('else')
     this.setState({
       allChoices: this.state.allChoices.map((el, i) => {
-        // if(el === e.target.name) return e.target.value;
-        // return el;
         if(i === ind) return e.target.value;
         return el;
       }),
       votesByChoice: this.state.votesByChoice.map((choice, i) => {
-        // if(choice.choiceName === e.target.name) return {choiceName: e.target.value, count: choice.count};
-        // return choice;
         if(i === ind) return {choiceName: e.target.value, count: choice.count};
         return choice;
       })
@@ -91,9 +81,6 @@ class PollCreateEdit extends Component {
         : accum[choice] = 1;
       return accum;
     }, {});
-    // return Object.entries(dict).reduce( (accum, entry) => {
-
-    // }, []);
     return Object.values(dict).some(count => count > 1);
   }
 
@@ -103,7 +90,6 @@ class PollCreateEdit extends Component {
     });
   }
   componentWillReceiveProps(nextProps) {
-    console.log('nextProps in CWRP', nextProps);
     this.setState({
       ...nextProps.poll
     });
@@ -116,7 +102,6 @@ class PollCreateEdit extends Component {
     if (!userId) return (<LoginNotice message="You must be logged in to create or edit a poll." />);
     return (
       <div>
-        {console.log(this.areDuplicateFormChoices())}
         {this.areDuplicateFormChoices() && <Message header='Poll choices must be unique' error />}
         <PollForm question={this.state.question} choices={this.state.allChoices} handleTitleChange={this.handleTitleChange} handleChoiceChange={this.handleChoiceChange} mode={mode} submitPoll={this.submitPoll} areDuplicateFormChoices={this.areDuplicateFormChoices()}/>
         <div>
@@ -135,7 +120,6 @@ const blankPoll = {
   question: "Poll Question",
 
   allChoices: ["Choice A", "Choice B"],
-  // votesByChoice: {"Choice A": 0, "Choice B": 0},
   votesByChoice: [{ choiceName: "Choice A", count: 0 }, { choiceName: "Choice B", count: 0 }],
   participants: []
 }
