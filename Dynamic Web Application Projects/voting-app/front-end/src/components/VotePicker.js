@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import {Form, Dropdown, Input, Select, Button, Divider } from 'semantic-ui-react'
 
 
 const propTypes = {}
@@ -12,7 +13,7 @@ class VotePicker extends Component {
     this.allChoices = this.props.allChoices;
 
     this.state = {
-      currentVoteOption: this.allChoices[0],
+      currentVoteOption: '',
       optionInputForm: ''
     }
 
@@ -21,8 +22,10 @@ class VotePicker extends Component {
     this.handleOptionInput = this.handleOptionInput.bind(this);
   }
 
-  handleVoteChoiceChange(e) {
-    this.setState({ currentVoteOption: e.target.value });
+  handleVoteChoiceChange(e, data) {
+    console.dir(e.target);
+    console.log(data);
+    this.setState({ currentVoteOption: data.value });
   }
   handleVoteSubmit(e) {
     e.preventDefault();
@@ -45,21 +48,37 @@ class VotePicker extends Component {
 
   render() {
     // console.log(this.props.voteError);
+    const dropdownOptions = this.allChoices.map((choice, ind) => {return {key: choice, value: choice, text: choice}})
+    const dropdownIsDisabled = this.state.optionInputForm ? true : false;
+    const voteButtonIsActive = this.state.optionInputForm || this.state.currentVoteOption;
     return (
-      <form id="vote_select">
-        <select form="vote-select" disabled={this.state.optionInputForm ? true : false} onChange={this.handleVoteChoiceChange}>
-          {this.allChoices.map((choice, ind) => {
-            return (
-              <option key={ind} value={choice}>{choice}</option>
-            )
-          })}
-        </select>
-        <span>Or add your own choice to the poll:</span>
-        <input type="text" value={this.state.optionInputForm} onChange={this.handleOptionInput} />
-        {/*{this.state.currentVoteOption && <p>dd{this.state.currentVoteOption}</p>}*/}
-        {!this.props.votePending && <input type="submit" value="Vote" onClick={this.handleVoteSubmit} />}
-        {!this.props.voteError || <p>There was an error submitting your vote. Please try again.</p>}
-      </form>
+      <Form className="VotePicker-Form">
+        <Form.Field>
+        <label>Vote Choice:</label>
+        </Form.Field>
+        <Select placeholder="Choose an option..." options={dropdownOptions} 
+          disabled={dropdownIsDisabled} onChange={this.handleVoteChoiceChange}/>
+        {/* <Input action="Vote" placeholder="Enter your choice..." onChange={this.handleOptionInput} onSubmit={this.handleVoteSubmit} /> */}
+        <Divider horizontal>or</Divider>
+        <Form.Field>
+          <label>Enter your own option:</label>
+          <input placeholder="choice..." value={this.state.optionInputForm} onChange={this.handleOptionInput}/>
+        </Form.Field>
+        <Button disabled={!voteButtonIsActive} color={voteButtonIsActive ? 'green' : 'grey'} type="submit" onClick={this.handleVoteSubmit}>Vote!</Button>
+      </Form>
+      // <form id="vote_select">
+      //   <select form="vote-select" disabled={this.state.optionInputForm ? true : false} onChange={this.handleVoteChoiceChange}>
+      //     {this.allChoices.map((choice, ind) => {
+      //       return (
+      //         <option key={ind} value={choice}>{choice}</option>
+      //       )
+      //     })}
+      //   </select>
+      //   <span>Or add your own choice to the poll:</span>
+      //   {/* <input type="text" value={this.state.optionInputForm} onChange={this.handleOptionInput} />
+      //   {!this.props.votePending && <input type="submit" value="Vote" onClick={this.handleVoteSubmit} />} */}
+      //   {!this.props.voteError || <p>There was an error submitting your vote. Please try again.</p>}
+      // </form>
     )
   }
 }

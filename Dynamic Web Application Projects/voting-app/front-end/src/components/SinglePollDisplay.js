@@ -40,6 +40,7 @@ class SinglePollDisplay extends React.Component {
     }
 
     const ctx = canvasEl;
+    Chart.defaults.global.defaultFontFamily = "sans-serif";
     this.myChart = new Chart(ctx, {
       type: 'doughnut',
       data: {

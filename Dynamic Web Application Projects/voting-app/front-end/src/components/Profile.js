@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import auth from '../auth/Auth';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {Message } from 'semantic-ui-react';
 
 import { injectAuthData } from '../actions/actions';
 
@@ -29,9 +30,20 @@ class Profile extends Component {
   }
 
   render() {
+    console.log('this.props.profile:', this.props.profile);
     return (
-      <div>
-        {this.props.profile && <Polls filteredPolls={this.props.userPolls} linkToEdit={true}/>}
+      <div className="Profile-wrapper">
+      {!this.props.profile && 
+        <Message color="orange">
+          <Message.Header>It looks like you haven't created any polls yet.</Message.Header>
+          <p>Click on 'Create a Poll' to get started</p>
+        </Message>}
+      <div className="pollsDisplay-topText">
+        <h1>Your Polls:</h1>
+        <i>Click on a poll to edit or delete it.</i>
+      </div>
+      {this.props.profile && 
+        <Polls filteredPolls={this.props.userPolls} linkToEdit={true}/>}
       </div>
     )
   }

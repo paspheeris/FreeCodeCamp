@@ -5,19 +5,14 @@ import { Link } from 'react-router-dom';
 import SinglePollDisplay from './SinglePollDisplay';
 
 const Polls = ({allPolls, allIds, filteredPolls, linkToEdit}) => {
-  // console.log(polls);
-  // console.log(allPolls);
   let pollsToShow = filteredPolls || allPolls;
-  // if(filterType === 'showNone') return false;
-  // if(filterType === 'authorId') {
-  //   idsToShow = allIds.filter(id => {
-  //     return polls[id].author_id === filter;
-  //   });
-    
-  
-  // console.log(idsToShow);
   return (
     <div className="pollsDisplay-wrapper">
+      {!filteredPolls &&
+      <div className="pollsDisplay-topText">
+        <h1>All Polls</h1>
+        <i>Click on a poll to vote on it or add a choice</i>
+      </div>}
       {Object.values(pollsToShow).map((poll, ind) => {
         return (
           <Link key={ind} to={linkToEdit ? `/poll/edit/${poll._id}` : `/poll/vote/${poll._id}`}>

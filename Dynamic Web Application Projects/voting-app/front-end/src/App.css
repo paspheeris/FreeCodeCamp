@@ -1,42 +1,42 @@
-/*.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}*/
-/*body {
-  background-color: lightgray;
-}*/
 .pollsDisplay-wrapper {
-  width: 100vw;
-  margin: 0;
-  flex-wrap: wrap;
-  display: flex;
+    width: 100vw;
+    /* margin: 0; */
+    justify-content: center;
+    flex-wrap: wrap;
+    display: flex;
 }
-.SinglePollDisplay-wrapper {
-  /*flex: 1;*/
-  flex-basis: 30%;
-  flex-shrink: 1;
-  /*flex-grow: 1;*/
+
+.pollsDisplay-topText {
+    flex-basis: 100%;
+    max-width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
-input {
-  display: block;
+
+
+/* .SinglePollDisplay-wrapper {
+    flex-basis: 30%;
+    flex-shrink: 1;
+} */
+
+.PollVoteView {
+    max-width: 80%;
+    margin: 0 auto;
 }
+
+
+/* .Profile-wrapper {
+    max-width: 80%;
+    margin: 0 auto;
+} */
+
+canvas {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    /* margin: 15px; */
+}
+
+
+/* .VotePicker-form {
+    margin: 0 auto;
+} */
