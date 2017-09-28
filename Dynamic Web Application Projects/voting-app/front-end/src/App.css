@@ -81,3 +81,8 @@ ul {
     min-height: 80%;
     display: flex;
 }
+
+.PollForm-wrapper {
+    max-width: 80%;
+    margin: 0 auto;
+}

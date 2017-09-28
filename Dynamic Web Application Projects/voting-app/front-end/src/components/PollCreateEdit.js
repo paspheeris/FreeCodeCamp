@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import update from 'immutability-helper';
 import { Redirect } from 'react-router';
+import { Message } from 'semantic-ui-react';
 
 import { submitVote, createPoll, submitEdit } from '../actions/actions';
 
@@ -31,36 +32,38 @@ class PollCreateEdit extends Component {
     })
   }
   handleChoiceChange(e) {
-    console.log(e.target.name, 'hur', e.target.value);
+    // console.log(e.target.name, 'hur', e.target.value);
 
-    let oldval = this.state.votesByChoice[e.target.name];
-
-    let ind = this.state.votesByChoice.findIndex((obj, ind) => obj.choiceName === e.target.name);
-    console.log('ind in PollCreateEdit.js', ind);
-    if (ind === - 1) {
-      this.setState(update(this.state, {
-        votesByChoice: {
-          $push: [{ choiceName: e.target.value, count: 0 }]
-        },
-        allChoices: {
-          $push: [e.target.value]
-        }
-      }));
-      return;
-    }
-    this.setState(
-      update(this.state, {
-        votesByChoice: {
-          [ind]: { choiceName: { $set: e.target.value } }
-        },
-        allChoices: {
-          $apply: (choices) => {
-            if (e.target.name === '') return choices.concat(e.target.value);
-            else return choices.map(choice => choice === e.target.name ? e.target.value : choice)
-          }
-        }
-      }
-      ))
+    //Typing into the empty field
+  if(e.target.name === '') {
+    // console.log('if')
+    this.setState({
+      allChoices:  [...this.state.allChoices, e.target.value],
+      votesByChoice: this.state.votesByChoice.concat({choiceName: e.target.value, count: 0})
+    })
+  }
+  //Backspace deleting a field 
+  else if(!e.target.value) {
+    // console.log('else if');
+    this.setState({
+      allChoices: this.state.allChoices.filter(el => el !== e.target.name),
+      votesByChoice: this.state.votesByChoice.filter(choice => choice.choiceName !== e.target.name)
+    });
+  }
+  //Modifying an existing field
+  else {
+    // console.log('else')
+    this.setState({
+      allChoices: this.state.allChoices.map(el => {
+        if(el === e.target.name) return e.target.value;
+        return el;
+      }),
+      votesByChoice: this.state.votesByChoice.map(choice => {
+        if(choice.choiceName === e.target.name) return {choiceName: e.target.value, count: choice.count};
+        return choice;
+      })
+    })
+  }
   }
   submitPoll(e) {
     if (this.props.mode === 'edit') {
