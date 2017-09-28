@@ -14,11 +14,13 @@ class PollForm extends Component {
   }
   createButtonIsActive = () => {
     // if(!this.props.choices[1]) return false;
-    console.log(this.props.choices[0], this.props.choices[1], this.props.question);
+    // console.log(this.props.choices[0], this.props.choices[1], this.props.question);
+    console.log(this.props.areDuplicateFormChoices);
     if(this.props.choices[0] === "Choice A"
        && this.props.choices[1] === "Choice B"
        && this.props.question === "Poll Question"
-       && this.props.choices.slice(2).every(q => q === '')) {
+       && this.props.choices.slice(2).every(q => q === '')
+       || this.props.areDuplicateFormChoices) {
          return false;
        }
     return true;
@@ -41,7 +43,7 @@ class PollForm extends Component {
         <Form.Field>
           <label>Choices:</label>
           {choices.concat('').map((choice, ind) => {
-            return <input key={ind} type="text" name={choice} value={choice} onChange={this.props.handleChoiceChange} />})}
+            return <input key={ind} type="text" name={choice} value={choice} onChange={this.props.handleChoiceChange} data-something={ind}/>})}
         </Form.Field>
         <Button disabled={!this.createButtonIsActive()} color={this.createButtonIsActive() ? 'green' : 'grey'} type="submit" onClick={submitPoll}>{this.buttonText()}</Button>
       </Form>

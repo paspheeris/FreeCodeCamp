@@ -33,7 +33,8 @@ class PollCreateEdit extends Component {
   }
   handleChoiceChange(e) {
     // console.log(e.target.name, 'hur', e.target.value);
-
+    // console.log(e.target.dataset.something);
+    const ind = parseInt(e.target.dataset.something);
     //Typing into the empty field
   if(e.target.name === '') {
     // console.log('if')
@@ -54,12 +55,16 @@ class PollCreateEdit extends Component {
   else {
     // console.log('else')
     this.setState({
-      allChoices: this.state.allChoices.map(el => {
-        if(el === e.target.name) return e.target.value;
+      allChoices: this.state.allChoices.map((el, i) => {
+        // if(el === e.target.name) return e.target.value;
+        // return el;
+        if(i === ind) return e.target.value;
         return el;
       }),
-      votesByChoice: this.state.votesByChoice.map(choice => {
-        if(choice.choiceName === e.target.name) return {choiceName: e.target.value, count: choice.count};
+      votesByChoice: this.state.votesByChoice.map((choice, i) => {
+        // if(choice.choiceName === e.target.name) return {choiceName: e.target.value, count: choice.count};
+        // return choice;
+        if(i === ind) return {choiceName: e.target.value, count: choice.count};
         return choice;
       })
     })
@@ -79,6 +84,19 @@ class PollCreateEdit extends Component {
     this.setState({
       ...this.state, redirect: "/polls"
     });
+  }
+  areDuplicateFormChoices = () => {
+    let dict = this.state.allChoices.reduce((accum, choice) => {
+      choice = choice.trim().toLowerCase();
+      accum[choice]
+        ? accum[choice]++
+        : accum[choice] = 1;
+      return accum;
+    }, {});
+    // return Object.entries(dict).reduce( (accum, entry) => {
+
+    // }, []);
+    return Object.values(dict).some(count => count > 1);
   }
 
   componentDidMount() {
@@ -100,7 +118,9 @@ class PollCreateEdit extends Component {
     if (!userId) return (<LoginNotice message="You must be logged in to create or edit a poll." />);
     return (
       <div>
-        <PollForm question={this.state.question} choices={this.state.allChoices} handleTitleChange={this.handleTitleChange} handleChoiceChange={this.handleChoiceChange} mode={mode} submitPoll={this.submitPoll} />
+        {console.log(this.areDuplicateFormChoices())}
+        {this.areDuplicateFormChoices() && <Message header='Poll choices must be unique' error />}
+        <PollForm question={this.state.question} choices={this.state.allChoices} handleTitleChange={this.handleTitleChange} handleChoiceChange={this.handleChoiceChange} mode={mode} submitPoll={this.submitPoll} areDuplicateFormChoices={this.areDuplicateFormChoices()}/>
         <div>
           <SinglePollDisplay poll={this.state} />
         </div>
