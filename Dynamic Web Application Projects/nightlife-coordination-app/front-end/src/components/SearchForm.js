@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import APIs from '../asyncActions.js';
+import { Input } from 'semantic-ui-react';
 // import { connect } from 'react-redux';
 // import { SEARCH_BOX_KEY_PRESS } from '../constants/actionTypes.js';
 
@@ -25,7 +26,7 @@ class SearchForm extends Component {
     // const {searchFormValue} = this.props;
     return (
       <form className="search-form" onSubmit={this.hur}>
-        <input type="text" value={this.state.value} placeholder="enter a location" onKeyDown={this.handleKeyDown} />
+        <Input fluid type="text" value={this.state.value} placeholder="enter a location" icon="search" onKeyDown={this.handleKeyDown} />
       </form>
     )
   }

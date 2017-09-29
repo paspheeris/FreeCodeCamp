@@ -28,7 +28,7 @@ class Map extends React.Component {
     this.divRef.appendChild(js_file);
     window.initMap = () => {
       this.map = new google.maps.Map(this.divRef, {
-        zoom: 13,
+        zoom: 12,
         center: this.props.center
       });
       // this.setMarkers(this.map, this.props.latLngs);
@@ -45,8 +45,14 @@ class Map extends React.Component {
       // this.map.setCenter(this.props.hoverMarker);
     }
     // Mouse out card
-    if (prevProps.hoverMarker && !this.props.hoverMarker) {
+    else if (prevProps.hoverMarker && !this.props.hoverMarker) {
       this.hideMarkers(this.hoverMarker);
+      this.drawMarkers(this.map, this.markers);
+    }
+    else {
+      this.hideMarkers(this.markers);
+      this.map.setCenter(this.props.center);
+      this.markers = this.createMarkers(this.props.latLngs);
       this.drawMarkers(this.map, this.markers);
     }
   }

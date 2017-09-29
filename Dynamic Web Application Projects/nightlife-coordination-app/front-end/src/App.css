@@ -39,7 +39,13 @@ body {
 
 .search-form {
     /*height: 10%;*/
+    /* width: 100%; */
 }
+
+
+/* .ui.icon.input {
+    width: 100%;
+} */
 
 .bar-list {
     overflow-y: scroll;
