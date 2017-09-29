@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import store from './store';
 
-import NavBar from './components/NavBar';
+// import NavBar from './components/NavBar';
 import MainView from './components/MainView';
 
 
@@ -16,10 +16,10 @@ class App extends Component {
     return (
       <Provider store={store}>
         <BrowserRouter>
-        <div>
-          <NavBar />
-          <MainView />
-        </div>
+          <div>
+            {/* <NavBar /> */}
+            <MainView />
+          </div>
         </BrowserRouter>
       </Provider>
     );

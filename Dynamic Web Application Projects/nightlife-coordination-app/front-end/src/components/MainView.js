@@ -17,7 +17,7 @@ const defaultProps = {
   searchFormValue: ''
 }
 
-const MainView = ({ searchFormSubmit, searchFormValue, bars, latLngs, center }) => (
+const MainView = ({ searchFormSubmit, searchFormValue, bars, latLngs, center, hoverMarker }) => (
   <div className="mainview-wrapper">
     {/*{console.log(extractLatLngFromBars(bars))}*/}
     <div className="mainview-left-group">
@@ -25,7 +25,7 @@ const MainView = ({ searchFormSubmit, searchFormValue, bars, latLngs, center }) 
       <BarList bars={bars} />
     </div>
     <div className="mainview-right-group">
-     <Map latLngs={latLngs} center={center}/> 
+      <Map latLngs={latLngs} center={center} hoverMarker={hoverMarker} />
     </div>
   </div>
 )
@@ -35,15 +35,16 @@ const MainView = ({ searchFormSubmit, searchFormValue, bars, latLngs, center }) 
 //   })
 // }
 const mapDispatchToProps = dispatch => ({
-  searchFormSubmit: payload => 
-    dispatch({type: SEARCH_FORM_SUBMIT, payload})
+  searchFormSubmit: payload =>
+    dispatch({ type: SEARCH_FORM_SUBMIT, payload })
 })
 const mapStateToProps = state => {
   return ({
     searchFormValue: state.searchForm.value,
     bars: state.bars,
     latLngs: state.location.latLngs,
-    center: state.location.center
+    center: state.location.center,
+    hoverMarker: state.ui.hoverMarker
   })
 }
 MainView.propTypes = propTypes

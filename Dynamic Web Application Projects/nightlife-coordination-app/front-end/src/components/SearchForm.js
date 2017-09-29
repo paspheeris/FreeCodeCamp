@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import APIs from '../asyncActions.js';
@@ -14,7 +14,7 @@ const defaultProps = {
   searchFormValue: ''
 }
 // = ({ onKeyDown, searchFormValue }) => {
-class SearchForm extends Component { 
+class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,10 +22,10 @@ class SearchForm extends Component {
     };
   }
   render() {
-  const {searchFormValue} = this.props;
+    // const {searchFormValue} = this.props;
     return (
       <form className="search-form" onSubmit={this.hur}>
-        <input type="text" value={this.state.value} placeholder="enter a location" onKeyDown={this.handleKeyDown}/>
+        <input type="text" value={this.state.value} placeholder="enter a location" onKeyDown={this.handleKeyDown} />
       </form>
     )
   }

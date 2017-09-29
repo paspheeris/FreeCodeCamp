@@ -1,7 +1,7 @@
 import {
-  SEARCH_FORM_SUBMIT,
+  // SEARCH_FORM_SUBMIT,
   SEARCH_FORM_SUBMIT_SUCCESS,
-  SEARCH_FORM_SUBMIT_FAILURE
+  // SEARCH_FORM_SUBMIT_FAILURE
 
 } from '../constants/actionTypes';
 
@@ -12,14 +12,15 @@ export default (state = {}, action) => {
       // console.log('SEARCH_FORM_SUBMIT', action.payload);
       return {
         // ...state,
-        latLngs : action.payload.businesses.map(business => {
+        latLngs: action.payload.businesses.map(business => {
           return ({
             id: business.id,
             name: business.name,
             lat: business.coordinates.latitude,
             lng: business.coordinates.longitude,
 
-        })}),
+          })
+        }),
         center: {
           lat: action.payload.region.center.latitude,
           lng: action.payload.region.center.longitude

@@ -27,32 +27,46 @@ class Map extends React.Component {
     js_file.src = `https://maps.googleapis.com/maps/api/js?key=${gmapApiKey}&callback=initMap`;
     this.divRef.appendChild(js_file);
     window.initMap = () => {
-        this.state.map = new google.maps.Map(this.divRef, {
-        zoom: 11,
+      this.map = new google.maps.Map(this.divRef, {
+        zoom: 13,
         center: this.props.center
       });
-      this.setMarkers(this.state.map, this.props.latLngs);
+      // this.setMarkers(this.map, this.props.latLngs);
+      this.markers = this.createMarkers(this.props.latLngs);
+      this.drawMarkers(this.map, this.markers);
     }
   }
   componentDidUpdate(prevProps, prevState) {
-    this.state.map.setCenter(this.props.center);
-    console.dir(this.state.map);
-    this.setMarkers(this.state.map, this.props.latLngs)
-  }
-  setMarkers = (map, latLngs) => {
-    console.log('in setMarkers in Map.js');
-    if(this.state.map) {
-      console.log('in setMarkers if');
-      latLngs.forEach(latLng => {
-        const marker = new window.google.maps.Marker({
-          position: {lat: latLng.lat, lng: latLng.lng}
-        });
-        marker.setMap(this.state.map);
-      });
+    //Mouse over card
+    if (!prevProps.hoverMarker && this.props.hoverMarker) {
+      this.hideMarkers(this.markers);
+      this.hoverMarker = this.createMarkers([this.props.hoverMarker]);
+      this.drawMarkers(this.map, this.hoverMarker);
+      // this.map.setCenter(this.props.hoverMarker);
+    }
+    // Mouse out card
+    if (prevProps.hoverMarker && !this.props.hoverMarker) {
+      this.hideMarkers(this.hoverMarker);
+      this.drawMarkers(this.map, this.markers);
     }
   }
+  createMarkers = (latLngs) => {
+    // if (!latLngs) return;
+    return latLngs.map(latLng => {
+      return new window.google.maps.Marker({
+        position: { lat: latLng.lat, lng: latLng.lng }
+      });
+    });
+  }
+  drawMarkers = (map, markers) => {
+    // if (!markers) return;
+    markers.forEach(marker => marker.setMap(map));
+  }
+  hideMarkers = (markers) => {
+    markers.forEach(marker => marker.setMap(null));
+  }
+
   render() {
-    const {latLngs, center} = this.props; 
     return (
       <div className="gmap-div" ref={(divRef) => this.divRef = divRef}>
       </div>

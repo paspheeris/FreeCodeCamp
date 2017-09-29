@@ -1,4 +1,4 @@
-import store from './store';
+// import store from './store';
 
 const API_ROOT = 'http://localhost:7777';
 
@@ -7,7 +7,7 @@ const requests = {
   //   superagent.del(`${API_ROOT}${url}`).use(tokenPlugin).then(responseBody),
   get: url =>
     fetch(`${API_ROOT}${url}`)
-    // const promiseMiddleware = store => next => action => {
+  // const promiseMiddleware = store => next => action => {
   // put: (url, body) =>
   //   superagent.put(`${API_ROOT}${url}`, body).use(tokenPlugin).then(responseBody),
   // post: (url, body) =>

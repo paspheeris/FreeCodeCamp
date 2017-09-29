@@ -1,61 +1,75 @@
 body {
-  overflow: hidden;
+    overflow: hidden;
 }
+
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
 }
 
 .App-intro {
-  font-size: large;
+    font-size: large;
 }
-.bar-image {
+
+
+/* .bar-image {
   width: 200px;
   height: 200px;
-}
+} */
+
 .mainview-wrapper {
-  display: flex;
-  max-height: 100vh;
+    display: flex;
+    max-height: 100vh;
 }
+
 .mainview-left-group {
-  flex: 1;
+    flex: 1;
 }
+
 .search-form {
-  /*height: 10%;*/
+    /*height: 10%;*/
 }
+
 .bar-list {
-  overflow-y: scroll;
-  height: 90%;
+    overflow-y: scroll;
+    height: 100%;
 }
+
 .mainview-right-group {
-  flex: 1;
+    flex: 1;
 }
+
 
 /*.gmap-div {
   height: 300px;
   width: 300px;
 }*/
+
 .gmap-div {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
+
+
 /*.map-responsive{
     overflow:hidden;
     padding-bottom:56.25%;
     position:relative;
     height:0;
 }*/
+
+
 /*.map-responsive iframe{
     left:0;
     top:0;
@@ -63,7 +77,12 @@ body {
     width:100%;
     position:absolute;
 }*/
+
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
