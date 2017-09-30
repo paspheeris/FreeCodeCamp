@@ -1,6 +1,6 @@
 // import store from './store';
 
-const API_ROOT = 'http://localhost:7777';
+const API_ROOT = 'http://localhost:7777/api';
 
 const requests = {
   // del: url =>
@@ -22,7 +22,7 @@ const Yelp = {
   // register: (username, email, password) =>
   //   requests.post('/users', { user: { username, email, password } }),
   // save: user =>
-  //   requests.put('/user', { user })
+  //   requests.put('/user', { user }
 };
 
 export default {

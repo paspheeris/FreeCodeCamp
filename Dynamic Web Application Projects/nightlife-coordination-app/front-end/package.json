@@ -2,6 +2,7 @@
   "name": "front-end",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:7777/api",
   "dependencies": {
     "loadjs": "^3.5.1",
     "prop-types": "^15.5.10",

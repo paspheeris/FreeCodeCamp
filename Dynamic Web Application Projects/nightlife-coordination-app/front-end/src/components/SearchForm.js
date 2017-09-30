@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import APIs from '../asyncActions.js';
 import { Input } from 'semantic-ui-react';
-// import { connect } from 'react-redux';
-// import { SEARCH_BOX_KEY_PRESS } from '../constants/actionTypes.js';
 
 const propTypes = {
   searchFormSubmit: PropTypes.func.isRequired,
@@ -14,7 +11,6 @@ const propTypes = {
 const defaultProps = {
   searchFormValue: ''
 }
-// = ({ onKeyDown, searchFormValue }) => {
 class SearchForm extends Component {
   constructor(props) {
     super(props);
@@ -23,10 +19,9 @@ class SearchForm extends Component {
     };
   }
   render() {
-    // const {searchFormValue} = this.props;
     return (
       <form className="search-form" onSubmit={this.hur}>
-        <Input fluid type="text" value={this.state.value} placeholder="enter a location" icon="search" onKeyDown={this.handleKeyDown} />
+        <Input fluid type="text" value={this.state.value} placeholder="enter a location, eg 'oakland'" icon="search" onKeyDown={this.handleKeyDown} />
       </form>
     )
   }
@@ -34,21 +29,13 @@ class SearchForm extends Component {
     this.setState({ formText: event.target.value });
   }
   hur = (event) => {
-    // console.log('in function submit');
     event.preventDefault();
     const payload = APIs.Yelp.getBars(this.state.formText);
     this.props.searchFormSubmit(payload);
   };
 }
-// bindActionCreators({ actions }, dispatch)
-// const mapDispatchToProps = dispatch => ({
-//   onKeyDown: payload =>
-//     dispatch({ type: SEARCH_BOX_KEY_PRESS, payload })
-// })
-
 SearchForm.propTypes = propTypes
 
 SearchForm.defaultProps = defaultProps
 
 export default SearchForm;
-// export default connect(() => {}, mapDispatchToProps)(SearchForm);

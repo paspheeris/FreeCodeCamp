@@ -22,12 +22,6 @@ body {
     font-size: large;
 }
 
-
-/* .bar-image {
-  width: 200px;
-  height: 200px;
-} */
-
 .mainview-wrapper {
     display: flex;
     max-height: 100vh;
@@ -36,16 +30,6 @@ body {
 .mainview-left-group {
     flex: 1;
 }
-
-.search-form {
-    /*height: 10%;*/
-    /* width: 100%; */
-}
-
-
-/* .ui.icon.input {
-    width: 100%;
-} */
 
 .bar-list {
     overflow-y: scroll;
@@ -56,39 +40,7 @@ body {
     flex: 1;
 }
 
-
-/*.gmap-div {
-  height: 300px;
-  width: 300px;
-}*/
-
 .gmap-div {
     height: 100%;
     width: 100%;
-}
-
-
-/*.map-responsive{
-    overflow:hidden;
-    padding-bottom:56.25%;
-    position:relative;
-    height:0;
-}*/
-
-
-/*.map-responsive iframe{
-    left:0;
-    top:0;
-    height:100%;
-    width:100%;
-    position:absolute;
-}*/
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
 }

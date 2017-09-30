@@ -19,7 +19,6 @@ const defaultProps = {
 
 const MainView = ({ searchFormSubmit, searchFormValue, bars, latLngs, center, hoverMarker }) => (
   <div className="mainview-wrapper">
-    {/*{console.log(extractLatLngFromBars(bars))}*/}
     <div className="mainview-left-group">
       <SearchForm className="search-form" searchFormSubmit={searchFormSubmit} searchFormValue={searchFormValue} />
       <BarList bars={bars} />
@@ -29,11 +28,6 @@ const MainView = ({ searchFormSubmit, searchFormValue, bars, latLngs, center, ho
     </div>
   </div>
 )
-// const extractLatLngFromBars = (bars) => {
-//   return bars.map(bar => {
-//     return bar.coordinates;
-//   })
-// }
 const mapDispatchToProps = dispatch => ({
   searchFormSubmit: payload =>
     dispatch({ type: SEARCH_FORM_SUBMIT, payload })

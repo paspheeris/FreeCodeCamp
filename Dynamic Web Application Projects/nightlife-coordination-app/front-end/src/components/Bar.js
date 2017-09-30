@@ -22,7 +22,7 @@ const defaultProps = {}
 
 const Bar = ({ id, name, image_url, url, rating, price, display_phone, categories, address, coordinates, cardMouseEnter, cardMouseExit }) => (
   <Card fluid href={url} target="_blank" onMouseOver={() => cardMouseEnter(coordinates)} onMouseOut={cardMouseExit}>
-    <Image src={image_url} />
+    <Image src={image_url} className="bar-image" />
     <Card.Content>
       <Card.Header>{name}</Card.Header>
       <Card.Meta>{categories}</Card.Meta>

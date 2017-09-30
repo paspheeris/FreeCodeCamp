@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import PropTypes from 'prop-types';
-import greenMarker from '../images/green-dot.png';
 
 const propTypes = {
   latLngs: PropTypes.array.isRequired,
@@ -57,7 +56,7 @@ class Map extends React.Component {
     }
   }
   createMarkers = (latLngs) => {
-    // if (!latLngs) return;
+    if (!latLngs) return;
     return latLngs.map(latLng => {
       return new window.google.maps.Marker({
         position: { lat: latLng.lat, lng: latLng.lng }
@@ -65,7 +64,7 @@ class Map extends React.Component {
     });
   }
   drawMarkers = (map, markers) => {
-    // if (!markers) return;
+    if (!markers) return;
     markers.forEach(marker => marker.setMap(map));
   }
   hideMarkers = (markers) => {

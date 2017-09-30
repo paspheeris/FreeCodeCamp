@@ -11,7 +11,6 @@ const defaultProps = {
 }
 
 const BarList = ({ bars }) => {
-  // console.log(bars);
   return (
     <Card.Group className="bar-list">
 
