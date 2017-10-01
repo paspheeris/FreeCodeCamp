@@ -1,6 +1,7 @@
 // import store from './store';
 
-const API_ROOT = 'http://localhost:7777/api';
+const API_ROOT = 'https://localhost:7777/api';
+// const API_ROOT = 'https://nightlife-rlwshuezej.now.sh/api';
 
 const requests = {
   // del: url =>
