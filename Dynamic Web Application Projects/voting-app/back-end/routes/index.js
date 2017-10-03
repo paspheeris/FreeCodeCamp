@@ -1,17 +1,22 @@
 var express = require('express');
 var router = express.Router();
+var path = require('path');
 
 // const mongoose = require('mongoose');
 // mongoose.connect(process.env.DATABASE);
 // mongoose.Promise = global.Promise;
 // const Poll = mongoose.model('Poll');
 const Poll = require('../models/Poll');
-
+var cors = require('cors');
+router.use(cors());
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-router.get('/polls', (req, res) => {
+// app.get('*', function(req, res) {
+//   res.sendFile(path.resolve(__dirname, 'public/index.html'));
+// });
+// router.get('/', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
+router.get('/api/polls', (req, res) => {
   Poll.find({}).exec()
     .then(data => {
       // console.log(data)
@@ -22,7 +27,7 @@ router.get('/polls', (req, res) => {
       res.json({error})
     })
 });
-router.patch('/poll/vote/:_id', (req, res) => {
+router.patch('/api/poll/vote/:_id', (req, res) => {
   console.log(req.body);
 
   if(req.body.addedChoice) {
@@ -60,7 +65,7 @@ router.patch('/poll/vote/:_id', (req, res) => {
     // res.send('ol');
     // res.json(JSON.stringify(poll));
 });
-router.post('/poll/create', (req, res) => {
+router.post('/api/poll/create', (req, res) => {
   // console.log(req.body.poll);
   const poll = new Poll(req.body.poll);
   // console.log(poll);
@@ -74,7 +79,7 @@ router.post('/poll/create', (req, res) => {
       res.json({error});
     });
 });
-router.patch('/poll/edit/:_id', (req, res) => {
+router.patch('/api/poll/edit/:_id', (req, res) => {
   console.log(req.params._id);
   const newPoll = new Poll(req.body.poll);
 
@@ -87,14 +92,6 @@ router.patch('/poll/edit/:_id', (req, res) => {
       console.log(error);
       res.json({error});
     })
-  // const poll = Poll.find({_id: req.params._id}).exec();
-  // poll.then(something => {
-  //   console.log(something);
-  // })
-  //   .catch(error => {
-  //     console.log(error);
-  //     res.json({error});
-  //   })
 });
 
 module.exports = router;
