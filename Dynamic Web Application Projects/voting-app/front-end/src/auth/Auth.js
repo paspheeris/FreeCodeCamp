@@ -10,6 +10,7 @@ class Auth {
   auth0 = new auth0.WebAuth({
     domain: 'paspheeris.auth0.com',
     clientID: 'v_yjKK_mmfZYpiRW28xu6rxVz99lGTH9',
+    // redirectUri: 'http://localhost:7777/profile/',
     redirectUri: 'http://localhost:3000/profile',
     audience: 'https://paspheeris.auth0.com/userinfo',
     responseType: 'token id_token',

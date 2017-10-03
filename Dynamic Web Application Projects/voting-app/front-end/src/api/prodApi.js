@@ -1,6 +1,7 @@
 export default class mockApi {
   constructor() {
-    this.endpoint = 'https://localhost:80/api/';
+    this.endpoint = 'http://localhost:7777/api/';
+    // this.endpoint = 'https://voting-app-ezbnyhxzxx.now.sh:80/api/';
 
     this.submitVote = this.submitVote.bind(this);
     this.fetchAll = this.fetchAll.bind(this);
